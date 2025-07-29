@@ -4,8 +4,9 @@ import { RouterOutlet } from '@angular/router';
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet],
-  templateUrl: './app.html',
-  styleUrl: './app.css'
+  styleUrl: './app.css',
+  standalone: true,
+  template: ` <router-outlet></router-outlet> `,
 })
 export class App {
   protected readonly title = signal('centar-sensus-app');
