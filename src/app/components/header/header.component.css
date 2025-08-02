@@ -1,0 +1,39 @@
+/* General Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+.navbar {
+  display: flex;
+  justify-content: flex-start; /* ⬅️ poravnanje ulijevo */
+  align-items: center;
+  background-color: #fffcfb;
+  padding: 15px 30px;
+  gap: 40px; /* razmak između linkova i loga */
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #b39ddad7;
+  font-weight: bold;
+  font-size: 16px;
+  transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: #ddd;
+}
+
+.logo img {
+  height: 70px;
+  width: 70px;
+}

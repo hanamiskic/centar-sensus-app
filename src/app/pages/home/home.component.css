@@ -1,0 +1,75 @@
+/* General Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+body {
+  background-color: #CEC3E1;
+}
+
+/* Hero Section */
+.hero {
+  position: relative;
+  background-image: url('/hero (3).jpg');
+  background-size: cover;
+  background-position: center;
+  height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(2px);
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.hero-text {
+  position: relative;
+  z-index: 1;
+  text-align: left;
+  margin-left: 0; /* optional, ensures no extra margin */
+  max-width: 800px;
+  padding: 15px;
+}
+
+.title-right {
+  width: 100%;
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  text-align: left;
+  margin-left: 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6); /* 👈 drop shadow */
+}
+
+.hero-text p {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  text-align: left;
+  margin-left: 0;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5); /* 👈 za paragrafe */
+}
+
+.cta-button {
+  margin-top: 1rem;
+  padding: 0.8rem 2rem;
+  background-color: #4b0082;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.cta-button:hover {
+  background-color: #360061;
+}
