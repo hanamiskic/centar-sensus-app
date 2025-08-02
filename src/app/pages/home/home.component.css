@@ -1,28 +1,38 @@
-/* General Reset */
+/* Globalni reset unutar komponente */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: Helvetica, Arial, sans-serif;
 }
 
-body {
+:host {
+  display: block;
+  width: 100vw;
+  padding: 0;
+  margin: 0;
+  overflow-x: hidden;
   background-color: #CEC3E1;
 }
 
-/* Hero Section */
+/* Hero sekcija */
 .hero {
   position: relative;
-  background-image: url('/hero (3).jpg');
-  background-size: cover;
+  width: 100vw;
+  height: 30vh; /* zauzima 30% visine ekrana */
+  background-image: url('/hero (7).jpg');
+  background-size: cover;         /* crop efekt */
   background-position: center;
-  height: 90vh;
+  background-repeat: no-repeat;
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
   color: white;
 }
 
+
+
+/* Tamni overlay */
 .overlay {
   position: absolute;
   top: 0;
@@ -30,46 +40,61 @@ body {
   width: 100%;
   height: 100%;
   backdrop-filter: blur(2px);
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: rgba(0, 0, 0, 0.2);
 }
 
+.moto {
+  color: #cbb4f3;
+  font-size: clamp(1.2rem, 3.5vw, 2.2rem);
+  font-weight: 600;
+  font-style: italic;
+  margin-top: 30px;
+  text-shadow: 0 0 10px rgba(0,0,0,0.3);
+}
+
+
+/* Tekst preko slike */
 .hero-text {
   position: relative;
   z-index: 1;
-  text-align: left;
-  margin-left: 0; /* optional, ensures no extra margin */
-  max-width: 800px;
-  padding: 15px;
+  text-align: center;
+  width: 100%;
+  max-width: 90%;
+  padding: 2vw;
 }
 
+
 .title-right {
-  width: 100%;
-  font-size: 3rem;
-  margin-bottom: 1rem;
-  text-align: left;
-  margin-left: 0;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6); /* 👈 drop shadow */
+  font-size: clamp(1.4rem, 6vw, 3rem); /* skalira od 1.4rem do 3rem */
+  text-shadow: 0.2vw 0.2vw 0.5vw rgba(0, 0, 0, 0.6);
+  line-height: 1.2;
 }
 
 .hero-text p {
-  font-size: 1.2rem;
-  margin-bottom: 0.5rem;
-  text-align: left;
-  margin-left: 0;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5); /* 👈 za paragrafe */
+  font-size: clamp(0.9rem, 4vw, 1.4rem); /* skalira od 0.9rem do 1.4rem */
+  text-shadow: 0.1vw 0.1vw 0.4vw rgba(0, 0, 0, 0.5);
+  line-height: 1.4;
 }
 
+/* Call-to-action gumb */
 .cta-button {
-  margin-top: 1rem;
-  padding: 0.8rem 2rem;
+  margin-top: 2vh;
+  padding: 1vh 3vw;
   background-color: #4b0082;
   color: white;
   border: none;
-  border-radius: 30px;
-  font-size: 1rem;
+  border-radius: 3vw;
+  font-size: clamp(0.8rem, 1.2vw, 1.2rem);
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .cta-button:hover {
   background-color: #360061;
+}
+
+@media (min-width: 1024px) {
+  .hero {
+    height: 60vh;
+  }
 }

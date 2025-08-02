@@ -1,39 +1,101 @@
-/* General Reset */
+/* RESET */
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
+/* NAVBAR */
 .navbar {
-  display: flex;
-  justify-content: flex-start; /* ⬅️ poravnanje ulijevo */
-  align-items: center;
-  background-color: #fffcfb;
-  padding: 15px 30px;
-  gap: 40px; /* razmak između linkova i loga */
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fcfbfb;
+    padding: 1.5vh 4vw;
+    width: 100%;
+    min-height: 8vh;
+    max-height: 12vh;
 }
 
+/* LOGO */
+.logo img {
+    height: clamp(40px, 8vw, 80px);
+    width: clamp(40px, 8vw, 80px);
+}
+
+/* DEFAULT NAVIGATION (desktop) */
 .nav-links {
-  list-style: none;
-  display: flex;
-  gap: 20px;
+    list-style: none;
+    display: flex;
+    gap: 2vw;
 }
 
 .nav-links a {
-  text-decoration: none;
-  color: #b39ddad7;
-  font-weight: bold;
-  font-size: 16px;
-  transition: color 0.3s ease;
+    text-decoration: none;
+    color: #CEC3E1;
+    font-weight: bold;
+    font-size: 1.2vw;
+    transition: color 0.3s ease;
 }
 
 .nav-links a:hover {
-  color: #ddd;
+    color: #ddd;
 }
 
-.logo img {
-  height: 70px;
-  width: 70px;
+/* HAMBURGER */
+.hamburger {
+    display: none;
+    font-size: 2rem;
+    cursor: pointer;
+    color: #CEC3E1;
+    z-index: 9999;
+    position: relative;
+}
+
+
+
+/* ============= MOBILE FULLSCREEN MENU (ispod headera) ============= */
+@media (max-width: 700px) {
+    .nav-links {
+        position: fixed;
+        top: 8vh;
+        /* visina headera – prilagodi po potrebi */
+        left: 0;
+        width: 100%;
+        height: calc(100vh - 8vh);
+        /* ostatak ekrana */
+        background-color: #fcfbfb;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        /* sadržaj od vrha */
+        align-items: flex-start;
+        padding: 2rem 2rem;
+        gap: 1.5rem;
+        transform: translateX(100%);
+        transition: transform 0.4s ease;
+        z-index: 999;
+        overflow-y: auto;
+    }
+
+    .nav-links.active {
+        transform: translateX(0);
+    }
+
+    .nav-links a {
+        font-size: 1.1rem;
+        font-weight: bold;
+        color: #CEC3E1;
+        text-align: left;
+        width: 100%;
+    }
+
+    .hamburger {
+        display: block;
+    }
 }

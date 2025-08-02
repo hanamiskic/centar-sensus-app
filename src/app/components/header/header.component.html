@@ -1,15 +1,22 @@
 <header>
   <nav class="navbar">
     <div class="logo">
-      <img src="/logo.png" alt="Logo"/>
+      <img src="/logo.png" alt="Logo" />
     </div>
 
-    <ul class="nav-links">
-      <li><a href="index.html">POČETNA</a></li>
-      <li><a href="radionice.html">RADIONICE</a></li>
-      <li><a href="galerija.html">GALERIJA</a></li>
-      <li><a href="onama.html">O NAMA</a></li>
-      <li><a href="kontakt.html">KONTAKT</a></li>
+    <ul class="nav-links" [class.active]="menuOpen">
+      <li><a routerLink="/">POČETNA</a></li>
+      <li><a routerLink="/dogadaji" (click)="menuOpen = false">DOGAĐAJI</a></li>
+      <li><a routerLink="/galerija">GALERIJA</a></li>
+      <li><a routerLink="/onama">O NAMA</a></li>
+      <li><a routerLink="/kontakt">KONTAKT</a></li>
+
     </ul>
+
+
+    <div class="hamburger" (click)="toggleMenu()">
+      <span *ngIf="!menuOpen">&#9776;</span> <!-- hamburger -->
+      <span *ngIf="menuOpen">&#10005;</span> <!-- X -->
+    </div>
   </nav>
 </header>
