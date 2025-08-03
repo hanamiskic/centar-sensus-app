@@ -12,11 +12,11 @@ export const routes: Routes = [
     path: '',
     component: LayoutComponent,
     children: [
-      { path: '', component: HomeComponent },
-      { path: 'dogadaji', component: DogadajiComponent },
-      { path: 'galerija', component: GalerijaComponent },
-      { path: 'onama', component: OnamaComponent },
-      { path: 'kontakt', component: KontaktComponent },
+      { path: '', component: HomeComponent, data: { animation: 'Home' } },
+      { path: 'dogadaji', component: DogadajiComponent, data: { animation: 'Dogadaji' } },
+      { path: 'galerija', component: GalerijaComponent, data: { animation: 'Galerija' } },
+      { path: 'onama', component: OnamaComponent, data: { animation: 'Onama' } },
+      { path: 'kontakt', component: KontaktComponent, data: { animation: 'Kontakt' } },
     ],
   },
 ];

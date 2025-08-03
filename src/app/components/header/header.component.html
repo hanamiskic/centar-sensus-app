@@ -1,15 +1,18 @@
 <header>
   <nav class="navbar">
     <div class="logo">
-      <img src="/logo.png" alt="Logo" />
+      <a routerLink="/" (click)="menuOpen = false">
+        <img src="/logo.png" alt="Logo" />
+      </a>
     </div>
 
+
     <ul class="nav-links" [class.active]="menuOpen">
-      <li><a routerLink="/">POČETNA</a></li>
+      <li><a routerLink="/" (click)="menuOpen = false">POČETNA</a></li>
       <li><a routerLink="/dogadaji" (click)="menuOpen = false">DOGAĐAJI</a></li>
-      <li><a routerLink="/galerija">GALERIJA</a></li>
-      <li><a routerLink="/onama">O NAMA</a></li>
-      <li><a routerLink="/kontakt">KONTAKT</a></li>
+      <li><a routerLink="/galerija" (click)="menuOpen = false">GALERIJA</a></li>
+      <li><a routerLink="/onama" (click)="menuOpen = false">O NAMA</a></li>
+      <li><a routerLink="/kontakt" (click)="menuOpen = false">KONTAKT</a></li>
 
     </ul>
 

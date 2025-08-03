@@ -7,6 +7,7 @@
 
 /* NAVBAR */
 .navbar {
+    box-shadow: 0 2px 8px rgba(179, 154, 220, 0.5);
     position: fixed;
     top: 0;
     left: 0;
@@ -24,8 +25,9 @@
 
 /* LOGO */
 .logo img {
-    height: clamp(40px, 8vw, 80px);
-    width: clamp(40px, 8vw, 80px);
+    height: clamp(40px, 8vw, 75px);
+    width: clamp(40px, 8vw, 75px);
+    padding: 1vh 1vh;
 }
 
 /* DEFAULT NAVIGATION (desktop) */
@@ -37,7 +39,7 @@
 
 .nav-links a {
     text-decoration: none;
-    color: #CEC3E1;
+    color: #b39adc;
     font-weight: bold;
     font-size: 1.2vw;
     transition: color 0.3s ease;
@@ -52,7 +54,7 @@
     display: none;
     font-size: 2rem;
     cursor: pointer;
-    color: #CEC3E1;
+    color: #b39adc;
     z-index: 9999;
     position: relative;
 }
@@ -63,11 +65,14 @@
 @media (max-width: 700px) {
     .nav-links {
         position: fixed;
-        top: 8vh;
+      
+         top: calc(8vh + 40px); /* Pomakni 2px ispod headera */
+    height: calc(100vh - 8vh);
+       
         /* visina headera – prilagodi po potrebi */
         left: 0;
         width: 100%;
-        height: calc(100vh - 8vh);
+       
         /* ostatak ekrana */
         background-color: #fcfbfb;
         display: flex;
@@ -87,10 +92,17 @@
         transform: translateX(0);
     }
 
+    .logo img {
+        height: clamp(40px, 8vw, 75px);
+        width: clamp(40px, 8vw, 75px);
+        padding: 0vh 0vh;
+
+    }
+
     .nav-links a {
         font-size: 1.1rem;
         font-weight: bold;
-        color: #CEC3E1;
+        color: #b39adc;
         text-align: left;
         width: 100%;
     }

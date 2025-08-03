@@ -1,0 +1,20 @@
+
+.content-wrapper {
+  margin-top: 8vh; /* Točno koliko je visok header */
+  min-height: calc(100vh - 12vh);
+  position: fixed;
+  overflow-x: hidden;
+}
+
+main {
+  display: block;
+  width: 100%;
+  min-height: 100%;
+}
+
+
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 8vh); /* ili koliko ti je visok header */
+}
