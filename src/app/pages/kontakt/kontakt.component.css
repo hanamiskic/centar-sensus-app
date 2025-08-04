@@ -2,6 +2,10 @@
   padding: 20vh 5vw 4vh;
   background-color: #fcfbfb;
   color: #2d2d2d;
+  border-radius: 1rem;
+  
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
 
