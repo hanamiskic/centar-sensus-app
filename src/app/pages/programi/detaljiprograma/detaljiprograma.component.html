@@ -1,0 +1,19 @@
+
+<section class="detalji-header">
+  <div class="back-button" (click)="goBack()">&#x276E;</div>
+  <h1>{{ title }}</h1>
+</section>
+
+
+
+<section class="podprogrami-container">
+  <div class="podprogram" *ngFor="let pod of podprogrami">
+    <div class="tekst">
+      <h2>{{ pod.subtitle }}</h2>
+      <p>{{ pod.description }}</p>
+    </div>
+    <div class="slika">
+      <img [src]="pod.imageUrl" [alt]="pod.subtitle" />
+    </div>
+  </div>
+</section>

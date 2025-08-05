@@ -1,1 +1,24 @@
-<p>galerija works!</p>
+<h1 class ="gallery-header"> 📸 GALERIJA</h1>
+<div class="grid">
+  <div class="item" *ngFor="let img of images; let i = index">
+    <img [src]="img" alt="Slika" (click)="openModal(i)" />
+  </div>
+</div>
+
+<div class="modal" *ngIf="selectedIndex !== null" (click)="closeModal()">
+  <div class="modal-content"
+       (click)="$event.stopPropagation()"
+       (touchstart)="onTouchStart($event)"
+       (touchend)="onTouchEnd($event)">
+
+
+    <button class="close" (click)="closeModal()">×</button>
+    <img [src]="images[selectedIndex!]" alt="Pregled slike" />
+
+  
+    <div class="controls">
+      <button (click)="prevImage()">⟨</button>
+      <button (click)="nextImage()">⟩</button>
+    </div>
+  </div>
+</div>

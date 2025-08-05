@@ -1,9 +1,57 @@
-
 <section class="hero">
   <img src="/hero (7).jpg" alt="Hero" class="hero-img" loading="eager" />
   <div class="overlay"></div>
   <div class="hero-text">
-    <h1 class="title-right">CENTAR SESNUS</h1>
-    <div class="moto">Mjesto na kojem tvoj potencijal pronalazi put ostvarenja</div>
+    <h1 class="title-right">CENTAR SENSUS</h1>
+    <div class="moto animate-moto">Mjesto na kojem tvoj potencijal pronalazi put ostvarenja</div>
   </div>
 </section>
+
+<section class="about-section-modern">
+  <div class="about-container">
+    <div class="about-text">
+      <p>
+        <strong><span>🌿</span>Centar Sensus</strong> je udruga posvećena poboljšanju
+        kvalitete života pojedinaca svih dobnih skupina. Nudimo podršku osobnom razvoju, mladima i
+        roditeljstvu kroz radionice, edukacije i mentorski rad.
+      </p>
+      <p>
+        Naša misija je pomoći svakome ostvariti svoj puni potencijal kroz suradnju, učenje i holistički
+        pristup. Vjerujemo u snagu zajednice i u pozitivan utjecaj koji zajedničkim radom možemo postići.
+      </p>
+    </div>
+    <div class="about-image">
+      <img src="/hero.jpg" alt="O nama - ilustracija" />
+    </div>
+  </div>
+</section>
+
+
+
+<section class="programs">
+  <h2 class="programs-title">🧭 Naši programi</h2>
+
+  <div class="programs-grid">
+    <div class="program-card">
+      <img src="/adults.jpg" alt="Programi za odrasle" />
+      <h3 class="program-subtitle">Programi za odrasle</h3>
+      <p>Osnažite se s našim programima osobnog razvoja: ostvarite osobne i profesionalne ciljeve uz prilagođenu podršku.</p>
+      <button class="program-btn" [routerLink]="['/program', 'programi-za-odrasle']">Više informacija</button>
+    </div>
+
+    <div class="program-card">
+      <img src="/hero (2).jpg" alt="Djeca i mladi" />
+      <h3 class="program-subtitle">Djeca i mladi</h3>
+      <p>Razvoj djece i mladih kroz radionice, mentorstvo i aktivnosti izgradnje vještina za djecu i mlade.</p>
+      <button class="program-btn" [routerLink]="['/program', 'djeca-i-mladi']">Više informacija</button>
+    </div>
+
+    <div class="program-card">
+      <img src="/parents.jpg" alt="Osnaženo roditeljstvo" />
+      <h3 class="program-subtitle">Osnaženo roditeljstvo</h3>
+      <p>Podrška roditeljstvu: pružanje izvora i smjernica roditeljima u suočavanju s izazovima odgoja djece.</p>
+      <button class="program-btn" [routerLink]="['/program', 'osnazeno-roditeljstvo']">Više informacija</button>
+    </div>
+  </div>
+</section>
+

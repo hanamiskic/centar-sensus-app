@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from '../components/header/header.component';
 import { FooterComponent } from '../components/footer/footer.component';
@@ -12,13 +12,14 @@ import { routeAnimations } from '../route-animations';
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.css']
 })
-export class LayoutComponent {
+export class LayoutComponent implements AfterViewInit {
+  constructor(private cdr: ChangeDetectorRef) {}
+
+  ngAfterViewInit() {
+    this.cdr.detectChanges();
+  }
+
   getRouteAnimationState(outlet: RouterOutlet) {
-    const state = outlet?.activatedRouteData?.['animation'] || null;
-    return state;
+    return outlet?.activatedRouteData?.['animation'] || null;
   }
 }
-
-
-
-

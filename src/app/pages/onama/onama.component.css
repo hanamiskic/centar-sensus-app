@@ -1,9 +1,14 @@
 .about-section {
-  padding: 2rem 5vw;
+  padding: 3rem 5vw;
   width: 100%;
   background-color: #ffffff;
   color: #2d2d2d;
 }
+
+.justify-text {
+  text-align: justify;
+}
+
 
 .section-block {
   background-color: #fcfbfb;
@@ -64,7 +69,6 @@
 }
 
 .donate {
-  text-align: center;
   padding: 2rem 1rem;
   background-color: #f9f9f9;
   border-radius: 1rem;
@@ -72,11 +76,13 @@
 }
 
 .donate h2 {
+  text-align: center;
   font-size: 1.8rem;
   margin-bottom: 1rem;
 }
 
 .donate p {
+  
   font-size: clamp(1rem, 2.5vw, 1.2rem);
   line-height: 1.6;
   margin-bottom: 1rem;
@@ -85,9 +91,14 @@
   margin-right: auto;
 }
 
+.center-text {
+  text-align: center;
+}
+
 .qr-code {
-  margin: 1.5rem auto;
-  max-width: 200px;
+  margin: 2rem auto;
+  max-width: 300px;
+  width: 100%;
 }
 
 .qr-code img {
@@ -97,3 +108,4 @@
   border-radius: 0.5rem;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
 }
+
