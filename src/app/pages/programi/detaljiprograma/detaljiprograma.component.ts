@@ -33,12 +33,12 @@ export class DetaljiProgramaComponent implements OnInit {
           {
             subtitle: '🌸 Ženski krug',
             description: 'Radionice i edukacije usmjerene na samopouzdanje, emocionalnu otpornost i unutarnju snagu.',
-            imageUrl: '/women.jpg'
+            imageUrl: 'assets/women.jpg'
           },
           {
             subtitle: '🤝 Programi povezivanja zajednice ',
             description: 'Kroz okupljanja putem igranja društvenih igara, književnog kluba, tematskih rasprava, intuitivnog pisanja i slikanja, outdoor avantura te volontiranja na aktivnostima lokalne zajednice, želimo potaknuti radost međusobnog povezivanja, aktivnog sudjelovanja i pružiti prostor pojedincima da otkriju svoje snage, interese, talente i osjećaj pripadnosti.',
-            imageUrl: '/hero (5).jpg'
+            imageUrl: 'assets/hero (5).jpg'
           }
         ]
       },
@@ -48,12 +48,12 @@ export class DetaljiProgramaComponent implements OnInit {
           {
             subtitle: '🌱 Razvoj samopoštovanja',
             description: 'Podrška djeci i mladima u izgradnji identiteta i emocionalnih vještina.',
-            imageUrl: '/happy.jpg'
+            imageUrl: 'assets/happy.jpg'
           },
           {
             subtitle: '📘 Antistres pripreme za maturu ',
             description: 'Radionice se provode od siječnja do svibnja u tjednom ritmu, uživo ili online. Svrha provođenja ovih priprema za maturante razviti je njihove psihološke vještine, kako bi sa što manje stresa, više samopouzdanja i boljom koncentracijom, pristupili ispitima državne mature te postigli što bolje rezultate.',
-            imageUrl: '/matura.jpg'
+            imageUrl: 'assets/matura.jpg'
           }
         ]
       },
@@ -63,7 +63,7 @@ export class DetaljiProgramaComponent implements OnInit {
           {
             subtitle: '👨‍👩‍👧‍👦 Edukacije i podrška',
             description: 'Savjeti, resursi i radionice za izazove roditeljstva u modernom društvu.',
-            imageUrl: '/parents.jpg'
+            imageUrl: 'assets/parents.jpg'
           }
         ]
       }
