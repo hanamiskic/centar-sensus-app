@@ -65,19 +65,21 @@
 
 
 
-
 @media (max-width: 700px) {
     .nav-links {
         position: fixed;
+        top: 8vh;
         left: 0;
         width: 100%;
+        height: 100vh;
+        /* Pokrije cijeli ekran */
         background-color: #fcfbfb;
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
         align-items: flex-start;
-        top:calc(8vh + 8px); 
-        padding: 8vh 2rem 2rem;
+        padding: 2rem;
+        /* Uklonili padding-top jer nije potreban */
         gap: 1.5rem;
         transform: translateX(100%);
         transition: transform 0.4s ease;
@@ -92,8 +94,7 @@
     .logo img {
         height: clamp(40px, 8vw, 75px);
         width: clamp(40px, 8vw, 75px);
-        padding: 0vh 0vh;
-
+        padding: 0;
     }
 
     .nav-links a {
@@ -104,7 +105,32 @@
         width: 100%;
     }
 
+    .nav-links li a::before {
+        content: "› ";
+        /* koristi "›" umesto ">" radi bolje estetike */
+        font-weight: bold;
+        color: #b39adc;
+        margin-right: 0.5rem;
+    }
+
+
     .hamburger {
         display: block;
     }
+
+
+
+    .nav-links li a::before {
+        content: "›";
+        margin-right: 0.5rem;
+        color: #b39adc;
+        font-weight: bold;
+    }
+
+}
+
+body.menu-open {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
 }

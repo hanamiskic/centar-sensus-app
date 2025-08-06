@@ -8,17 +8,17 @@
 
 
     <ul class="nav-links" [class.active]="menuOpen">
-      <li><a routerLink="/" (click)="menuOpen = false">POČETNA</a></li>
-      <li><a routerLink="/dogadaji" (click)="menuOpen = false">DOGAĐAJI</a></li>
-      <li><a routerLink="/galerija" (click)="menuOpen = false">GALERIJA</a></li>
-      <li><a routerLink="/onama" (click)="menuOpen = false">O NAMA</a></li>
-      <li><a routerLink="/kontakt" (click)="menuOpen = false">KONTAKT</a></li>
-
+      <li><a routerLink="/" (click)="closeMenu()">POČETNA</a></li>
+      <li><a routerLink="/dogadaji" (click)="closeMenu()">DOGAĐAJI</a></li>
+      <li><a routerLink="/galerija" (click)="closeMenu()">GALERIJA</a></li>
+      <li><a routerLink="/onama" (click)="closeMenu()">O NAMA</a></li>
+      <li><a routerLink="/kontakt" (click)="closeMenu()">KONTAKT</a></li>
     </ul>
 
 
+
     <div class="hamburger" (click)="toggleMenu()">
-      <span *ngIf="!menuOpen">&#9776;</span> 
+      <span *ngIf="!menuOpen">&#9776;</span>
       <span *ngIf="menuOpen">&#10005;</span>
     </div>
   </nav>

@@ -1,4 +1,4 @@
-<h1 class ="gallery-header"> 📸 Galerija</h1>
+<h1 class ="gallery-header">📸 Galerija</h1>
 <div class="grid">
   <div class="item" *ngFor="let img of images; let i = index">
     <img [src]="img" alt="Slika" (click)="openModal(i)" />

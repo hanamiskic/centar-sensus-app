@@ -6,6 +6,17 @@
   font-family: 'Inter', sans-serif;
 }
 
+body.menu-open,
+body.menu-open html,
+body.menu-open #main,
+body.menu-open app-root {
+  overflow: hidden !important;
+  height: 100%;
+  position: fixed;
+  width: 100%;
+}
+
+
 html, body {
   width: 100%;
   height: 100%;
@@ -46,6 +57,8 @@ app-home {
   max-width: 100vw;
  
 }
+
+
 
 
 .lb-image {

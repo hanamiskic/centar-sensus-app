@@ -13,13 +13,15 @@ import { filter } from 'rxjs/operators'; // Uvezi filter operator
   `,
 })
 export class App {
-  protected readonly title = signal('centar-sensus-app');
-
   constructor(private router: Router) {
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
-    ).subscribe(() => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        setTimeout(() => {
+          if (!document.body.classList.contains('menu-open')) {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }
+        }, 100);
+      }
     });
   }
 }
