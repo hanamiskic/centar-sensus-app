@@ -77,7 +77,6 @@ export class AuthComponent {
 
         this.successMessage = 'Registracija uspješna! Možete se prijaviti.';
 
-        // Prebaci na login mod nakon kraće pauze
         setTimeout(() => {
           this.toggleMode();
           this.successMessage = '';

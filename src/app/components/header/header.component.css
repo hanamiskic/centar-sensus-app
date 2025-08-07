@@ -63,7 +63,24 @@
     position: relative;
 }
 
+.fa-user {
+    color: rgb(80, 48, 139) !important;
+    margin-right: 6px;
+}
 
+.fa-user:hover {
+    color: #ddd !important;
+    transition: color 0.3s ease;
+}
+
+
+.desktop-only {
+    display: inline;
+}
+
+.mobile-only {
+    display: none;
+}
 
 @media (max-width: 700px) {
     .nav-links {
@@ -85,6 +102,18 @@
         transition: transform 0.4s ease;
         z-index: 999;
         overflow-y: auto;
+    }
+
+    .desktop-only {
+        display: none;
+    }
+
+    .mobile-only {
+        display: inline;
+    }
+
+    .fa-user {
+        display: none;
     }
 
     .nav-links.active {
@@ -130,7 +159,68 @@
 }
 
 body.menu-open {
-  overflow: hidden;
-  position: fixed;
-  width: 100%;
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+}
+
+.profile-wrapper {
+  position: relative;
+}
+
+.profile-trigger {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  color: rgb(80, 48, 139);
+  font-weight: bold;
+  font-size: 1.2vw;
+  gap: 3px;   /* razmak između ikone i teksta */
+}
+
+
+.profile-trigger:hover {
+  color: #ddd;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: calc(100% + 4px); /* mali razmak ispod */
+  right: 0;
+  background-color: #ffffff;
+  border: 1px solid #b39adc;
+  border-radius: 8px; /* zaobljeni rubovi */
+  padding: 0.3rem 0;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  z-index: 10000;
+  list-style: none;
+  min-width: 160px;
+  animation: fadeIn 0.15s ease-in-out;
+}
+
+.dropdown-menu li a {
+  display: block;
+  padding: 0.6rem 1rem;
+  text-decoration: none;
+  color: #b39adc;
+  font-weight: bold;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.dropdown-menu li a:hover {
+  background-color: #f3f0fa;
+  color: #271b3b;
+  border-radius: 4px;
+}
+
+/* animacija pojavljivanja */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

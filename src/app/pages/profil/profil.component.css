@@ -1,0 +1,125 @@
+/* Opći stilovi za body i fontove */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+  background-color: #f0f2f5;
+}
+
+/* Glavni wrapper */
+.profil-wrapper {
+  padding: 4rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Sekcija zaglavlja profila */
+.profil-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* ✅ VRAĆENO NA LIJEVO PORAVNANJE */
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+  padding: 2rem;
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+}
+
+.profil-ikona {
+  font-size: 5rem;
+  color: #b39adc;
+}
+
+.profil-info {
+  text-align: left; /* ✅ VRAĆENO NA LIJEVO PORAVNANJE TEKSTA */
+}
+
+.ime-prezime {
+  font-size: 2.5rem;
+  color: #b39adc;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.email {
+  font-size: 1rem;
+  color: #888;
+  margin-top: 0.5rem;
+}
+
+/* Naslov sekcije */
+.sekcija-naslov {
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  color: #b39adc;
+  font-weight: 600;
+  border-bottom: 2px solid #e0d9f1;
+  padding-bottom: 0.5rem;
+}
+
+/* Kontejner za događaje */
+.dogadaji-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+/* Kartica događaja */
+.dogadaj-kartica {
+  background-color: #fdfbff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 15px rgba(179, 154, 220, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+}
+
+.dogadaj-kartica:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 25px rgba(179, 154, 220, 0.3);
+}
+
+.dogadaj-kartica h3 {
+  font-size: 1.2rem;
+  color: #4b0082;
+  margin: 0 0 0.5rem 0;
+  font-weight: 600;
+}
+
+.dogadaj-kartica .datum {
+  font-size: 0.9rem;
+  color: #a3a3a3;
+  margin: 0;
+}
+
+/* Statusna značka */
+.status {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: white;
+}
+
+.status.prijavljen {
+  background-color: #8860d0;
+}
+
+.status.zavrsen {
+  background-color: #565656;
+}
+
+/* Responsivnost */
+@media (min-width: 768px) {
+  .profil-header {
+    justify-content: flex-start; /* ✅ VRAĆENO NA LIJEVO PORAVNANJE */
+  }
+
+  .profil-info {
+    text-align: left; /* ✅ VRAĆENO NA LIJEVO PORAVNANJE */
+  }
+}
