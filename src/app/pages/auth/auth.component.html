@@ -1,0 +1,97 @@
+<section class="auth-section">
+  <img src="assets/hero (7).jpg" alt="Hero" class="background-img" loading="eager" />
+  <div class="overlay"></div>
+
+  <div class="auth-container">
+    <h2>{{ isRegisterMode ? 'Registracija' : 'Prijava' }}</h2>
+
+    <form (ngSubmit)="onSubmit()" #authForm="ngForm" class="auth-form">
+      <ng-container *ngIf="isRegisterMode; else loginForm">
+        <div class="input-group">
+          <input type="text" placeholder="Ime" required [(ngModel)]="firstName" name="firstName"
+            #firstNameInput="ngModel" />
+          <div *ngIf="firstNameInput.invalid && firstNameInput.touched" class="error">Ime je obavezno</div>
+        </div>
+
+        <div class="input-group">
+          <input type="text" placeholder="Prezime" required [(ngModel)]="lastName" name="lastName"
+            #lastNameInput="ngModel" />
+          <div *ngIf="lastNameInput.invalid && lastNameInput.touched" class="error">Prezime je obavezno</div>
+        </div>
+
+        <div class="input-group">
+          <input type="email" placeholder="Email" required email [(ngModel)]="email" name="email"
+            #emailInput="ngModel" />
+          <div *ngIf="emailInput.invalid && emailInput.touched" class="error">
+            Neispravan format e-mail adrese
+          </div>
+        </div>
+
+        <div class="input-group password-group">
+          <input [type]="isPasswordVisible ? 'text' : 'password'" placeholder="Lozinka" required minlength="8"
+            [(ngModel)]="password" name="password" #passInput="ngModel" />
+          <button type="button" class="toggle-password" (click)="togglePasswordVisibility()">
+            <i class="fas" [ngClass]="isPasswordVisible ? 'fa-eye-slash' : 'fa-eye'"></i>
+          </button>
+        </div>
+        <div *ngIf="passInput.invalid && passInput.touched" class="error">Lozinka mora imati najmanje 8 znakova</div>
+
+        <div class="input-group password-group">
+          <input [type]="isPasswordVisible ? 'text' : 'password'" placeholder="Potvrdi lozinku" required
+            [(ngModel)]="confirmPassword" name="confirmPassword" #confirmInput="ngModel" />
+          <button type="button" class="toggle-password" (click)="togglePasswordVisibility()">
+            <i class="fas" [ngClass]="isPasswordVisible ? 'fa-eye-slash' : 'fa-eye'"></i>
+          </button>
+        </div>
+        <div *ngIf="confirmInput.invalid && confirmInput.touched" class="error">Potvrda lozinke je obavezna</div>
+
+        <div *ngIf="password && confirmPassword && password !== confirmPassword" class="error">
+          Lozinke se ne podudaraju
+        </div>
+
+        <div class="radio-section">
+          <label class="radio-label">Član udruge:</label>
+          <div class="radio-group">
+            <label><input type="radio" name="memberType" [(ngModel)]="membership" value="redovni" required /> DA -
+              redovni</label>
+            <label><input type="radio" name="memberType" [(ngModel)]="membership" value="podupiruci" required /> DA -
+              podupirući</label>
+            <label><input type="radio" name="memberType" [(ngModel)]="membership" value="ne" required /> NE</label>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <input type="tel" placeholder="Broj mobitela (opcionalno)" [(ngModel)]="phone" name="phone" />
+        </div>
+
+        <button type="submit" [disabled]="authForm.invalid || (isRegisterMode && password !== confirmPassword)">
+          Registriraj se
+        </button>
+      </ng-container>
+
+      <ng-template #loginForm>
+        <div class="input-group">
+          <input type="email" placeholder="Email" required [(ngModel)]="email" name="email" />
+        </div>
+        <div class="input-group password-group">
+          <input [type]="isPasswordVisible ? 'text' : 'password'" placeholder="Lozinka" required [(ngModel)]="password"
+            name="password" />
+          <button type="button" class="toggle-password" (click)="togglePasswordVisibility()">
+            <i class="fas" [ngClass]="isPasswordVisible ? 'fa-eye-slash' : 'fa-eye'"></i>
+          </button>
+        </div>
+        <button type="submit" [disabled]="!email || !password">Prijavi se</button>
+      </ng-template>
+    </form>
+    <div *ngIf="successMessage" class="success-msg">{{ successMessage }}</div>
+    <div *ngIf="errorMessage" class="error-msg">{{ errorMessage }}</div>
+
+
+    <p class="switch-mode">
+      {{ isRegisterMode ? 'Već imate račun?' : 'Nemate račun?' }}
+      <a (click)="toggleMode()">
+        {{ isRegisterMode ? 'Prijavite se' : 'Registrirajte se' }}
+      </a>
+    </p>
+  </div>
+</section>

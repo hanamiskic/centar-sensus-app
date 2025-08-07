@@ -1,0 +1,217 @@
+/* Kontejner za cijelu sekciju */
+.auth-section {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5rem 0;
+  background-color: #cec3e1;
+}
+
+/* Pozadinska slika */
+.background-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: 0;
+}
+
+/* Prekrivajući sloj */
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(2px);
+  background-color: rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+/* Kontejner za formu */
+.auth-container {
+  position: relative;
+  z-index: 2;
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+}
+
+/* Naslov forme */
+.auth-container h2 {
+  margin-bottom: 1.5rem;
+  color: #b39adc;
+  font-size: 1.8rem;
+}
+
+/* Forma */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+/* Grupa input polja */
+.input-group {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 0.9rem 1.2rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: #b39adc;
+}
+
+/* Stil za grupu s lozinkom */
+.password-group {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.password-group input {
+  padding-right: 3rem; /* Ostavlja prostor za gumb s okom */
+}
+
+.toggle-password {
+  position: absolute;
+  right: 12px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #b39adc; /* Promijenjena boja u ljubičastu */
+  padding: 0;
+  font-size: 1rem;
+}
+
+/* Gumb za akciju */
+button[type="submit"] {
+  width: 100%;
+  padding: 1rem;
+  background-color: #b39adc;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  margin-top: 0.5rem;
+}
+
+button[type="submit"]:hover {
+  background-color: #9e84c8;
+}
+
+button[type="submit"]:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Grupa radio gumba */
+.radio-section {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.radio-label {
+  font-weight: bold;
+  color: #555;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.radio-group {
+  display: flex;
+  gap: 1rem;
+}
+
+.radio-group label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.95rem;
+  color: #333;
+  cursor: pointer;
+}
+
+/* Error poruke */
+.error {
+  color: #d9534f;
+  font-size: 0.8rem;
+  margin-top: 0.3rem;
+  margin-bottom: -0.2rem;
+  font-weight: 500;
+}
+
+/* Link za prebacivanje između registracije i prijave */
+.switch-mode {
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.switch-mode a {
+  color: #b39adc;
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.switch-mode a:hover {
+  text-decoration: underline;
+}
+
+/* Stil za nevaljana polja */
+input.ng-invalid.ng-touched {
+  border-color: #d9534f;
+}
+
+.success-msg {
+  color: green;
+  font-size: 0.9rem;
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.error-msg {
+  color: red;
+  font-size: 0.9rem;
+  margin-top: 1rem;
+  text-align: center;
+}
+
+@media screen and (max-width: 600px) {
+  .auth-section {
+    padding: 2rem 0;
+    align-items: flex-start;
+  }
+
+  .auth-container {
+    margin-top: 1rem;
+  }
+}
