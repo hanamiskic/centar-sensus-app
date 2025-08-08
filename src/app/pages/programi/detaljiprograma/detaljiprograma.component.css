@@ -73,7 +73,7 @@
   cursor: pointer;
   color: #b39adc;
   font-weight: bold;
-  font-size: clamp(1rem, 2.5vw, 2rem);
+  font-size: clamp(1.2rem, 3vw, 2rem); 
   text-align: left;
   transition: transform 0.2s ease;
 }

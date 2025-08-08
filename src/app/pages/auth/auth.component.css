@@ -106,19 +106,20 @@
   font-size: 1rem;
 }
 
-/* Gumb za akciju */
 button[type="submit"] {
   width: 100%;
-  padding: 1rem;
+  padding: 1.1rem 1.5rem;
+  font-size: clamp(1rem, 1.6vw, 1.2rem);
   background-color: #b39adc;
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
-  margin-top: 0.5rem;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-top: 0.8rem;
 }
+
 
 button[type="submit"]:hover {
   background-color: #9e84c8;

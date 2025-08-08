@@ -107,14 +107,14 @@
 
 .programs {
   background-color: #fcfbfb;
-  padding: 6vh 5vw;
+  padding: 3vh 5vw 6vh; 
   text-align: center;
 }
 
 .programs-title {
   font-size: clamp(1.6rem, 4vw, 2.5rem);
   color: #b39adc;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   font-weight: 700;
 }
 
@@ -201,13 +201,16 @@
 .program-btn {
   background-color: #b39adc;
   color: white;
-  padding: 0.8rem 1.4rem;
+  padding: 1rem 2rem;
+  font-size: clamp(1rem, 1.6vw, 1.2rem);
   border: none;
-  border-radius: 12px;
+  border-radius: 14px;
   cursor: pointer;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  white-space: nowrap;
 }
+
 
 .program-btn:hover {
   background-color: #9e84c8;
