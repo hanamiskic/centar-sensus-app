@@ -103,6 +103,58 @@
   background-color: #565656;
 }
 
+/* Admin users table */
+.admin-users { margin-top: 2.5rem; }
+
+.table-wrap {
+  overflow-x: auto;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.05);
+}
+
+.users-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 720px;
+}
+
+.users-table th, .users-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+  font-size: .95rem;
+}
+
+.users-table thead th {
+  background: #f6f3ff;
+  color: #6f5b94;
+  font-weight: 600;
+}
+
+.users-table tbody tr:hover {
+  background: #faf8ff;
+}
+
+.actions-col { width: 120px; }
+
+.btn-delete {
+  background: #ffe8ea;
+  color: #b00020;
+  border: 1px solid #ffcbd1;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: .9rem;
+  cursor: pointer;
+}
+.btn-delete:hover { background: #ffdfe4; }
+
+.admin-users__loading, .users-table .empty {
+  padding: 1rem;
+  color: #666;
+}
+
+
 /* 📱 Responsivnost */
 @media (max-width: 992px) {
   .profil-ikona {

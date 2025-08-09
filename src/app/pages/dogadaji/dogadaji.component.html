@@ -14,16 +14,16 @@
     <input [(ngModel)]="formData.naslov" type="text" />
   </div>
 
-<label>Ciljna populacija:</label>
-<select [(ngModel)]="formData.ciljnaPopulacija">
-  <option value="SVI">SVI</option>
-  <option value="DJECA">DJECA</option>
-  <option value="DJECA I MLADI">DJECA I MLADI</option>
-  <option value="ŽENE">ŽENE</option>
-  <option value="ODRASLI">ODRASLI</option>
-  <option value="ODGAJATELJI">ODGAJATELJI</option>
-  <option value="RODITELJI I BUDUĆI RODITELJI">RODITELJI i BUDUĆI RODITELJI</option>
-</select>
+  <label>Ciljna populacija:</label>
+  <select [(ngModel)]="formData.ciljnaPopulacija">
+    <option value="SVI">SVI</option>
+    <option value="DJECA">DJECA</option>
+    <option value="DJECA I MLADI">DJECA I MLADI</option>
+    <option value="ŽENE">ŽENE</option>
+    <option value="ODRASLI">ODRASLI</option>
+    <option value="ODGAJATELJI">ODGAJATELJI</option>
+    <option value="RODITELJI I BUDUĆI RODITELJI">RODITELJI i BUDUĆI RODITELJI</option>
+  </select>
 
 
   <div>
@@ -48,13 +48,16 @@
 
   <div>
     <label>Maksimalan broj sudionika</label>
-    <input [(ngModel)]="formData.maxSudionika" type="number" />
+    <input [(ngModel)]="formData.maxSudionika" type="number" min="1" step="1" />
   </div>
 
- <div class="form-buttons">
-  <button class="save-btn" (click)="addEvent()">Spremi</button>
-  <button class="cancel-btn" (click)="showForm=false">Odustani</button>
-</div>
+  <div class="form-buttons">
+    <button class="save-btn" (click)="addEvent()" [disabled]="!isFormValid()">
+      Spremi
+    </button>
+
+    <button class="cancel-btn" (click)="showForm=false">Odustani</button>
+  </div>
 
 </div>
 
@@ -67,6 +70,12 @@
     <p>{{ e.opis }}</p>
     <p><strong>Datum:</strong> {{ e.datumVrijeme | date:'dd.MM.yyyy. HH:mm' }}</p>
     <p><strong>Mjesto:</strong> {{ e.mjesto }}</p>
-    <p><strong>Max sudionika:</strong> {{ e.maxSudionika }}</p>
+    <p>
+      <strong>Max sudionika:</strong>
+      <span [ngClass]="{ 'infinity': e.maxSudionika === 500 }">
+        {{ e.maxSudionika === 500 ? ' ∞' : e.maxSudionika }}
+      </span>
+    </p>
+
   </div>
 </div>

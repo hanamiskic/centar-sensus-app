@@ -1,44 +1,37 @@
-// gallery.service.ts
-import { Injectable } from '@angular/core';
-import {
-  Storage,
-  ref,
-  uploadBytes,
-  getDownloadURL,
-  listAll,
-  deleteObject
-} from '@angular/fire/storage';
+// src/app/services/gallery.service.ts
+import { Injectable, inject, EnvironmentInjector, runInInjectionContext } from '@angular/core';
+import { Storage, ref, listAll, getDownloadURL, uploadBytes, deleteObject } from '@angular/fire/storage';
 
 @Injectable({ providedIn: 'root' })
 export class GalleryService {
-  constructor(private storage: Storage) {}
+  private injector = inject(EnvironmentInjector);
 
-  // Brže dohvaćanje svih slika (paralelno)
-  async listGallery(): Promise<string[]> {
-    const folderRef = ref(this.storage, 'galerija');
-    const res = await listAll(folderRef);
-
-    // Umjesto await u petlji — radimo Promise.all
-    return Promise.all(res.items.map((item) => getDownloadURL(item)));
+  listGallery(): Promise<string[]> {
+    return runInInjectionContext(this.injector, async () => {
+      const storage = inject(Storage);
+      const folderRef = ref(storage, 'galerija');
+      const res = await listAll(folderRef);
+      return Promise.all(res.items.map(it => getDownloadURL(it)));
+    });
   }
 
-  async uploadToGallery(file: File): Promise<string> {
-    const path = `galerija/${Date.now()}_${file.name.replace(/\s+/g, '_')}`;
-    const fileRef = ref(this.storage, path);
-
-    await uploadBytes(fileRef, file);
-    return await getDownloadURL(fileRef);
+  uploadToGallery(file: File): Promise<string> {
+    return runInInjectionContext(this.injector, async () => {
+      const storage = inject(Storage);
+      const path = `galerija/${Date.now()}_${file.name}`;
+      const fileRef = ref(storage, path);
+      await uploadBytes(fileRef, file);
+      return getDownloadURL(fileRef);
+    });
   }
 
-  async deleteImageByUrl(url: string): Promise<void> {
-    const path = this.extractPathFromUrl(url);
-    const fileRef = ref(this.storage, path);
-    await deleteObject(fileRef);
-  }
-
-  private extractPathFromUrl(url: string): string {
-    const match = url.match(/\/o\/(.*?)\?/);
-    if (!match || match.length < 2) throw new Error('Ne mogu izvući putanju iz URL-a');
-    return decodeURIComponent(match[1]);
+  deleteImageByUrl(url: string): Promise<void> {
+    return runInInjectionContext(this.injector, async () => {
+      const storage = inject(Storage);
+      // ako imaš path već – koristi ref(storage, path)
+      const path = decodeURIComponent(url.split('/o/')[1].split('?')[0]); // fallback
+      const fileRef = ref(storage, path);
+      await deleteObject(fileRef);
+    });
   }
 }

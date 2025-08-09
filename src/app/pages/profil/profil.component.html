@@ -34,4 +34,44 @@
       </div>
     </div>
   </div>
+  <!-- ADMIN: korisnici -->
+  <div *ngIf="isAdmin" class="admin-users">
+    <h2 class="sekcija-naslov">Korisnici</h2>
+
+    <div *ngIf="loadingUsers" class="admin-users__loading">Učitavanje…</div>
+
+    <div class="table-wrap" *ngIf="!loadingUsers">
+      <table class="users-table">
+        <thead>
+          <tr>
+            <th>Email</th>
+            <th>Ime</th>
+            <th>Prezime</th>
+            <th>Član</th>
+            <th>Telefon</th>
+            <th>Registriran</th>
+            <th class="actions-col">Akcije</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let u of users">
+            <td>{{ u.email }}</td>
+            <td>{{ u.firstName }}</td>
+            <td>{{ u.lastName }}</td>
+            <td>{{ u.membership || '—' }}</td>
+            <td>{{ u.phone || '—' }}</td>
+            <td>{{ formatDate(u.createdAt) }}</td>
+            <td class="actions-col">
+              <button class="btn-delete" (click)="removeUser(u.uid)">🗑 Obriši</button>
+            </td>
+          </tr>
+          <tr *ngIf="users.length === 0">
+            <td colspan="7" class="empty">Nema korisnika.</td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+
 </section>

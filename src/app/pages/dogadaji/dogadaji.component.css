@@ -4,7 +4,29 @@
   font-size: 1.6rem;
   font-weight: 700;
   color: #b39adc;
+  margin-top: clamp(1rem, 3vh, 3rem);
+
 }
+
+.infinity {
+  font-size: 2rem; /* veće od teksta */
+  color: #b39adc;
+  font-weight: bold;
+  font-family: "Segoe UI Symbol", Arial, sans-serif;
+  position: relative;
+  top: 3px; /* lagani pomak dolje za poravnanje s tekstom */
+  display: inline-block;
+  line-height: 1;
+}
+
+.save-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+
+
 
 /* ===== Admin gumb ===== */
 .admin-actions {
