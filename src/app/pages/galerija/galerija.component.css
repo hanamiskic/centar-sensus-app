@@ -5,15 +5,12 @@
   padding: clamp(1rem, 3vh, 4rem) clamp(1rem, 5vw, 4rem);
 }
 
-
 .gallery-header {
   padding: clamp(1rem, 3vh, 4rem) clamp(1rem, 5vw, 4rem) 0;
   font-size: 1.6rem;
   font-weight: bold;
   color: #b39adc;
 }
-
-
 
 .item {
   position: relative;
@@ -66,7 +63,6 @@
   box-shadow: 0 0 10px rgba(0,0,0,0.5);
 }
 
-
 .controls {
   position: absolute;
   top: 50%;
@@ -95,6 +91,88 @@
   font-size: 2rem;
   color: white;
   cursor: pointer;
+}
+
+/* Upload forma */
+.upload-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 1rem clamp(1rem, 5vw, 4rem);
+  background: #f9f9ff;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  flex-wrap: wrap;
+}
+
+.upload-container input[type="file"] {
+  flex: 0 0 auto;
+  width: 100%;
+  max-width: 520px;
+  min-width: 180px;
+  padding: 6px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: #fff;
+  font-size: 0.95rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: auto;
+}
+
+.upload-container button {
+  flex: 0 0 auto;
+  background-color: #b39adc;
+  color: #fff;
+  border: none;
+  padding: 10px 16px;
+  font-size: 0.95rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.upload-container button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.upload-container button:hover:not(:disabled) {
+  background-color: #a088c7;
+}
+
+.delete-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(0,0,0,0.6);
+  border: none;
+  color: #fff;
+  font-size: 1.1rem;
+  padding: 4px 6px;
+  border-radius: 6px;
+  cursor: pointer;
+  z-index: 5;
+  transition: background .2s ease;
+}
+
+.delete-btn:hover {
+  background: rgba(200,0,0,0.85);
+}
+
+@media (max-width: 480px) {
+  .upload-container {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+  .upload-container input[type="file"],
+  .upload-container button {
+    width: 100%;
+    max-width: none;
+  }
 }
 
 @media (min-width: 550px) {

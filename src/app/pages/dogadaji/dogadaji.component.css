@@ -1,0 +1,193 @@
+/* ===== Naslov ===== */
+.events-header {
+  padding: clamp(1rem, 3vh, 4rem) clamp(1rem, 5vw, 4rem) 0;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #b39adc;
+}
+
+/* ===== Admin gumb ===== */
+.admin-actions {
+  padding: 0 clamp(1rem, 5vw, 4rem);
+  margin: 0.5rem 0 1rem;
+}
+.primary-btn {
+  background: #b39adc;
+  color: #fff;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(0,0,0,.08);
+  transition: transform .06s ease, background .2s ease;
+}
+.primary-btn:hover { background: #a088c7; }
+.primary-btn:active { transform: translateY(1px); }
+.primary-btn.secondary { background: #eee; color: #444; }
+.primary-btn:disabled { background: #ccc; cursor: not-allowed; }
+
+/* ===== Forma ===== */
+.event-form {
+  margin: 0 clamp(1rem, 5vw, 4rem) 1rem;
+  background: #f9f9ff;
+  border: 1px solid #e6e1f5;
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 1px 6px rgba(0,0,0,.06);
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 1fr; /* mobitel default */
+}
+
+.event-form label {
+  font-size: .92rem;
+  color: #6f5b94;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.event-form input[type="text"],
+.event-form input[type="number"],
+.event-form input[type="datetime-local"],
+.event-form textarea,
+.event-form select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d9d6e8;
+  border-radius: 10px;
+  background: #fff;
+  font-size: .95rem;
+  outline: none;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+
+.event-form select {
+  appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, #b39adc 50%),
+    linear-gradient(135deg, #b39adc 50%, transparent 50%),
+    linear-gradient(to right, #d9d6e8, #d9d6e8);
+  background-position:
+    calc(100% - 20px) calc(50% - 3px),
+    calc(100% - 14px) calc(50% - 3px),
+    calc(100% - 2.2rem) 50%;
+  background-size: 6px 6px, 6px 6px, 1px 60%;
+  background-repeat: no-repeat;
+}
+
+.event-form textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.event-form input:focus,
+.event-form textarea:focus,
+.event-form select:focus {
+  border-color: #b39adc;
+  box-shadow: 0 0 0 2px rgba(179, 154, 220, 0.2);
+}
+
+/* pojedinačni gumbi u formi (ne koristi se za "Spremi/Odustani") */
+.event-form button {
+  justify-self: start;
+  background: #b39adc;
+  color: #fff;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(0,0,0,.08);
+  transition: transform .06s ease, background .2s ease;
+}
+.event-form button:hover { background: #a088c7; }
+.event-form button:active { transform: translateY(1px); }
+
+.form-actions,
+.form-buttons {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  justify-content: flex-end;
+}
+
+.form-actions button,
+.form-buttons button {
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  min-width: 110px; /* ista širina za oba gumba */
+  text-align: center;
+}
+
+
+.save-btn {
+  background-color: #b39adc;
+  color: #fff;
+  border: none;
+}
+.save-btn:hover { background-color: #a088c7; }
+.cancel-btn {
+  background: #f3f3f7;
+  color: #444;
+  border: 1px solid #d9d6e8;
+}
+.cancel-btn:hover { background: #e8e8ef; }
+
+/* ===== Grid događaja ===== */
+.events-grid {
+  padding: clamp(1rem, 3vh, 4rem) clamp(1rem, 5vw, 4rem);
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.event-card {
+  background: #fff;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+}
+
+.event-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.event-card h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #6f5b94;
+  margin: 12px 16px 4px;
+}
+
+.event-card p {
+  margin: 4px 16px;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.event-card p strong {
+  color: #333;
+}
+
+/* ===== Responsivnost ===== */
+@media (min-width: 768px) {
+  .event-form {
+    grid-template-columns: 1fr 1fr;
+    gap: 16px 20px;
+  }
+  .event-form label {
+    grid-column: span 2;
+  }
+  /* wrapper za gumbe preko cijele širine u dva stupca */
+  .form-actions,
+  .form-buttons {
+    grid-column: 1 / -1;
+  }
+}

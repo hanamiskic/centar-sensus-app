@@ -1,1 +1,72 @@
-<p>dogaji works!</p>
+<h1 class="events-header">📅 Događaji</h1>
+
+<!-- Admin: gumb za dodavanje -->
+<div *ngIf="isAdmin" class="admin-actions">
+  <button class="primary-btn" (click)="showForm = !showForm">
+    {{ showForm ? 'Zatvori formu' : '➕ Dodaj događaj' }}
+  </button>
+</div>
+
+<!-- Forma za dodavanje događaja -->
+<div *ngIf="showForm && isAdmin" class="event-form">
+  <div>
+    <label>Naslov radionice</label>
+    <input [(ngModel)]="formData.naslov" type="text" />
+  </div>
+
+<label>Ciljna populacija:</label>
+<select [(ngModel)]="formData.ciljnaPopulacija">
+  <option value="SVI">SVI</option>
+  <option value="DJECA">DJECA</option>
+  <option value="DJECA I MLADI">DJECA I MLADI</option>
+  <option value="ŽENE">ŽENE</option>
+  <option value="ODRASLI">ODRASLI</option>
+  <option value="ODGAJATELJI">ODGAJATELJI</option>
+  <option value="RODITELJI I BUDUĆI RODITELJI">RODITELJI i BUDUĆI RODITELJI</option>
+</select>
+
+
+  <div>
+    <label>Slika</label>
+    <input type="file" (change)="onFileSelected($event)" />
+  </div>
+
+  <div>
+    <label>Opis</label>
+    <textarea [(ngModel)]="formData.opis"></textarea>
+  </div>
+
+  <div>
+    <label>Datum i vrijeme</label>
+    <input [(ngModel)]="formData.datumVrijeme" type="datetime-local" />
+  </div>
+
+  <div>
+    <label>Mjesto održavanja</label>
+    <input [(ngModel)]="formData.mjesto" type="text" />
+  </div>
+
+  <div>
+    <label>Maksimalan broj sudionika</label>
+    <input [(ngModel)]="formData.maxSudionika" type="number" />
+  </div>
+
+ <div class="form-buttons">
+  <button class="save-btn" (click)="addEvent()">Spremi</button>
+  <button class="cancel-btn" (click)="showForm=false">Odustani</button>
+</div>
+
+</div>
+
+<!-- Lista događaja -->
+<div class="events-grid">
+  <div class="event-card" *ngFor="let e of events">
+    <img *ngIf="e.imageUrl" [src]="e.imageUrl" alt="Slika događaja" />
+    <h3>{{ e.naslov }}</h3>
+    <p><strong>Ciljna populacija:</strong> {{ e.ciljnaPopulacija }}</p>
+    <p>{{ e.opis }}</p>
+    <p><strong>Datum:</strong> {{ e.datumVrijeme | date:'dd.MM.yyyy. HH:mm' }}</p>
+    <p><strong>Mjesto:</strong> {{ e.mjesto }}</p>
+    <p><strong>Max sudionika:</strong> {{ e.maxSudionika }}</p>
+  </div>
+</div>

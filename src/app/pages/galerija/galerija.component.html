@@ -1,21 +1,49 @@
-<h1 class ="gallery-header">📸 Galerija</h1>
+<h1 class="gallery-header">📸 Galerija</h1>
+
+<!-- Admin dio -->
+<div *ngIf="isAdmin" class="upload-container">
+  <input type="file" (change)="onFileSelected($event)" />
+  <button (click)="uploadImage()" [disabled]="!selectedFile">Dodaj sliku</button>
+</div>
+
+<!-- grid -->
 <div class="grid">
   <div class="item" *ngFor="let img of images; let i = index">
-    <img [src]="img" alt="Slika" (click)="openModal(i)" />
+    <!-- Lazy-load + thumb -->
+    <img
+      [src]="getThumb(img)"
+      alt="Slika"
+      loading="lazy"
+      (click)="openModal(i)"
+    />
+
+    <!-- Gumb za brisanje samo adminu -->
+    <button
+      *ngIf="isAdmin"
+      class="delete-btn"
+      (click)="deleteImage(img)"
+    >
+      🗑
+    </button>
   </div>
 </div>
 
+<!-- modal -->
 <div class="modal" *ngIf="selectedIndex !== null" (click)="closeModal()">
-  <div class="modal-content"
-       (click)="$event.stopPropagation()"
-       (touchstart)="onTouchStart($event)"
-       (touchend)="onTouchEnd($event)">
-
-
+  <div
+    class="modal-content"
+    (click)="$event.stopPropagation()"
+    (touchstart)="onTouchStart($event)"
+    (touchend)="onTouchEnd($event)"
+  >
     <button class="close" (click)="closeModal()">×</button>
-    <img [src]="images[selectedIndex!]" alt="Pregled slike" />
 
-  
+    <!-- u modalu otvori full verziju -->
+    <img
+      [src]="getFull(images[selectedIndex!])"
+      alt="Pregled slike"
+    />
+
     <div class="controls">
       <button (click)="prevImage()">⟨</button>
       <button (click)="nextImage()">⟩</button>

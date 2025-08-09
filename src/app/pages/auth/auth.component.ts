@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../../services/auth.service'; // prilagodi path ako treba
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-auth',
@@ -13,19 +13,18 @@ import { AuthService } from '../../services/auth.service'; // prilagodi path ako
 })
 export class AuthComponent {
   isRegisterMode = false;
-  isPasswordVisible: boolean = false;
+  isPasswordVisible = false;
 
-  email: string = '';
-  password: string = '';
-  firstName: string = '';
-  lastName: string = '';
-  confirmPassword: string = '';
-  membership: string = '';
-  phone: string = '';
-  successMessage: string = '';
-  errorMessage: string = '';
+  email = '';
+  password = '';
+  firstName = '';
+  lastName = '';
+  confirmPassword = '';
+  membership = '';
+  phone = '';
+  successMessage = '';
+  errorMessage = '';
 
-  // ✅ Konstruktor s AuthService-om
   constructor(private authService: AuthService, private router: Router) {}
 
   toggleMode() {
@@ -52,11 +51,11 @@ export class AuthComponent {
     this.errorMessage = '';
 
     if (this.isRegisterMode) {
+      // --- REGISTRACIJA ---
       if (this.password !== this.confirmPassword) {
         this.errorMessage = 'Lozinke se ne podudaraju!';
         return;
       }
-
       try {
         const userCred = await this.authService.register(
           this.email,
@@ -75,16 +74,21 @@ export class AuthComponent {
 
         await this.authService.saveUserData(uid, userData);
 
-        this.successMessage = 'Registracija uspješna! Možete se prijaviti.';
+        // odmah logout nakon registracije
+        await this.authService.logout();
 
+        this.successMessage =
+          'Registracija uspješna! Sada se možete prijaviti.';
         setTimeout(() => {
           this.toggleMode();
           this.successMessage = '';
-        }, 2000);
+        }, 1500);
       } catch (err) {
-        this.errorMessage = (err as any).message || 'Greška pri registraciji';
+        this.errorMessage =
+          (err as any).message || 'Greška pri registraciji';
       }
     } else {
+      // --- PRIJAVA ---
       try {
         const userCred = await this.authService.login(
           this.email,
@@ -92,7 +96,14 @@ export class AuthComponent {
         );
         console.log('✅ Prijava uspješna:', userCred.user);
 
-        // Prebaci na početnu
+        // provjeri i ispiši claimove
+        const claims = await this.authService.getCurrentClaims();
+        console.log(
+          'Admin claim?',
+          claims?.['admin'] === true,
+          claims
+        );
+
         this.router.navigate(['/']);
       } catch (err: any) {
         console.error('Greška pri prijavi:', err);

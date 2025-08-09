@@ -2,10 +2,11 @@ import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZoneChang
 import { provideRouter, withInMemoryScrolling } from '@angular/router';
 import { routes } from './app.routes';
 import { provideAuth, getAuth } from '@angular/fire/auth';
-import { provideFirebaseApp } from '@angular/fire/app';
-import { initializeApp } from 'firebase/app';
+import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { environment } from '../environments/environment';
 import { provideAnimations } from '@angular/platform-browser/animations';
+import { provideFirestore, getFirestore } from '@angular/fire/firestore';
+import { provideStorage, getStorage } from '@angular/fire/storage';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -13,12 +14,12 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(
       routes,
-      withInMemoryScrolling({
-        scrollPositionRestoration: 'enabled'
-      })
+      withInMemoryScrolling({ scrollPositionRestoration: 'enabled' })
     ),
     provideAnimations(),
     provideFirebaseApp(() => initializeApp(environment.firebase)),
-    provideAuth(() => getAuth())
+    provideAuth(() => getAuth()),
+    provideFirestore(() => getFirestore()),
+    provideStorage(() => getStorage()) // ⬅️ dodano
   ]
 };
