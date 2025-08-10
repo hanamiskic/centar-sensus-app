@@ -1,5 +1,5 @@
 import { Component, HostListener, OnInit } from '@angular/core';
-import { CommonModule, NgIf, NgFor } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { GalleryService } from '../../services/gallery.service';
 import { AuthService } from '../../services/auth.service';
 
@@ -8,7 +8,7 @@ type ImgItem = string | { thumb?: string; full?: string };
 @Component({
   selector: 'app-galerija',
   standalone: true,
-  imports: [CommonModule, NgIf, NgFor],
+  imports: [CommonModule],
   templateUrl: './galerija.component.html',
   styleUrl: './galerija.component.css',
 })

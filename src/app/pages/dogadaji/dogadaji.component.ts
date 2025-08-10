@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { CommonModule, NgIf, NgFor } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { EventsService } from '../../services/events.service';
@@ -31,7 +31,7 @@ interface EventFormData {
 @Component({
   selector: 'app-dogadaji',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink, NgIf, NgFor],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './dogadaji.component.html',
   styleUrls: ['./dogadaji.component.css']
 })
