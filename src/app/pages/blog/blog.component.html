@@ -1,0 +1,71 @@
+<h1 class="blog-header">📰 Blog</h1>
+
+<!-- Admin: gumb za dodavanje -->
+<div *ngIf="isAdmin" class="admin-actions">
+  <button class="primary-btn" (click)="toggleNewPost()">
+    {{ showForm ? (editingId ? 'Zatvori uređivanje' : 'Zatvori formu') : '➕ Novi post' }}
+  </button>
+</div>
+
+<!-- Forma (dodaj / uredi) -->
+<div *ngIf="showForm && isAdmin" class="blog-form">
+  <div>
+    <label>Naslov</label>
+    <input type="text" [(ngModel)]="title" />
+  </div>
+
+  <div>
+    <label>Tekst</label>
+    <textarea [(ngModel)]="content" rows="6"></textarea>
+  </div>
+
+  <div>
+    <label>Slika {{ editingId ? '(ostavi prazno ako ne mijenjaš)' : '' }}</label>
+    <input type="file" (change)="onFileSelected($event)" />
+  </div>
+
+  <div class="form-buttons">
+    <button
+      *ngIf="!editingId"
+      class="save-btn"
+      (click)="addPost()"
+      [disabled]="!isFormValid()"
+    >
+      Objavi
+    </button>
+
+    <button
+      *ngIf="editingId"
+      class="save-btn"
+      (click)="saveEdit()"
+      [disabled]="!canSaveEdit()"
+    >
+      Spremi izmjene
+    </button>
+
+    <button class="cancel-btn" (click)="cancelEditOrClose()">Odustani</button>
+  </div>
+</div>
+
+<!-- Lista postova -->
+<section class="blog-list">
+  <article class="post" *ngFor="let p of posts">
+    <header class="post-header">
+      <h2 class="post-title">{{ p.title }}</h2>
+      <div class="post-header-right">
+        <span class="post-date">{{ formatDate(p.createdAt) }}</span>
+        <div *ngIf="isAdmin" class="post-admin-actions">
+          <button class="mini-btn" (click)="startEdit(p)">✏️ Uredi</button>
+          <button class="mini-btn danger" (click)="deletePost(p)">🗑️ Obriši</button>
+        </div>
+      </div>
+    </header>
+
+    <div class="post-body">
+      <img class="post-image" [src]="p.imageUrl" [alt]="p.title" />
+      <p class="post-text">
+        {{ p.content }}
+      </p>
+    </div>
+  </article>
+</section>

@@ -62,7 +62,7 @@
             <td>{{ u.phone || '—' }}</td>
             <td>{{ formatDate(u.createdAt) }}</td>
             <td class="actions-col">
-              <button class="btn-delete" (click)="removeUser(u.uid)">🗑 Obriši</button>
+              <button class="btn-delete" (click)="removeUser(u.uid)">🗑️ Obriši</button>
             </td>
           </tr>
           <tr *ngIf="users.length === 0">

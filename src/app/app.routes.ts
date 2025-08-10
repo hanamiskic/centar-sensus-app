@@ -6,46 +6,77 @@ export const routes: Routes = [
     path: '',
     component: LayoutComponent,
     children: [
-      { 
-        path: '', 
-        loadComponent: () => import('./pages/home/home.component').then(m => m.HomeComponent), 
-        data: { animation: 'Home' } 
+      {
+        path: '',
+        loadComponent: () =>
+          import('./pages/home/home.component').then((m) => m.HomeComponent),
+        data: { animation: 'Home' },
       },
-      { 
-        path: 'dogadaji', 
-        loadComponent: () => import('./pages/dogadaji/dogadaji.component').then(m => m.DogadajiComponent), 
-        data: { animation: 'Dogadaji' } 
+      {
+        path: 'dogadaji',
+        loadComponent: () =>
+          import('./pages/dogadaji/dogadaji.component').then(
+            (m) => m.DogadajiComponent
+          ),
+        data: { animation: 'Dogadaji' },
       },
-      { 
-        path: 'galerija', 
-        loadComponent: () => import('./pages/galerija/galerija.component').then(m => m.GalerijaComponent), 
-        data: { animation: 'Galerija' } 
+      {
+        path: 'dogadaji/:id',
+        loadComponent: () =>
+          import('./pages/detaljidogadaja/detaljidogadaja.component').then(
+            (m) => m.DetaljiDogadajaComponent),
       },
-      { 
-        path: 'onama', 
-        loadComponent: () => import('./pages/onama/onama.component').then(m => m.OnamaComponent), 
-        data: { animation: 'Onama' } 
+
+      {
+        path: 'galerija',
+        loadComponent: () =>
+          import('./pages/galerija/galerija.component').then(
+            (m) => m.GalerijaComponent
+          ),
+        data: { animation: 'Galerija' },
       },
-      { 
-        path: 'kontakt', 
-        loadComponent: () => import('./pages/kontakt/kontakt.component').then(m => m.KontaktComponent), 
-        data: { animation: 'Kontakt' } 
+      {
+        path: 'onama',
+        loadComponent: () =>
+          import('./pages/onama/onama.component').then((m) => m.OnamaComponent),
+        data: { animation: 'Onama' },
       },
-      { 
-        path: 'program/:id', 
-        loadComponent: () => import('./pages/programi/detaljiprograma/detaljiprograma.component').then(m => m.DetaljiProgramaComponent), 
-        data: { animation: 'Program' } 
+      {
+        path: 'blog',
+        loadComponent: () =>
+          import('./pages/blog/blog.component').then((m) => m.BlogComponent),
+        data: { animation: 'Blog' },
       },
-      { 
-        path: 'auth', 
-        loadComponent: () => import('./pages/auth/auth.component').then(m => m.AuthComponent), 
-        data: { animation: 'Auth' } 
+      {
+        path: 'kontakt',
+        loadComponent: () =>
+          import('./pages/kontakt/kontakt.component').then(
+            (m) => m.KontaktComponent
+          ),
+        data: { animation: 'Kontakt' },
       },
-      { 
-        path: 'profil', 
-        loadComponent: () => import('./pages/profil/profil.component').then(m => m.ProfilComponent), 
-        data: { animation: 'Profil' } 
-      }
+      {
+        path: 'program/:id',
+        loadComponent: () =>
+          import(
+            './pages/programi/detaljiprograma/detaljiprograma.component'
+          ).then((m) => m.DetaljiProgramaComponent),
+        data: { animation: 'Program' },
+      },
+      {
+        path: 'auth',
+        loadComponent: () =>
+          import('./pages/auth/auth.component').then((m) => m.AuthComponent),
+        data: { animation: 'Auth' },
+      },
+      {
+        path: 'profil',
+        loadComponent: () =>
+          import('./pages/profil/profil.component').then(
+            (m) => m.ProfilComponent
+          ),
+        data: { animation: 'Profil' },
+      },
     ],
   },
 ];

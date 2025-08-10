@@ -32,7 +32,7 @@ export class DetaljiProgramaComponent implements OnInit {
         podprogrami: [
           {
             subtitle: '🌸 Ženski krug',
-            description: 'Radionice i edukacije usmjerene na samopouzdanje, emocionalnu otpornost i unutarnju snagu.',
+            description: 'Ženski krug dio je redovnog programa naše udruge čije se radionice održavaju jednom mjesečno, a predstavlja živi intuitivni prostor u kojem sadržaj radionica nastaje putem onoga što sudionice žele izraziti, podijeliti ili iscijeliti, u tom trenutku, zajedno. ',
             imageUrl: 'assets/women.jpg'
           },
           {
@@ -46,9 +46,9 @@ export class DetaljiProgramaComponent implements OnInit {
         title: 'Djeca i mladi',
         podprogrami: [
           {
-            subtitle: '🌱 Razvoj samopoštovanja',
-            description: 'Podrška djeci i mladima u izgradnji identiteta i emocionalnih vještina.',
-            imageUrl: 'assets/happy.jpg'
+            subtitle: '🌱 LjUB program ',
+            description: 'Certificirani program Ljubav u pokretu provodi se kroz 12 pomno osmišljenih radionica tijekom tri mjeseca. Namijenjen je u unapređenju tjelesnog i emocionalnog zdravlja djece i mladih kroz integraciju elemenata art terapije, terapije plesom i pokretom, psihodrame i edukativnih elemenata. ',
+            imageUrl: 'assets/happy(1).jpg'
           },
           {
             subtitle: '📘 Antistres pripreme za maturu ',
@@ -58,11 +58,11 @@ export class DetaljiProgramaComponent implements OnInit {
         ]
       },
       'osnazeno-roditeljstvo': {
-        title: 'Osnaženo roditeljstvo',
+        title: 'Program za roditelje',
         podprogrami: [
           {
-            subtitle: '👨‍👩‍👧‍👦 Edukacije i podrška',
-            description: 'Savjeti, resursi i radionice za izazove roditeljstva u modernom društvu.',
+            subtitle: '👨‍👩‍👧‍👦 Osnaženo roditeljstvo',
+            description: 'Program Osnaženo roditeljstvo provodi se kao ciklus od šest radionica kroz tri mjeseca. Na susretima interaktivno prolazimo kroz glavnih sadašnjih izazova roditeljstva te nudimo podršku, savjete i alate kojima prvenstveno osnažujete sebe kako bi mogli odgojiti mentalno i emocionalno jako dijete. ',
             imageUrl: 'assets/parents.jpg'
           }
         ]

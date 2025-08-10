@@ -1,0 +1,58 @@
+<!-- Back iznad kartice, poravnat sa sadržajem -->
+<div class="detail-back">
+  <a routerLink="/dogadaji" class="back-button" aria-label="Natrag na događaje">&#x276E;</a>
+</div>
+
+<section class="event-detail" *ngIf="!notFound; else nf">
+  <!-- Lijevo: sve informacije -->
+  <div class="left">
+    <header class="detail-header">
+      <h1 class="title">{{ event?.naslov }}</h1>
+    </header>
+
+    <!-- Podaci (Opis + ostalo) -->
+    <dl class="meta-list">
+
+
+      <div class="row" *ngIf="event?.opis">
+        <dt><span class="icon">📝</span> Opis:</dt>
+        <dd class="opis-text">{{ event?.opis }}</dd>
+      </div>
+
+
+      <div class="row" *ngIf="event?.datumVrijeme as d">
+        <dt><span class="icon">🗓️</span> Datum i vrijeme:</dt>
+        <dd>{{ d | date:'dd.MM.yyyy. HH:mm' }}</dd>
+      </div>
+
+      <div class="row" *ngIf="event?.mjesto">
+        <dt><span class="icon">📍</span> Mjesto održavanja:</dt>
+        <dd>{{ event?.mjesto }}</dd>
+      </div>
+
+      <div class="row" *ngIf="event?.ciljnaPopulacija">
+        <dt><span class="icon">🎯</span> Ciljna populacija:</dt>
+        <dd>{{ event?.ciljnaPopulacija }}</dd>
+      </div>
+
+      <div class="row" *ngIf="event?.maxSudionika !== null">
+        <dt><span class="icon">👥</span> Maks. sudionika:</dt>
+        <dd>{{ displayMax(event?.maxSudionika) }}</dd>
+      </div>
+    </dl>
+  </div>
+
+  <!-- Desno: slika -->
+  <aside class="right" *ngIf="event?.imageUrl">
+    <img class="poster" [src]="event?.imageUrl" [alt]="event?.naslov" />
+  </aside>
+</section>
+
+<ng-template #nf>
+  <div class="detail-back">
+    <a routerLink="/dogadaji" class="back-button" aria-label="Natrag na događaje">←</a>
+  </div>
+  <section class="event-detail">
+    <h2 class="title">Događaj nije pronađen</h2>
+  </section>
+</ng-template>

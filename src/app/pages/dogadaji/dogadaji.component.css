@@ -1,91 +1,62 @@
 /* ===== Naslov ===== */
-.events-header {
+.events-header{
   padding: clamp(1rem, 3vh, 4rem) clamp(1rem, 5vw, 4rem) 0;
   font-size: 1.6rem;
   font-weight: 700;
   color: #b39adc;
   margin-top: clamp(1rem, 3vh, 3rem);
-
 }
 
-.infinity {
-  font-size: 2rem; /* veće od teksta */
-  color: #b39adc;
-  font-weight: bold;
-  font-family: "Segoe UI Symbol", Arial, sans-serif;
-  position: relative;
-  top: 3px; /* lagani pomak dolje za poravnanje s tekstom */
-  display: inline-block;
-  line-height: 1;
-}
+/* ========== STILIZIRANJE FORME ========== */
 
-.save-btn:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
-  opacity: 0.7;
-}
-
-
-
-
-/* ===== Admin gumb ===== */
-.admin-actions {
-  padding: 0 clamp(1rem, 5vw, 4rem);
-  margin: 0.5rem 0 1rem;
-}
-.primary-btn {
-  background: #b39adc;
-  color: #fff;
-  border: none;
-  padding: 10px 16px;
-  border-radius: 10px;
-  font-size: 0.95rem;
-  cursor: pointer;
-  box-shadow: 0 1px 4px rgba(0,0,0,.08);
-  transition: transform .06s ease, background .2s ease;
-}
-.primary-btn:hover { background: #a088c7; }
-.primary-btn:active { transform: translateY(1px); }
-.primary-btn.secondary { background: #eee; color: #444; }
-.primary-btn:disabled { background: #ccc; cursor: not-allowed; }
-
-/* ===== Forma ===== */
-.event-form {
+/* Kutija forme */
+.event-form{
   margin: 0 clamp(1rem, 5vw, 4rem) 1rem;
-  background: #f9f9ff;
-  border: 1px solid #e6e1f5;
-  border-radius: 14px;
-  padding: 16px;
-  box-shadow: 0 1px 6px rgba(0,0,0,.06);
-  display: grid;
-  gap: 12px;
-  grid-template-columns: 1fr; /* mobitel default */
+  background:#f9f9ff;
+  border:1px solid #e6e1f5;
+  border-radius:14px;
+  padding:16px;
+  box-shadow:0 1px 6px rgba(0,0,0,.06);
+
+  display:grid;
+  gap:12px;
+  grid-template-columns:1fr; /* mobitel default */
 }
 
-.event-form label {
-  font-size: .92rem;
-  color: #6f5b94;
-  margin-bottom: 6px;
-  display: block;
+/* Svako polje (label + kontrola) — idealno wrapati ovako */
+.event-form > .field{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
 }
 
+/* Label */
+.event-form label{
+  display:block;
+  margin:0;
+  color:#6f5b94;
+  font-size:.92rem;
+}
+
+/* Inputi / select / textarea */
 .event-form input[type="text"],
 .event-form input[type="number"],
 .event-form input[type="datetime-local"],
 .event-form textarea,
-.event-form select {
-  width: 100%;
-  padding: 10px 12px;
-  border: 1px solid #d9d6e8;
-  border-radius: 10px;
-  background: #fff;
-  font-size: .95rem;
-  outline: none;
-  transition: border-color .15s ease, box-shadow .15s ease;
+.event-form select{
+  width:100%;
+  padding:10px 12px;
+  border:1px solid #d9d6e8;
+  border-radius:10px;
+  background:#fff;
+  font-size:.95rem;
+  outline:none;
+  transition:border-color .15s ease, box-shadow .15s ease;
 }
 
-.event-form select {
-  appearance: none;
+/* Select – strelica */
+.event-form select{
+  appearance:none;
   background-image:
     linear-gradient(45deg, transparent 50%, #b39adc 50%),
     linear-gradient(135deg, #b39adc 50%, transparent 50%),
@@ -94,122 +65,264 @@
     calc(100% - 20px) calc(50% - 3px),
     calc(100% - 14px) calc(50% - 3px),
     calc(100% - 2.2rem) 50%;
-  background-size: 6px 6px, 6px 6px, 1px 60%;
-  background-repeat: no-repeat;
+  background-size:6px 6px, 6px 6px, 1px 60%;
+  background-repeat:no-repeat;
+  background-color:#fff;
 }
 
-.event-form textarea {
-  min-height: 80px;
-  resize: vertical;
+/* Textarea */
+.event-form textarea{
+  min-height:80px;
+  resize:vertical;
 }
 
+/* Focus state */
 .event-form input:focus,
 .event-form textarea:focus,
-.event-form select:focus {
-  border-color: #b39adc;
-  box-shadow: 0 0 0 2px rgba(179, 154, 220, 0.2);
+.event-form select:focus{
+  border-color:#b39adc;
+  box-shadow:0 0 0 2px rgba(179,154,220,.2);
 }
 
-/* pojedinačni gumbi u formi (ne koristi se za "Spremi/Odustani") */
-.event-form button {
-  justify-self: start;
-  background: #b39adc;
-  color: #fff;
-  border: none;
-  padding: 10px 16px;
-  border-radius: 10px;
-  font-size: 0.95rem;
-  cursor: pointer;
-  box-shadow: 0 1px 4px rgba(0,0,0,.08);
-  transition: transform .06s ease, background .2s ease;
-}
-.event-form button:hover { background: #a088c7; }
-.event-form button:active { transform: translateY(1px); }
-
-.form-actions,
-.form-buttons {
-  display: flex;
-  gap: 8px;
-  margin-top: 8px;
-  justify-content: flex-end;
+/* ===== Gumbi ===== */
+.form-buttons{
+  display:flex !important;            /* osiguraj flex i ako drugi stilovi gađu div */
+  flex-direction:row !important;      /* prisilno vodoravno da ne stavljaju jedan ispod drugog */
+  gap:8px;
+  margin-top:8px;
+  justify-content:flex-end;
+  align-items:center;
 }
 
-.form-actions button,
-.form-buttons button {
-  padding: 8px 14px;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  min-width: 110px; /* ista širina za oba gumba */
-  text-align: center;
+.form-buttons .save-btn,
+.form-buttons .cancel-btn{
+  width:auto;              /* nikad 100% */
+  min-width:120px;
+  padding:8px 14px;
+  border-radius:8px;
+  font-weight:500;
+  cursor:pointer;
 }
 
-
-.save-btn {
-  background-color: #b39adc;
-  color: #fff;
-  border: none;
+.form-buttons .save-btn{
+  background:#b39adc; color:#fff; border:none;
 }
-.save-btn:hover { background-color: #a088c7; }
-.cancel-btn {
-  background: #f3f3f7;
-  color: #444;
-  border: 1px solid #d9d6e8;
-}
-.cancel-btn:hover { background: #e8e8ef; }
+.form-buttons .save-btn:hover{ background:#a088c7; }
+.form-buttons .save-btn:disabled{ background:#ccc; cursor:not-allowed; opacity:.7; }
 
-/* ===== Grid događaja ===== */
-.events-grid {
+.form-buttons .cancel-btn{
+  background:#f3f3f7; color:#444; border:1px solid #d9d6e8;
+}
+.form-buttons .cancel-btn:hover{ background:#e8e8ef; }
+
+/* ===== Desktop layout: 2 kolone; gumbi u desnom donjem kutu ===== */
+@media (min-width:768px){
+  .event-form{
+    grid-template-columns:1fr 1fr;
+    gap:16px 20px;
+  }
+
+  /* Ako koristiš .field wrap (label+kontrola), ovo ih lijepo slaže */
+  .event-form > .field{ display:flex; flex-direction:column; }
+
+  /* Gumbi: stavi ih u desni stupac i poravnaj dolje/desno */
+  .form-buttons{
+    grid-column: 2 / 3;
+    justify-self: end;
+    align-self: end;
+  }
+}
+
+/* ===== Admin gumb ===== */
+.admin-actions{
+  padding: 0 clamp(1rem, 5vw, 4rem);
+  margin: .5rem 0 1rem;
+}
+.primary-btn{
+  background:#b39adc;color:#fff;border:none;padding:10px 16px;border-radius:10px;
+  font-size:.95rem;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.08);
+  transition:transform .06s ease, background .2s ease;
+}
+.primary-btn:hover{ background:#a088c7; }
+.primary-btn:active{ transform:translateY(1px); }
+
+/* ===== Sekcije ===== */
+.events-section{
+  padding: clamp(.9rem, 2.8vh, 1.6rem) clamp(1rem, 5vw, 4rem) 0;
+  margin-bottom: 2rem;
+}
+.events-subheader{
+  margin:.5rem 0 .5rem;
+  color:#6f5b94;
+  font-weight:800;
+  font-size:clamp(1.1rem, 2.2vw, 1.4rem);
+}
+.events-empty{
+  padding:1rem clamp(1rem, 5vw, 4rem);
+  color:#7a63b0;background:#f6f3ff;border:1px solid #e6e1f5;border-radius:12px;
+  margin-top:.5rem;
+}
+
+/* ===== FILTERI ===== */
+.events-filters{
+  position:sticky; top:0; z-index:5;
+  background:linear-gradient(#fff 0 60%, transparent 100%);
+  padding: clamp(.6rem, 1.6vh, .9rem) clamp(1rem, 5vw, 4rem) 0;
+}
+.filters-row{
+  display:flex; align-items:center; flex-wrap:wrap; gap:10px 12px;
+  background:#f9f9ff;border:1px solid #e6e1f5;border-radius:14px;
+  padding:14px 16px; box-shadow:0 1px 6px rgba(0,0,0,.06);
+}
+.events-filters label{ font-size:.92rem; color:#6f5b94; margin-right:6px; }
+.events-filters select{
+  appearance:none; min-width:220px;
+  padding:10px 12px; border:1px solid #d9d6e8; border-radius:10px; background:#fff;
+  font-size:.95rem; outline:none; transition:border-color .15s, box-shadow .15s;
+  background-image:
+    linear-gradient(45deg, transparent 50%, #b39adc 50%),
+    linear-gradient(135deg, #b39adc 50%, transparent 50%),
+    linear-gradient(to right, #d9d6e8, #d9d6e8);
+  background-position:
+    calc(100% - 20px) calc(50% - 3px),
+    calc(100% - 14px) calc(50% - 3px),
+    calc(100% - 2.2rem) 50%;
+  background-size:6px 6px, 6px 6px, 1px 60%;
+  background-repeat:no-repeat;
+}
+.events-filters select:focus{
+  border-color:#b39adc; box-shadow:0 0 0 2px rgba(179,154,220,.2);
+}
+.filter-reset{
+  margin-left:auto; border:1px solid #d9d6e8; background:#f6f3ff; color:#6f5b94;
+  padding:8px 12px; border-radius:10px; font-size:.9rem; cursor:pointer;
+  transition:background .2s, transform .06s;
+}
+.filter-reset:hover{ background:#efe9ff; }
+.filter-reset:active{ transform:translateY(1px); }
+
+/* ===== GRID KARTICA (lista događaja) ===== */
+.events-grid{
+  --card-w: clamp(260px, 27vw, 300px);
   padding: clamp(1rem, 3vh, 4rem) clamp(1rem, 5vw, 4rem);
-  display: grid;
-  gap: 20px;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  display:flex; flex-wrap:wrap; gap:18px 20px; justify-content:center;
+}
+.event-card{
+  flex:0 0 var(--card-w);
+  width:var(--card-w);
+  display:block; text-decoration:none; color:inherit;
+  background:#fff; border:1px solid #ece8f6; border-radius:16px; overflow:hidden;
+  box-shadow:0 2px 10px rgba(0,0,0,.06);
+  transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+.event-card:hover{ transform:translateY(-6px); box-shadow:0 10px 24px rgba(0,0,0,.12); border-color:#d9d0f0; }
+.event-card:focus-visible{ outline:3px solid rgba(179,154,220,.5); outline-offset:2px; }
+
+/* Slika kockasta */
+.event-card img{
+  width:100%; aspect-ratio:1/1; object-fit:cover; display:block;
 }
 
-.event-card {
-  background: #fff;
-  border-radius: 14px;
-  overflow: hidden;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+/* Tijelo kartice */
+.card-body{ padding:12px 14px 14px; }
+.title{ margin:2px 0 8px; font-size:1.1rem; font-weight:700; color:#6f5b94; }
+
+/* Meta redovi */
+.meta{ display:flex; flex-direction:column; gap:6px; }
+.meta-row{ display:flex; align-items:center; gap:8px; font-size:.95rem; color:#333; }
+.icon{ width:1.2rem; display:inline-flex; justify-content:center; }
+.label{ color:#6b6b6b; }
+.value{ color:#2c2c2c; font-weight:700; }
+.event-card h3, .event-card .title{ text-decoration:none; }
+
+/* Infinity */
+.meta-row .value.infinity{
+  font-weight:800;
+  font-size:2em;
+  color:#b39adc;
+  line-height:1;
+}
+
+/* Mobiteli: jedna kartica u redu, i dalje centrirano */
+@media (max-width:480px){
+  .events-grid{ --card-w:100%; gap:16px; }
+}
+
+.card-admin-actions{
+  position:absolute;
+  top:10px; right:10px;
+  display:flex; gap:6px;
+}
+.icon-btn{
+  background:#fff; border:1px solid #e6e1f5; border-radius:8px;
+  padding:6px 10px; font-size:.85rem; cursor:pointer;
+  box-shadow:0 1px 3px rgba(0,0,0,.06);
+}
+.icon-btn:hover{ background:#f6f3ff; }
+.icon-btn.danger{ color:#a94442; border-color:#f0c3c3; }
+.event-card{ position:relative; }
+
+
+/* ——— mini tipke (iste kao na blogu) ——— */
+.mini-btn{
+  border:1px solid #d9d6e8;
+  background:#f6f3ff;
+  padding:6px 10px;
+  border-radius:8px;
+  font-size:.85rem;
+  cursor:pointer;
+}
+.mini-btn:hover{ background:#efe9ff; }
+.mini-btn.danger{ background:#ffecec; border-color:#ffd7d7; }
+.mini-btn.danger:hover{ background:#ffdede; }
+
+/* ——— header unutar kartice: naslov + traka gore desno ——— */
+.event-card{ position: relative; }
+
+.event-card-header{
+  position: relative;
+  margin-bottom: 8px;
+  padding-top: clamp(36px, 6vw, 48px); /* prostor za traku gore desno */
+}
+
+.event-title{
+  margin:0;
+  font-weight:800;
+  color:#6f5b94;
+  font-size: clamp(1.1rem, 2.6vw, 1.35rem);
+  line-height: 1.2;
+}
+
+/* traka gore desno: datum + admin tipke */
+.event-header-right{
+  position: absolute;
+  top: 0;
+  right: 0;
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  z-index: 2;
 }
 
-.event-card img {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
+/* datum mjehurić */
+.event-date{
+  background:#efe9ff;
+  color:#7a63b0;
+  font-weight:600;
+  border-radius:999px;
+  padding:6px 14px;
+  font-size:.9rem;
+  box-shadow:0 2px 6px rgba(0,0,0,.06);
+  white-space:nowrap;
 }
 
-.event-card h3 {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #6f5b94;
-  margin: 12px 16px 4px;
+/* admin tipke uz datum */
+.card-admin-actions{
+  display:flex;
+  gap:6px;
 }
 
-.event-card p {
-  margin: 4px 16px;
-  font-size: 0.9rem;
-  color: #555;
-}
-
-.event-card p strong {
-  color: #333;
-}
-
-/* ===== Responsivnost ===== */
-@media (min-width: 768px) {
-  .event-form {
-    grid-template-columns: 1fr 1fr;
-    gap: 16px 20px;
-  }
-  .event-form label {
-    grid-column: span 2;
-  }
-  /* wrapper za gumbe preko cijele širine u dva stupca */
-  .form-actions,
-  .form-buttons {
-    grid-column: 1 / -1;
-  }
+/* malo zraka uz rub na baš uskim ekranima */
+@media (max-width: 420px){
+  .event-header-right{ right: 4px; }
 }

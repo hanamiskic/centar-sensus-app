@@ -7,24 +7,25 @@
   </button>
 </div>
 
-<!-- Forma za dodavanje događaja -->
+<!-- FORMA: DODAVANJE -->
 <div *ngIf="showForm && isAdmin" class="event-form">
   <div>
     <label>Naslov događaja</label>
     <input [(ngModel)]="formData.naslov" type="text" />
   </div>
 
-  <label>Ciljna populacija:</label>
-  <select [(ngModel)]="formData.ciljnaPopulacija">
-    <option value="SVI">SVI</option>
-    <option value="DJECA">DJECA</option>
-    <option value="DJECA I MLADI">DJECA I MLADI</option>
-    <option value="ŽENE">ŽENE</option>
-    <option value="ODRASLI">ODRASLI</option>
-    <option value="ODGAJATELJI">ODGAJATELJI</option>
-    <option value="RODITELJI I BUDUĆI RODITELJI">RODITELJI i BUDUĆI RODITELJI</option>
-  </select>
-
+  <div>
+    <label>Ciljna populacija:</label>
+    <select [(ngModel)]="formData.ciljnaPopulacija">
+      <option value="SVI">SVI</option>
+      <option value="DJECA">DJECA</option>
+      <option value="DJECA I MLADI">DJECA I MLADI</option>
+      <option value="ŽENE">ŽENE</option>
+      <option value="ODRASLI">ODRASLI</option>
+      <option value="ODGAJATELJI">ODGAJATELJI</option>
+      <option value="RODITELJI I BUDUĆI RODITELJI">RODITELJI i BUDUĆI RODITELJI</option>
+    </select>
+  </div>
 
   <div>
     <label>Slika</label>
@@ -48,34 +49,209 @@
 
   <div>
     <label>Maksimalan broj sudionika</label>
-    <input [(ngModel)]="formData.maxSudionika" type="number" min="1" step="1" />
+    <input
+      [(ngModel)]="formData.maxSudionika"
+      type="number"
+      min="1"
+      step="1"
+      (keydown)="blockNonNumericKey($event)"
+      (input)="normalizeMaxSudionika()"
+    />
   </div>
 
   <div class="form-buttons">
-    <button class="save-btn" (click)="addEvent()" [disabled]="!isFormValid()">
-      Spremi
-    </button>
-
+    <button class="save-btn" (click)="addEvent()" [disabled]="!isFormValid()">Spremi</button>
     <button class="cancel-btn" (click)="showForm=false">Odustani</button>
   </div>
-
 </div>
 
-<!-- Lista događaja -->
-<div class="events-grid">
-  <div class="event-card" *ngFor="let e of events">
-    <img *ngIf="e.imageUrl" [src]="e.imageUrl" alt="Slika događaja" />
-    <h3>{{ e.naslov }}</h3>
-    <p><strong>Ciljna populacija:</strong> {{ e.ciljnaPopulacija }}</p>
-    <p>{{ e.opis }}</p>
-    <p><strong>Datum:</strong> {{ e.datumVrijeme | date:'dd.MM.yyyy. HH:mm' }}</p>
-    <p><strong>Mjesto:</strong> {{ e.mjesto }}</p>
-    <p>
-      <strong>Max sudionika:</strong>
-      <span [ngClass]="{ 'infinity': e.maxSudionika === 500 }">
-        {{ e.maxSudionika === 500 ? ' ∞' : e.maxSudionika }}
-      </span>
-    </p>
+<!-- FORMA: UREĐIVANJE -->
+<div *ngIf="isAdmin && editingId" class="event-form">
+  <div>
+    <label>Naslov događaja</label>
+    <input [(ngModel)]="editData.naslov" type="text" />
+  </div>
 
+  <div>
+    <label>Ciljna populacija:</label>
+    <select [(ngModel)]="editData.ciljnaPopulacija">
+      <option value="SVI">SVI</option>
+      <option value="DJECA">DJECA</option>
+      <option value="DJECA I MLADI">DJECA I MLADI</option>
+      <option value="ŽENE">ŽENE</option>
+      <option value="ODRASLI">ODRASLI</option>
+      <option value="ODGAJATELJI">ODGAJATELJI</option>
+      <option value="RODITELJI I BUDUĆI RODITELJI">RODITELJI i BUDUĆI RODITELJI</option>
+    </select>
+  </div>
+
+  <div>
+    <label>Nova slika (opcionalno)</label>
+    <input type="file" (change)="onEditFileSelected($event)" />
+  </div>
+
+  <div>
+    <label>Opis</label>
+    <textarea [(ngModel)]="editData.opis"></textarea>
+  </div>
+
+  <div>
+    <label>Datum i vrijeme</label>
+    <input [(ngModel)]="editData.datumVrijeme" type="datetime-local" />
+  </div>
+
+  <div>
+    <label>Mjesto održavanja</label>
+    <input [(ngModel)]="editData.mjesto" type="text" />
+  </div>
+
+  <div>
+    <label>Maksimalan broj sudionika</label>
+    <input
+      [(ngModel)]="editData.maxSudionika"
+      type="number"
+      min="1"
+      step="1"
+      (keydown)="blockNonNumericKey($event)"
+    />
+  </div>
+
+  <div class="form-buttons">
+    <button class="save-btn" (click)="saveEdit()" [disabled]="!isEditValid()">Spremi izmjene</button>
+    <button class="cancel-btn" (click)="cancelEdit()">Odustani</button>
   </div>
 </div>
+
+<!-- FILTERI -->
+<section class="events-filters">
+  <div class="filters-row">
+    <span class="filters-title"><strong>Filtriraj:</strong></span>
+
+    <label>Mjesec održavanja:</label>
+    <select [(ngModel)]="filters.month">
+      <option *ngFor="let m of months" [value]="m.value">{{ m.label }}</option>
+    </select>
+
+    <label>Ciljna populacija:</label>
+    <select [(ngModel)]="filters.populacija">
+      <option value="">Sve ciljne populacije</option>
+      <option *ngFor="let p of populationOptions" [value]="p">{{ p }}</option>
+    </select>
+
+    <button class="filter-reset" (click)="resetFilters()" *ngIf="filters.month || filters.populacija">
+      ✖️ Resetiraj
+    </button>
+  </div>
+</section>
+
+<!-- AKTIVNI DOGAĐAJI -->
+<section class="events-section">
+  <h2 class="events-subheader">Aktivni događaji</h2>
+
+  <ng-container *ngIf="activeEvents.length; else noActive">
+    <div class="events-grid">
+      <a class="event-card" *ngFor="let e of activeEvents" [routerLink]="['/dogadaji', e.id]">
+        <img *ngIf="e.imageUrl" [src]="e.imageUrl" [alt]="e.naslov || 'Slika događaja'" />
+
+        <div class="card-body">
+          <h3 class="title">{{ e.naslov }}</h3>
+
+          <div class="meta">
+            <div class="meta-row">
+              <span class="icon">🎯</span>
+              <span class="label">Ciljna populacija:</span>
+              <span class="value">{{ e.ciljnaPopulacija }}</span>
+            </div>
+            <div class="meta-row">
+              <span class="icon">🗓️</span>
+              <span class="label">Datum:</span>
+              <span class="value">{{ e.datumVrijeme | date:'dd.MM.yyyy. HH:mm' }}</span>
+            </div>
+            <div class="meta-row">
+              <span class="icon">📍</span>
+              <span class="label">Mjesto:</span>
+              <span class="value">{{ e.mjesto }}</span>
+            </div>
+            <div class="meta-row">
+              <span class="icon">👥</span>
+              <span class="label">Max sudionika:</span>
+              <span class="value" [ngClass]="{ 'infinity': e.maxSudionika === 500 }">
+                {{ e.maxSudionika === 500 ? '∞' : e.maxSudionika }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Admin tipke – DONJI DESNI KUT -->
+        <div
+          class="card-admin-actions"
+          *ngIf="isAdmin"
+          (click)="$event.preventDefault(); $event.stopPropagation();"
+        >
+          <button class="mini-btn" (click)="startEdit(e)">✏️ Uredi</button>
+          <button class="mini-btn danger" (click)="deleteEvent(e)">🗑️ Obriši</button>
+        </div>
+      </a>
+    </div>
+  </ng-container>
+
+  <ng-template #noActive>
+    <p class="events-empty">Trenutno nema aktivnih događaja.</p>
+  </ng-template>
+</section>
+
+<!-- ZAVRŠENI DOGAĐAJI -->
+<section class="events-section">
+  <h2 class="events-subheader">Završeni događaji</h2>
+
+  <ng-container *ngIf="finishedEvents.length; else noFinished">
+    <div class="events-grid">
+      <a class="event-card" *ngFor="let e of finishedEvents" [routerLink]="['/dogadaji', e.id]">
+        <img *ngIf="e.imageUrl" [src]="e.imageUrl" [alt]="e.naslov || 'Slika događaja'" />
+
+        <div class="card-body">
+          <h3 class="title">{{ e.naslov }}</h3>
+
+          <div class="meta">
+            <div class="meta-row">
+              <span class="icon">🎯</span>
+              <span class="label">Ciljna populacija:</span>
+              <span class="value">{{ e.ciljnaPopulacija }}</span>
+            </div>
+            <div class="meta-row">
+              <span class="icon">🗓️</span>
+              <span class="label">Datum:</span>
+              <span class="value">{{ e.datumVrijeme | date:'dd.MM.yyyy. HH:mm' }}</span>
+            </div>
+            <div class="meta-row">
+              <span class="icon">📍</span>
+              <span class="label">Mjesto:</span>
+              <span class="value">{{ e.mjesto }}</span>
+            </div>
+            <div class="meta-row">
+              <span class="icon">👥</span>
+              <span class="label">Max sudionika:</span>
+              <span class="value" [ngClass]="{ 'infinity': e.maxSudionika === 500 }">
+                {{ e.maxSudionika === 500 ? '∞' : e.maxSudionika }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Admin tipke – DONJI DESNI KUT -->
+        <div
+          class="card-admin-actions"
+          *ngIf="isAdmin"
+          (click)="$event.preventDefault(); $event.stopPropagation();"
+        >
+          <button class="mini-btn" (click)="startEdit(e)">✏️ Uredi</button>
+          <button class="mini-btn danger" (click)="deleteEvent(e)">🗑️ Obriši</button>
+        </div>
+      </a>
+    </div>
+  </ng-container>
+
+  <ng-template #noFinished>
+    <p class="events-empty">Trenutno nema završenih događaja.</p>
+  </ng-template>
+</section>

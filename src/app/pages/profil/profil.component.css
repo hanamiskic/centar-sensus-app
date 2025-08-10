@@ -139,9 +139,8 @@
 .actions-col { width: 120px; }
 
 .btn-delete {
-  background: #ffe8ea;
-  color: #b00020;
-  border: 1px solid #ffcbd1;
+  background: #ffecec;
+  border: 1px solid #ffd7d7;
   padding: 6px 10px;
   border-radius: 8px;
   font-size: .9rem;
