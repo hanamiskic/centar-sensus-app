@@ -1,0 +1,38 @@
+<a class="event-card" [routerLink]="['/dogadaji', event.id]">
+  <img *ngIf="event.imageUrl" [src]="event.imageUrl" [alt]="event.naslov || 'Slika događaja'" />
+
+  <div class="card-body">
+    <h3 class="title">{{ event.naslov }}</h3>
+
+    <div class="meta">
+      <div class="meta-row">
+        <span class="icon">🎯</span>
+        <span class="label">Ciljna populacija:</span>
+        <span class="value">{{ event.ciljnaPopulacija }}</span>
+      </div>
+      <div class="meta-row">
+        <span class="icon">🗓️</span>
+        <span class="label">Datum:</span>
+        <span class="value">{{ event.datumVrijeme | date:'dd.MM.yyyy. HH:mm' }}</span>
+      </div>
+      <div class="meta-row">
+        <span class="icon">📍</span>
+        <span class="label">Mjesto:</span>
+        <span class="value">{{ event.mjesto }}</span>
+      </div>
+      <div class="meta-row">
+        <span class="icon">👥</span>
+        <span class="label">Max sudionika:</span>
+        <span class="value" [ngClass]="{ 'infinity': isInfinity }">
+          {{ isInfinity ? '∞' : event.maxSudionika }}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Admin tipke – DONJI DESNI KUT -->
+  <div class="card-admin-actions" *ngIf="isAdmin" (click)="$event.preventDefault(); $event.stopPropagation();">
+    <button class="mini-btn" (click)="onEdit($event)">✏️ Uredi</button>
+    <button class="mini-btn danger" (click)="onRemove($event)">🗑️ Obriši</button>
+  </div>
+</a>
