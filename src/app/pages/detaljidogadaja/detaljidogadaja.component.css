@@ -1,7 +1,7 @@
 /* ===== Back gumb iznad kartice (zrak + poravnanje) ===== */
 .detail-back{
   max-width: 1200px;
-  margin: clamp(72px, 9vh, 120px) auto 10px;      /* odmak ispod headera */
+  margin: clamp(44px, 7vh, 84px) auto 6px; 
   padding: 0 clamp(18px, 2.8vw, 30px) clamp(14px, 2vh, 22px);
 }
 
@@ -23,11 +23,7 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: clamp(18px, 2.8vw, 30px);
-  background:#fff;
-  border-radius:16px;
-  box-shadow:0 8px 24px rgba(0,0,0,.05);
-
-  /* Sliku prikazujemo ispod teksta -> jedna kolona */
+  padding-bottom: clamp(36px, 6vh, 80px);  /* više zraka iznad footera */
   display:grid;
   gap: clamp(14px, 1.6vw, 24px);
   grid-template-columns: 1fr;
@@ -48,16 +44,13 @@
   display:grid;
   gap: 10px;
 }
-
 .meta-list .row{
   display:grid;
-  grid-template-columns: 230px 1fr;   /* labela | vrijednost */
+  grid-template-columns: 230px 1fr;
   align-items: baseline;
   gap: 10px;
   padding: 2px 0;
 }
-
-/* Labela ostaje bold, vrijednosti nisu bold */
 .meta-list dt{
   color:#6f5b94;
   font-weight:800;
@@ -69,11 +62,10 @@
   width:1.2rem;
   text-align:center;
 }
-
 .meta-list dd{
   margin:0;
   color:#1f1f1f;
-  font-weight:400;                /* maknut bold s vrijednosti */
+  font-weight:400;
   font-size:1.02rem;
   line-height:1.75;
   white-space:pre-wrap;
@@ -86,46 +78,111 @@
   line-height: 1.9;
 }
 
-/* ===== Slika ispod teksta, kvadrat ===== */
+/* ===== Slika ===== */
 .right{
   display:flex;
-  justify-content:center;         /* centrirana ispod sadržaja */
+  justify-content:center;
 }
 .poster{
   width:100%;
-  max-width: 560px;               /* širina kvadrata */
-  aspect-ratio: 1 / 1;            /* kvadrat */
+  max-width: 560px;
+  aspect-ratio: 1 / 1;
   object-fit: cover;
   border-radius:14px;
   box-shadow:0 8px 20px rgba(0,0,0,.08);
   background:#f7f5ff;
 }
 
-/* ===== Responsive ===== */
-@media (max-width: 880px){
-  .meta-list .row{
-    grid-template-columns: auto 1fr;  /* "Labela:" | "vrijednost" u istom redu */
-  }
+/* ===== Prijava/odjava akcije ===== */
+.actions{
+  margin-top: 14px;
+  display: flex;
+  justify-content: flex-end;  /* sve udesno */
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  text-align: right;
+}
+.actions.info{ opacity: .8; }
+
+/* “Prijavljeno: 1 / ∞” */
+.capacity{
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 0.95rem;
+  color: #6f5b94;
+}
+.count{
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+}
+.count .num{ font-weight: 800; }
+.count .slash{ opacity: .6; font-weight: 600; }
+
+/* ∞ – kao u događajima, ali s baseline fixom da ne “skače” */
+.capacity .value.infinity{
+  font-weight: 800;
+  font-size: 1.6em;   /* ako želiš veće: 1.75em ili 2em */
+  color: #b39adc;
+  line-height: 1;
+  position: relative;
+  top: .04em;         /* lagani nudge na baseline */
 }
 
+.capacity .full{
+  color: #b00020;
+  font-weight: 700;
+}
+
+/* Gumb */
+.reg-btn{
+  appearance: none;
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 18px;
+  font-weight: 700;
+  cursor: pointer;
+  background: #b39adc;
+  color: #fff;
+  box-shadow: 0 6px 14px rgba(179,154,220,.35);
+  transition: transform .15s ease, box-shadow .15s ease, opacity .15s ease;
+}
+.reg-btn:hover{ transform: translateY(-1px); }
+.reg-btn:disabled{
+  opacity: .6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: 0 3px 8px rgba(0,0,0,.08);
+}
+.reg-btn.secondary{
+  background: #f1eef9;
+  color: #6f5b94;
+  box-shadow: 0 6px 14px rgba(0,0,0,.06);
+}
+.reg-btn[aria-busy="true"]{ opacity: .8; }
+
+/* ===== Responsive ===== */
+@media (max-width: 880px){
+  .meta-list .row{ grid-template-columns: auto 1fr; }
+}
 @media (max-width: 560px){
   .detail-back{
     margin: clamp(56px, 8vh, 80px) auto 8px;
     padding: 0 18px 12px;
   }
-
   .event-detail{
     padding: clamp(20px, 5vw, 26px);
+    padding-bottom: clamp(36px, 8vh, 90px); /* malo više na malima */
     gap: 16px;
     border-radius:16px;
   }
-
   .title{
     font-size: clamp(1.35rem, 5.2vw, 1.8rem);
     margin: 0 0 10px;
     line-height: 1.25;
   }
-
   .poster{
     max-width: 100%;
     max-height: 380px;
@@ -133,7 +190,6 @@
     box-shadow:0 6px 16px rgba(0,0,0,.08);
   }
 }
-
 @media (max-width: 380px){
   .detail-back{ padding-left: 12px; padding-right: 12px; }
   .event-detail{ padding: 18px; }
@@ -141,37 +197,243 @@
 }
 
 /* ========== Veći bočni padding na manjim ekranima ========== */
-
-/* tablet i niže */
 @media (max-width: 768px){
-  .detail-back{
-    /* samo bočni padding povećan */
-    padding-inline: clamp(22px, 6vw, 32px);
-  }
+  .detail-back{ padding-inline: clamp(22px, 6vw, 32px); }
   .event-detail{
-    /* više „zraka” sa strane nego gore/dolje */
     padding-block: clamp(18px, 3.5vw, 24px);
     padding-inline: clamp(24px, 6.5vw, 36px);
   }
 }
-
-/* telefoni */
 @media (max-width: 560px){
-  .detail-back{
-    padding-inline: clamp(24px, 7vw, 36px);
-  }
+  .detail-back{ padding-inline: clamp(24px, 7vw, 36px); }
   .event-detail{
     padding-block: clamp(18px, 4vw, 26px);
     padding-inline: clamp(26px, 7.5vw, 40px);
   }
 }
-
-/* baš mali telefoni */
 @media (max-width: 380px){
-  .detail-back{
-    padding-inline: clamp(22px, 8vw, 32px);
-  }
-  .event-detail{
-    padding-inline: clamp(24px, 8.5vw, 38px);
-  }
+  .detail-back{ padding-inline: clamp(22px, 8vw, 32px); }
+  .event-detail{ padding-inline: clamp(24px, 8.5vw, 38px); }
+}
+
+
+/* ↓ poravnanje i mikro-spuštanje ∞ i gumba */
+.capacity{ line-height: 1; }              /* da baseline bude čist */
+/* Jedinstveni stil za ∞ (vrijedi i gore i dolje) */
+.value.infinity{
+  font-weight: 800;
+  font-size: 2em;   /* ako želiš veće: 1.75em ili 2em */
+  color: #b39adc;
+  line-height: 1;
+  position: relative;
+  top: .04em;         /* baseline nudge da ne “skače” */
+}
+
+
+.reg-btn{
+  position: relative;
+  top: 2px;                                /* spušta gumb da sjedne uz tekst */
+}
+
+
+/* broj kao gumb-link (samo za admina aktivan) */
+.count .num-btn{
+  appearance: none;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  font-weight: 800;
+  cursor: default;
+}
+.is-admin .count .num-btn,
+.count .num-btn[title]{
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.count .num-btn:disabled{
+  opacity: .7;
+  text-decoration: none;
+  cursor: default;
+}
+
+/* ===== Modal ===== */
+.modal-backdrop{
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.25);
+  z-index: 90;
+}
+.modal{
+  position: fixed;
+  inset: auto 0 0 0;
+  margin: auto;
+  top: 10vh;
+  max-width: 640px;
+  width: calc(100% - 32px);
+  background: #fff;
+  border: 1px solid #ece8f6;
+  border-radius: 14px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.18);
+  z-index: 100;
+  overflow: hidden;
+}
+.modal-header{
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 14px;
+  background: #f9f9ff;
+  border-bottom: 1px solid #ece8f6;
+}
+.modal-header h3{
+  margin: 0; font-size: 1.05rem; color: #6f5b94; font-weight: 800;
+}
+.modal-close{
+  appearance: none; border: 0; background: transparent; cursor: pointer;
+  font-size: 1rem; padding: 6px; line-height: 1;
+  border-radius: 8px;
+}
+.modal-close:hover{ background: #efe9ff; }
+
+.modal-body{
+  padding: 12px 14px;
+  max-height: min(60vh, 520px);
+  overflow: auto;
+}
+
+.reg-list{
+  list-style: none; margin: 0; padding: 0;
+  display: grid; gap: 10px;
+}
+.reg-list li{
+  display: grid; grid-template-columns: 1fr auto; gap: 4px 10px;
+  padding: 10px 12px; border: 1px solid #f0ecfb; border-radius: 10px; background: #fff;
+}
+.reg-name{ font-weight: 700; color: #2c2c2c; }
+.reg-email{ color: #6b6b6b; font-size: .92rem; grid-column: 1 / 2; }
+.reg-email.uid{ font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+.reg-date{ color: #6f5b94; font-weight: 600; white-space: nowrap; grid-column: 2 / 3; align-self: center; }
+
+.modal-loading, .muted{ color: #6b6b6b; padding: 12px; }
+
+
+
+
+/* MODAL — neka raste do max visine, bez fiksnog bottom-a */
+.modal{
+  max-width: 560px;
+  width: min(90vw, 560px);
+  top: 15vh;
+  /* REMOVE/OVERRIDE ovo ako postoji: bottom: 6vh; */
+  bottom: auto;                         /* ⬅️ bitno */
+  max-height: calc(100vh - 8vh - 8vh);  /* 8vh gore + 8vh dolje razmak */
+  display: flex;                        /* ⬅️ da tijelo ispuni ostatak */
+  flex-direction: column;
+  overflow: hidden;                     /* zadrži za zaobljene rubove */
+}
+
+/* Header ostaje prirodne visine */
+.modal-header{
+  flex: 0 0 auto;
+  padding: 10px 12px;
+}
+
+/* Tijelo puni visinu i scrolla */
+.modal-body{
+  flex: 1 1 auto;        /* ⬅️ ispuni sav preostali prostor */
+  overflow: auto;        /* ⬅️ scroll iznutra */
+  padding: 12px;         /* ovo je onaj “padding unutra prozora” */
+  /* REMOVE/OVERRIDE ako si prije imao: max-height: ... */
+}
+
+/* sitno: da zadnja kartica ne ostavi dodatnog razmaka */
+.reg-list{ margin: 0; padding: 0; }
+
+/* Kutija "Ručno dodani" */
+.extra-box{
+  margin-top: 12px;
+  padding: 10px 12px;
+  border: 1px solid #f0ecfb;
+  border-radius: 12px;
+  background: #f9f9ff;
+}
+
+/* Red s labelom, steperom i spremi gumbom */
+.extra-row{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.extra-row label{
+  color:#6f5b94;
+  font-weight:700;
+  margin-right: 4px;
+}
+
+/* Steper: [-][ input ][+] */
+.stepper{
+  display: inline-flex;
+  align-items: center;
+  height: 36px;
+  border: 1px solid #d9d6e8;
+  border-radius: 10px;
+  background:#fff;
+  overflow: hidden;
+}
+.stepper button{
+  appearance: none;
+  border: 0;
+  width: 36px;
+  height: 100%;
+  font-size: 1.1rem;
+  line-height: 1;
+  background:#f6f3ff;
+  color:#6f5b94;
+  cursor: pointer;
+}
+.stepper button:hover{ background:#efe9ff; }
+.stepper button:disabled{ opacity:.5; cursor:not-allowed; }
+
+.stepper input{
+  width: 64px;
+  height: 100%;
+  border: 0;
+  outline: 0;
+  text-align: center;
+  font-weight: 700;
+  font-size: .95rem;
+}
+/* makni spinnere */
+.stepper input::-webkit-outer-spin-button,
+.stepper input::-webkit-inner-spin-button{ -webkit-appearance: none; margin: 0; }
+.stepper input[type=number]{ -moz-appearance: textfield; }
+
+/* Spremi gumb */
+.save-extra{
+  margin-left: auto;
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 1px solid #d9d6e8;
+  background:#b39adc;
+  color:#fff;
+  font-weight:600;
+  cursor:pointer;
+  box-shadow: 0 1px 6px rgba(179,154,220,.25);
+  transition: background .2s ease;
+}
+.save-extra:hover{ background:#a088c7; }
+.save-extra:disabled{ opacity:.6; cursor:not-allowed; box-shadow:none; }
+
+/* Hint ispod */
+.extra-hint{
+  margin-top: 8px;
+  font-size: .9rem;
+  color:#6b6b6b;
+}
+
+/* Mobile: gumb preko cijele širine */
+@media (max-width:560px){
+  .extra-row{ gap: 10px; }
+  .save-extra{ width: 100%; margin-left: 0; }
 }

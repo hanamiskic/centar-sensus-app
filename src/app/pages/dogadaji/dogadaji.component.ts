@@ -6,6 +6,9 @@ import { EventsService } from '../../services/events.service';
 import { Subscription } from 'rxjs';
 import { RouterLink } from '@angular/router';
 
+// ⬇️ NOVO
+import { EventRegistrationsService } from '../../services/event-registrations.service';
+
 /** Stavka iz baze / za listanje (date je pravi Date ili null) */
 interface EventItem {
   id?: string;
@@ -41,7 +44,7 @@ export class DogadajiComponent implements OnInit, OnDestroy {
   isAdmin = false;
   events: EventItem[] = [];
 
-  readonly MAX_LIMIT = 500;
+  readonly MAX_LIMIT = 500; // ∞
 
   // Dodavanje
   showForm = false;
@@ -59,7 +62,6 @@ export class DogadajiComponent implements OnInit, OnDestroy {
     'SVI','DJECA','DJECA I MLADI','ŽENE','ODRASLI','ODGAJATELJI','RODITELJI I BUDUĆI RODITELJI'
   ];
   months = [
-    { value: '',   label: 'Svi mjeseci' },
     { value: '01', label: 'Siječanj' }, { value: '02', label: 'Veljača' },
     { value: '03', label: 'Ožujak' },   { value: '04', label: 'Travanj' },
     { value: '05', label: 'Svibanj' },  { value: '06', label: 'Lipanj' },
@@ -67,11 +69,21 @@ export class DogadajiComponent implements OnInit, OnDestroy {
     { value: '09', label: 'Rujan' },    { value: '10', label: 'Listopad' },
     { value: '11', label: 'Studeni' },  { value: '12', label: 'Prosinac' }
   ];
-  filters = { month: '', populacija: '' };
+  // ⬇️ NOVO: dodan status
+  filters: { month: string; populacija: string; status: '' | 'free' | 'full' } = {
+    month: '',
+    populacija: '',
+    status: ''
+  };
+
+  // ⬇️ NOVO: broj prijava po eventu
+  regCount: Record<string, number> = {};
+  countsReady = false;
 
   constructor(
     private authService: AuthService,
-    private eventsService: EventsService
+    private eventsService: EventsService,
+    private regs: EventRegistrationsService // ⬅️ NOVO
   ) {}
 
   ngOnInit() {
@@ -116,12 +128,18 @@ export class DogadajiComponent implements OnInit, OnDestroy {
 
   // ===== Filtrirano + sortirano =====
   get filteredEvents(): EventItem[] {
-    const month = this.filters.month;
-    const pop = this.filters.populacija;
+    const { month, populacija: pop, status } = this.filters;
+
     return (this.events || []).filter(e => {
       const monthOk = !month || this.getMonthStr(e.datumVrijeme) === month;
-      const popOk = !pop || e.ciljnaPopulacija === pop;
-      return monthOk && popOk;
+      const popOk   = !pop   || e.ciljnaPopulacija === pop;
+
+      // Status filtriraj tek kad znamo brojeve; dotad propusti sve
+      const statusOk = !status || !this.countsReady
+        ? true
+        : (status === 'free' ? !this.isFull(e) : this.isFull(e));
+
+      return monthOk && popOk && statusOk;
     });
   }
 
@@ -139,7 +157,9 @@ export class DogadajiComponent implements OnInit, OnDestroy {
       .sort((a, b) => this.toMs(b.datumVrijeme) - this.toMs(a.datumVrijeme));
   }
 
-  resetFilters() { this.filters = { month: '', populacija: '' }; }
+  resetFilters() {
+    this.filters = { month: '', populacija: '', status: '' };
+  }
 
   // ===== Utili =====
   private getEmptyForm(): EventFormData {
@@ -213,6 +233,37 @@ export class DogadajiComponent implements OnInit, OnDestroy {
       ...e,
       datumVrijeme: this.coerceDate(e?.datumVrijeme)
     })) as EventItem[];
+
+    await this.loadRegistrationCounts(); // ⬅️ NOVO: povuci brojeve prijava
+  }
+
+  // ⬇️ NOVO: broj prijava po svim eventima
+  private async loadRegistrationCounts(): Promise<void> {
+    this.countsReady = false;
+    const ids = (this.events || []).map(e => e.id!).filter(Boolean);
+    const results = await Promise.all(
+      ids.map(async id => {
+        const count = await this.regs.countForEvent(id);
+        return { id, count };
+      })
+    );
+    this.regCount = {};
+    for (const r of results) this.regCount[r.id] = r.count;
+    this.countsReady = true;
+  }
+
+  // ⬇️ NOVO: utili za status popunjenosti
+  private getCount(e: EventItem): number {
+    return e.id ? (this.regCount[e.id] ?? 0) : 0;
+  }
+  private isUnlimited(e: EventItem): boolean {
+    return Number(e.maxSudionika ?? 0) === this.MAX_LIMIT;
+  }
+  private isFull(e: EventItem): boolean {
+    if (this.isUnlimited(e)) return false;
+    const cap = Number(e.maxSudionika || 0);
+    if (cap <= 0) return false;
+    return this.getCount(e) >= cap;
   }
 
   onFileSelected(ev: Event) {
@@ -230,7 +281,7 @@ export class DogadajiComponent implements OnInit, OnDestroy {
     this.showForm = false;
     this.formData = this.getEmptyForm();
     this.selectedImage = null;
-    await this.loadEvents();
+    await this.loadEvents(); // učitava i brojače
   }
 
   // ====== UREĐIVANJE / BRISANJE ======

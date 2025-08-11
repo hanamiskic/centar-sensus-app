@@ -243,6 +243,51 @@
   line-height:1;
 }
 
+/* Kutija s filtrima */
+.events-filters .filters-row{
+  display: flex;
+  flex-wrap: wrap;            /* da naslov može zauzeti cijeli red */
+  align-items: center;
+  gap: 10px 16px;
+}
+
+/* Naslov "Filtriraj:" ide iznad filtera u istom boxu */
+.events-filters .filters-title{
+  flex: 0 0 100%;             /* cijela širina → novi red iznad */
+  display: block;
+  margin: 0 0 1px 0;          /* malo razmaka ispod naslova */
+  font-weight: 800;
+  color: #6f5b94;             /* kao i ostale labele */
+  font-size: 1.05rem;
+}
+
+/* (opcionalno) reset gumb neka stoji desno kad je prisutan */
+.events-filters .filter-reset{
+  margin-left: auto;
+}
+
+/* Mobile: svaki filter ide u dva reda (label iznad selecta) */
+@media (max-width: 560px){
+  .events-filters .filters-row{
+    gap: 8px 0;
+  }
+  .events-filters .filters-row > label{
+    flex: 0 0 100%;
+    display: block;
+    margin-top: 10px;
+  }
+  .events-filters .filters-row > select{
+    flex: 0 0 100%;
+    display: block;
+    width: 100%;
+    min-width: 0;      /* spriječi preljevanje */
+  }
+  /* Reset gumb ostaje dolje desno */
+  .events-filters .filter-reset{
+    margin-left: auto;
+  }
+}
+
 /* Mobiteli: jedna kartica u redu, i dalje centrirano */
 @media (max-width:480px){
   .events-grid{ --card-w:100%; gap:16px; }

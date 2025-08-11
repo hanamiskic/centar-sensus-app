@@ -44,6 +44,7 @@ export class EventsService {
       mjesto: eventData?.mjesto ?? '',
       maxSudionika: Number(eventData?.maxSudionika ?? 0),
       imageUrl,
+      extraCount: 0,
       createdAt: serverTimestamp()
     });
   }
@@ -81,7 +82,8 @@ export class EventsService {
       datumVrijeme,
       mjesto: d?.mjesto ?? '',
       maxSudionika: d?.maxSudionika ?? 0,
-      imageUrl: d?.imageUrl ?? ''
+      imageUrl: d?.imageUrl ?? '',
+      extraCount: d?.extraCount ?? 0
     };
   }
 
@@ -133,4 +135,9 @@ export class EventsService {
     }
     await deleteDoc(doc(this.db, 'events', id));
   }
+
+  async setExtraCount(id: string, value: number): Promise<void> {
+  const target = doc(this.db, 'events', id);
+  await updateDoc(target, { extraCount: Math.max(0, Math.floor(value)) });
+}
 }

@@ -49,14 +49,8 @@
 
   <div>
     <label>Maksimalan broj sudionika</label>
-    <input
-      [(ngModel)]="formData.maxSudionika"
-      type="number"
-      min="1"
-      step="1"
-      (keydown)="blockNonNumericKey($event)"
-      (input)="normalizeMaxSudionika()"
-    />
+    <input [(ngModel)]="formData.maxSudionika" type="number" min="1" step="1" (keydown)="blockNonNumericKey($event)"
+      (input)="normalizeMaxSudionika()" />
   </div>
 
   <div class="form-buttons">
@@ -85,6 +79,11 @@
     </select>
   </div>
 
+  <button class="filter-reset" (click)="resetFilters()" *ngIf="filters.month || filters.populacija || filters.status">
+    ✖️ Resetiraj
+  </button>
+
+
   <div>
     <label>Nova slika (opcionalno)</label>
     <input type="file" (change)="onEditFileSelected($event)" />
@@ -107,13 +106,7 @@
 
   <div>
     <label>Maksimalan broj sudionika</label>
-    <input
-      [(ngModel)]="editData.maxSudionika"
-      type="number"
-      min="1"
-      step="1"
-      (keydown)="blockNonNumericKey($event)"
-    />
+    <input [(ngModel)]="editData.maxSudionika" type="number" min="1" step="1" (keydown)="blockNonNumericKey($event)" />
   </div>
 
   <div class="form-buttons">
@@ -126,11 +119,12 @@
 <section class="events-filters">
   <div class="filters-row">
     <span class="filters-title"><strong>Filtriraj:</strong></span>
-
     <label>Mjesec održavanja:</label>
     <select [(ngModel)]="filters.month">
-      <option *ngFor="let m of months" [value]="m.value">{{ m.label }}</option>
+      <option value="">Svi mjeseci</option>
+      <option *ngFor="let m of months" [value]="m.value">{{ m.label | uppercase }}</option>
     </select>
+
 
     <label>Ciljna populacija:</label>
     <select [(ngModel)]="filters.populacija">
@@ -138,7 +132,14 @@
       <option *ngFor="let p of populationOptions" [value]="p">{{ p }}</option>
     </select>
 
-    <button class="filter-reset" (click)="resetFilters()" *ngIf="filters.month || filters.populacija">
+    <label>Status:</label>
+    <select [(ngModel)]="filters.status">
+      <option value="">Svi</option>
+      <option value="free">SLOBODNO</option>
+      <option value="full">POPUNJENO</option>
+    </select>
+
+    <button class="filter-reset" (click)="resetFilters()" *ngIf="filters.month || filters.populacija || filters.status">
       ✖️ Resetiraj
     </button>
   </div>
@@ -183,11 +184,7 @@
         </div>
 
         <!-- Admin tipke – DONJI DESNI KUT -->
-        <div
-          class="card-admin-actions"
-          *ngIf="isAdmin"
-          (click)="$event.preventDefault(); $event.stopPropagation();"
-        >
+        <div class="card-admin-actions" *ngIf="isAdmin" (click)="$event.preventDefault(); $event.stopPropagation();">
           <button class="mini-btn" (click)="startEdit(e)">✏️ Uredi</button>
           <button class="mini-btn danger" (click)="deleteEvent(e)">🗑️ Obriši</button>
         </div>
@@ -239,11 +236,7 @@
         </div>
 
         <!-- Admin tipke – DONJI DESNI KUT -->
-        <div
-          class="card-admin-actions"
-          *ngIf="isAdmin"
-          (click)="$event.preventDefault(); $event.stopPropagation();"
-        >
+        <div class="card-admin-actions" *ngIf="isAdmin" (click)="$event.preventDefault(); $event.stopPropagation();">
           <button class="mini-btn" (click)="startEdit(e)">✏️ Uredi</button>
           <button class="mini-btn danger" (click)="deleteEvent(e)">🗑️ Obriši</button>
         </div>

@@ -1,4 +1,6 @@
+<!-- profil.component.html -->
 <section class="profil-wrapper" *ngIf="user$ | async as user">
+  <!-- HEADER -->
   <div class="profil-header">
     <i class="fas fa-user-circle profil-ikona"></i>
     <div class="profil-info">
@@ -7,11 +9,12 @@
     </div>
   </div>
 
+  <!-- MOJI DOGAĐAJI -->
   <div class="moji-dogadaji">
     <h2 class="sekcija-naslov">Moji događaji</h2>
 
     <div class="dogadaji-grid">
-      <!-- Ovo su hardkodirani primjeri, kasnije možeš dinamički puniti iz baze -->
+      <!-- Primjeri (kasnije može iz baze) -->
       <div class="dogadaj-kartica">
         <h3>Radionica keramike</h3>
         <p class="datum">12. 9. 2025.</p>
@@ -34,7 +37,8 @@
       </div>
     </div>
   </div>
-  <!-- ADMIN: korisnici -->
+
+  <!-- ADMIN: KORISNICI -->
   <div *ngIf="isAdmin" class="admin-users">
     <h2 class="sekcija-naslov">Korisnici</h2>
 
@@ -54,7 +58,8 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let u of users">
+          <!-- KORISTI pagedUsers umjesto users -->
+          <tr *ngFor="let u of pagedUsers">
             <td>{{ u.email }}</td>
             <td>{{ u.firstName }}</td>
             <td>{{ u.lastName }}</td>
@@ -65,13 +70,35 @@
               <button class="btn-delete" (click)="removeUser(u.uid)">🗑️ Obriši</button>
             </td>
           </tr>
+
           <tr *ngIf="users.length === 0">
             <td colspan="7" class="empty">Nema korisnika.</td>
           </tr>
         </tbody>
       </table>
 
+      <!-- PAGER -->
+      <div class="pagination">
+        <div class="rows-per-page">
+          <label for="rpp">Redova:</label>
+          <select id="rpp" (change)="changePageSize($any($event.target).value)">
+            <option [selected]="pageSize === 10" value="10">10</option>
+            <option [selected]="pageSize === 20" value="20">20</option>
+            <option [selected]="pageSize === 50" value="50">50</option>
+            <option [selected]="pageSize === 100" value="100">100</option>
+          </select>
+        </div>
+
+        <div class="page-info" *ngIf="users.length">
+          Prikaz {{ showingFrom }}–{{ showingTo }} od {{ users.length }}
+        </div>
+
+        <div class="pager-buttons">
+          <button (click)="prevPage()" [disabled]="pageIndex === 0">« Prethodna</button>
+          <span>Stranica {{ pageIndex + 1 }} / {{ pageCount }}</span>
+          <button (click)="nextPage()" [disabled]="pageIndex + 1 >= pageCount">Sljedeća »</button>
+        </div>
+      </div>
     </div>
   </div>
-
 </section>

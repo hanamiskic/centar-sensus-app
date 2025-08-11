@@ -4,21 +4,16 @@
 </div>
 
 <section class="event-detail" *ngIf="!notFound; else nf">
-  <!-- Lijevo: sve informacije -->
   <div class="left">
     <header class="detail-header">
       <h1 class="title">{{ event?.naslov }}</h1>
     </header>
 
-    <!-- Podaci (Opis + ostalo) -->
     <dl class="meta-list">
-
-
       <div class="row" *ngIf="event?.opis">
         <dt><span class="icon">📝</span> Opis:</dt>
         <dd class="opis-text">{{ event?.opis }}</dd>
       </div>
-
 
       <div class="row" *ngIf="event?.datumVrijeme as d">
         <dt><span class="icon">🗓️</span> Datum i vrijeme:</dt>
@@ -37,15 +32,54 @@
 
       <div class="row" *ngIf="event?.maxSudionika !== null">
         <dt><span class="icon">👥</span> Maks. sudionika:</dt>
-        <dd>{{ displayMax(event?.maxSudionika) }}</dd>
+        <dd>
+          <ng-container *ngIf="isUnlimited; else finiteMax">
+            <span class="value infinity" aria-label="neograničeno">∞</span>
+          </ng-container>
+          <ng-template #finiteMax>{{ event?.maxSudionika }}</ng-template>
+        </dd>
       </div>
     </dl>
   </div>
 
-  <!-- Desno: slika -->
   <aside class="right" *ngIf="event?.imageUrl">
     <img class="poster" [src]="event?.imageUrl" [alt]="event?.naslov" />
   </aside>
+
+  <!-- Akcije -->
+  <div class="actions" *ngIf="isLoggedIn && isActive">
+    <div class="capacity">
+      <span class="label">Prijavljeno:</span>
+      <span class="count">
+        <!-- BROJ PRIJAVLJENIH (klik adminu otvara modal) -->
+        <ng-container *ngIf="isAdmin; else totalStatic">
+          <button class="num-btn" type="button" title="Prikaži prijavljene" (click)="openRegistrationsModal()">
+            {{ totalCount }}
+          </button>
+        </ng-container>
+        <ng-template #totalStatic>
+          <strong class="num">{{ totalCount }}</strong>
+        </ng-template>
+
+        <span class="slash">/</span>
+        <ng-container *ngIf="isUnlimited; else finiteCap">
+          <span class="value infinity" aria-label="neograničeno">∞</span>
+        </ng-container>
+        <ng-template #finiteCap>
+          <strong class="num">{{ event?.maxSudionika }}</strong>
+        </ng-template>
+      </span>
+    </div>
+
+    <button class="reg-btn"
+      [class.secondary]="isRegistered"
+      [disabled]="regLoading || (!isRegistered && isFull)"
+      (click)="onToggleRegistration()"
+      [attr.aria-busy]="regLoading ? 'true' : null">
+      <ng-container *ngIf="!isRegistered; else odjava">Prijavi se</ng-container>
+      <ng-template #odjava>Odjavi se</ng-template>
+    </button>
+  </div>
 </section>
 
 <ng-template #nf>
@@ -56,3 +90,53 @@
     <h2 class="title">Događaj nije pronađen</h2>
   </section>
 </ng-template>
+
+<!-- ===== ADMIN MODAL: popis + ručno dodani ===== -->
+<div class="modal-backdrop" *ngIf="isAdmin && showRegModal" (click)="closeRegistrationsModal()"></div>
+
+<div class="modal" *ngIf="isAdmin && showRegModal" role="dialog" aria-modal="true">
+  <div class="modal-header">
+    <h3>Prijavljeni sudionici</h3>
+    <button class="modal-close" type="button" (click)="closeRegistrationsModal()">✖</button>
+  </div>
+
+  <div class="modal-body" *ngIf="!regsLoading; else regsLoadingTpl">
+    <!-- Lista stvarno prijavljenih -->
+    <ng-container *ngIf="registrations.length; else noRegs">
+      <ul class="reg-list">
+        <li *ngFor="let r of registrations">
+          <div class="reg-name">{{ r.fullName }}</div>
+          <div class="reg-email" *ngIf="r.email; else uidTpl">{{ r.email }}</div>
+          <ng-template #uidTpl><div class="reg-email uid">{{ r.uid }}</div></ng-template>
+          <div class="reg-date" *ngIf="r.createdAt as d">{{ d | date:'dd.MM.yyyy. HH:mm' }}</div>
+        </li>
+      </ul>
+    </ng-container>
+    <ng-template #noRegs><p class="muted">Nema prijavljenih.</p></ng-template>
+
+    <!-- Ručno dodani (samo broj) -->
+    <div class="extra-box" *ngIf="!isUnlimited">
+      <div class="extra-row">
+        <label>Ručno dodani:</label>
+        <div class="stepper">
+          <button type="button" (click)="decExtra()" [disabled]="extraDraft<=0 || extraBusy">−</button>
+          <input type="number" [value]="extraDraft" (input)="onExtraInput($event)" min="0" [max]="maxExtra" />
+          <button type="button" (click)="incExtra()" [disabled]="extraDraft>=maxExtra || extraBusy">+</button>
+        </div>
+        <button class="save-extra" type="button"
+                (click)="saveExtra()"
+                [disabled]="extraBusy || extraDraft<0 || extraDraft>maxExtra">
+          Spremi
+        </button>
+      </div>
+      <div class="extra-hint">
+        Kapacitet: {{ capacity }} • Stvarno prijavljenih: {{ registrationsCount }} •
+        Preostalo nakon izmjene: {{ remainingAfterDraft }}
+      </div>
+    </div>
+  </div>
+
+  <ng-template #regsLoadingTpl>
+    <div class="modal-loading">Učitavanje…</div>
+  </ng-template>
+</div>

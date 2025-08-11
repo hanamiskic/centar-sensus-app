@@ -13,9 +13,9 @@ const serviceAccount = require("./serviceAccount.json");
 
   try {
     await getAuth().setCustomUserClaims(uid, {admin: true});
-    console.log(`✅ Admin set for ${uid}`);
+    console.log(`Admin set for ${uid}`);
   } catch (err) {
-    console.error("❌ Error setting admin:", err);
+    console.error(" Error setting admin:", err);
     process.exit(1);
   }
 })();

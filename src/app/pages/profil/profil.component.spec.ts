@@ -1,23 +1,104 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+<!-- profil.component.html -->
+<section class="profil-wrapper" *ngIf="user$ | async as user">
+  <!-- HEADER -->
+  <div class="profil-header">
+    <i class="fas fa-user-circle profil-ikona"></i>
+    <div class="profil-info">
+      <h1 class="ime-prezime">{{ user.fullName }}</h1>
+      <p class="email">{{ user.email }}</p>
+    </div>
+  </div>
 
-import { ProfilComponent } from './profil.component';
+  <!-- MOJI DOGAĐAJI -->
+  <div class="moji-dogadaji">
+    <h2 class="sekcija-naslov">Moji događaji</h2>
 
-describe('Profil', () => {
-  let component: ProfilComponent;
-  let fixture: ComponentFixture<ProfilComponent>;
+    <div class="dogadaji-grid">
+      <!-- Primjeri (kasnije može iz baze) -->
+      <div class="dogadaj-kartica">
+        <h3>Radionica keramike</h3>
+        <p class="datum">12. 9. 2025.</p>
+        <span class="status prijavljen">Prijavljen</span>
+      </div>
+      <div class="dogadaj-kartica">
+        <h3>Likovna radionica</h3>
+        <p class="datum">28. 9. 2025.</p>
+        <span class="status zavrsen">Završen</span>
+      </div>
+      <div class="dogadaj-kartica">
+        <h3>Glazbena večer</h3>
+        <p class="datum">5. 10. 2025.</p>
+        <span class="status prijavljen">Prijavljen</span>
+      </div>
+      <div class="dogadaj-kartica">
+        <h3>Foto natjecanje</h3>
+        <p class="datum">1. 11. 2025.</p>
+        <span class="status zavrsen">Završen</span>
+      </div>
+    </div>
+  </div>
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [ProfilComponent]
-    })
-    .compileComponents();
+  <!-- ADMIN: KORISNICI -->
+  <div *ngIf="isAdmin" class="admin-users">
+    <h2 class="sekcija-naslov">Korisnici</h2>
 
-    fixture = TestBed.createComponent(ProfilComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    <div *ngIf="loadingUsers" class="admin-users__loading">Učitavanje…</div>
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+    <div class="table-wrap" *ngIf="!loadingUsers">
+      <table class="users-table">
+        <thead>
+          <tr>
+            <th>Email</th>
+            <th>Ime</th>
+            <th>Prezime</th>
+            <th>Član</th>
+            <th>Telefon</th>
+            <th>Registriran</th>
+            <th class="actions-col">Akcije</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- KORISTI pagedUsers umjesto users -->
+          <tr *ngFor="let u of pagedUsers">
+            <td>{{ u.email }}</td>
+            <td>{{ u.firstName }}</td>
+            <td>{{ u.lastName }}</td>
+            <td>{{ u.membership || '—' }}</td>
+            <td>{{ u.phone || '—' }}</td>
+            <td>{{ formatDate(u.createdAt) }}</td>
+            <td class="actions-col">
+              <button class="btn-delete" (click)="removeUser(u.uid)">🗑️ Obriši</button>
+            </td>
+          </tr>
+
+          <tr *ngIf="users.length === 0">
+            <td colspan="7" class="empty">Nema korisnika.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- PAGER -->
+      <div class="pagination">
+        <div class="rows-per-page">
+          <label for="rpp">Redova:</label>
+          <select id="rpp" (change)="changePageSize($any($event.target).value)">
+            <option [selected]="pageSize === 10" value="10">10</option>
+            <option [selected]="pageSize === 20" value="20">20</option>
+            <option [selected]="pageSize === 50" value="50">50</option>
+            <option [selected]="pageSize === 100" value="100">100</option>
+          </select>
+        </div>
+
+        <div class="page-info" *ngIf="users.length">
+          Prikaz {{ showingFrom }}–{{ showingTo }} od {{ users.length }}
+        </div>
+
+        <div class="pager-buttons">
+          <button (click)="prevPage()" [disabled]="pageIndex === 0">« Prethodna</button>
+          <span>Stranica {{ pageIndex + 1 }} / {{ pageCount }}</span>
+          <button (click)="nextPage()" [disabled]="pageIndex + 1 >= pageCount">Sljedeća »</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
