@@ -1,15 +1,16 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
+import { Subscription } from 'rxjs';
+
 import { AuthService } from '../../services/auth.service';
 import { EventsService } from '../../services/events.service';
-import { Subscription } from 'rxjs';
-import { RouterLink } from '@angular/router';
-
-// ⬇️ NOVO
 import { EventRegistrationsService } from '../../services/event-registrations.service';
 
-/** Stavka iz baze / za listanje (date je pravi Date ili null) */
+// Reusable kartica
+import { EventCardComponent } from '../../components/event-card/event-card.component';
+
 interface EventItem {
   id?: string;
   naslov: string;
@@ -21,12 +22,11 @@ interface EventItem {
   imageUrl?: string;
 }
 
-/** Podaci iz forme (datetime-local = string) */
 interface EventFormData {
   naslov: string;
   ciljnaPopulacija: string;
   opis: string;
-  datumVrijeme: string; // <-- string iz <input type="datetime-local">
+  datumVrijeme: string; // 'YYYY-MM-DDTHH:mm'
   mjesto: string;
   maxSudionika: number;
 }
@@ -34,7 +34,7 @@ interface EventFormData {
 @Component({
   selector: 'app-dogadaji',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule, EventCardComponent],
   templateUrl: './dogadaji.component.html',
   styleUrls: ['./dogadaji.component.css']
 })
@@ -53,7 +53,7 @@ export class DogadajiComponent implements OnInit, OnDestroy {
 
   // Uređivanje
   editingId: string | null = null;
-  editData: EventFormData = this.getEmptyForm();      // koristi string datume
+  editData: EventFormData = this.getEmptyForm();
   editSelectedImage: File | null = null;
   editingOriginalImageUrl = '';
 
@@ -69,31 +69,27 @@ export class DogadajiComponent implements OnInit, OnDestroy {
     { value: '09', label: 'Rujan' },    { value: '10', label: 'Listopad' },
     { value: '11', label: 'Studeni' },  { value: '12', label: 'Prosinac' }
   ];
-  // ⬇️ NOVO: dodan status
   filters: { month: string; populacija: string; status: '' | 'free' | 'full' } = {
     month: '',
     populacija: '',
     status: ''
   };
 
-  // ⬇️ NOVO: broj prijava po eventu
+  // broj prijava po eventu (za filter statusa)
   regCount: Record<string, number> = {};
   countsReady = false;
 
   constructor(
     private authService: AuthService,
     private eventsService: EventsService,
-    private regs: EventRegistrationsService // ⬅️ NOVO
+    private regs: EventRegistrationsService
   ) {}
 
   ngOnInit() {
     this.authSub = this.authService.isAdmin$.subscribe(v => (this.isAdmin = v));
     this.loadEvents();
   }
-
-  ngOnDestroy(): void {
-    this.authSub?.unsubscribe();
-  }
+  ngOnDestroy(): void { this.authSub?.unsubscribe(); }
 
   // ===== Helpers za datum =====
   private coerceDate(d: any): Date | null {
@@ -110,16 +106,12 @@ export class DogadajiComponent implements OnInit, OnDestroy {
     const dt = new Date(d);
     return isNaN(dt.getTime()) ? null : dt;
   }
-
   private toMs(d: Date | null): number { return d ? d.getTime() : 0; }
-
   private getMonthStr(d: Date | null): string {
     if (!d) return '';
     const m = d.getMonth() + 1;
     return m.toString().padStart(2, '0');
   }
-
-  /** Pretvori Date -> 'YYYY-MM-DDTHH:mm' za <input type="datetime-local"> */
   private formatForInput(date: Date | null): string {
     if (!date) return '';
     const pad = (n: number) => n.toString().padStart(2, '0');
@@ -129,12 +121,10 @@ export class DogadajiComponent implements OnInit, OnDestroy {
   // ===== Filtrirano + sortirano =====
   get filteredEvents(): EventItem[] {
     const { month, populacija: pop, status } = this.filters;
-
     return (this.events || []).filter(e => {
       const monthOk = !month || this.getMonthStr(e.datumVrijeme) === month;
       const popOk   = !pop   || e.ciljnaPopulacija === pop;
 
-      // Status filtriraj tek kad znamo brojeve; dotad propusti sve
       const statusOk = !status || !this.countsReady
         ? true
         : (status === 'free' ? !this.isFull(e) : this.isFull(e));
@@ -157,22 +147,17 @@ export class DogadajiComponent implements OnInit, OnDestroy {
       .sort((a, b) => this.toMs(b.datumVrijeme) - this.toMs(a.datumVrijeme));
   }
 
-  resetFilters() {
-    this.filters = { month: '', populacija: '', status: '' };
-  }
+  resetFilters() { this.filters = { month: '', populacija: '', status: '' }; }
 
   // ===== Utili =====
   private getEmptyForm(): EventFormData {
     return { naslov:'', ciljnaPopulacija:'', opis:'', datumVrijeme:'', mjesto:'', maxSudionika:0 };
   }
-
   displayMax(value: number): string | number { return value === this.MAX_LIMIT ? '∞' : value; }
-
   blockNonNumericKey(ev: KeyboardEvent) {
     const blocked = ['e','E','+','-','.',',',' '];
     if (blocked.includes(ev.key)) ev.preventDefault();
   }
-
   normalizeMaxSudionika() {
     let v = Number(this.formData.maxSudionika);
     if (Number.isNaN(v)) v = 0;
@@ -196,11 +181,10 @@ export class DogadajiComponent implements OnInit, OnDestroy {
       f.maxSudionika >= 1 &&
       f.maxSudionika <= this.MAX_LIMIT;
 
-    const imageOk = !!this.selectedImage; // slika obavezna kod dodavanja
+    const imageOk = !!this.selectedImage;
     return filled && maxOk && imageOk;
   }
 
-  // === EDIT validacija (slika nije obavezna) ===
   isEditValid(): boolean {
     const f = this.editData;
     const filled =
@@ -230,29 +214,24 @@ export class DogadajiComponent implements OnInit, OnDestroy {
   async loadEvents() {
     const raw = await this.eventsService.listEvents();
     this.events = (raw as any[]).map(e => ({
-      ...e,
-      datumVrijeme: this.coerceDate(e?.datumVrijeme)
+      ...e, datumVrijeme: this.coerceDate(e?.datumVrijeme)
     })) as EventItem[];
 
-    await this.loadRegistrationCounts(); // ⬅️ NOVO: povuci brojeve prijava
+    await this.loadRegistrationCounts();
   }
 
-  // ⬇️ NOVO: broj prijava po svim eventima
   private async loadRegistrationCounts(): Promise<void> {
     this.countsReady = false;
     const ids = (this.events || []).map(e => e.id!).filter(Boolean);
     const results = await Promise.all(
-      ids.map(async id => {
-        const count = await this.regs.countForEvent(id);
-        return { id, count };
-      })
+      ids.map(async id => ({ id, count: await this.regs.countForEvent(id) }))
     );
     this.regCount = {};
     for (const r of results) this.regCount[r.id] = r.count;
     this.countsReady = true;
   }
 
-  // ⬇️ NOVO: utili za status popunjenosti
+  // utili za status popunjenosti
   private getCount(e: EventItem): number {
     return e.id ? (this.regCount[e.id] ?? 0) : 0;
   }
@@ -273,34 +252,28 @@ export class DogadajiComponent implements OnInit, OnDestroy {
 
   async addEvent() {
     this.normalizeMaxSudionika();
-    if (!this.isFormValid()) {
-      alert('Molimo ispunite sva polja i dodajte sliku.');
-      return;
-    }
+    if (!this.isFormValid()) { alert('Molimo ispunite sva polja i dodajte sliku.'); return; }
     await this.eventsService.addEvent(this.formData, this.selectedImage!);
     this.showForm = false;
     this.formData = this.getEmptyForm();
     this.selectedImage = null;
-    await this.loadEvents(); // učitava i brojače
+    await this.loadEvents();
   }
 
-  // ====== UREĐIVANJE / BRISANJE ======
   startEdit(e: EventItem) {
     if (!e.id) return;
     this.editingId = e.id;
     this.editSelectedImage = null;
     this.editingOriginalImageUrl = e.imageUrl || '';
-
     this.editData = {
       naslov: e.naslov,
       ciljnaPopulacija: e.ciljnaPopulacija,
       opis: e.opis || '',
-      datumVrijeme: this.formatForInput(e.datumVrijeme), // string za input
+      datumVrijeme: this.formatForInput(e.datumVrijeme),
       mjesto: e.mjesto,
       maxSudionika: e.maxSudionika ?? 0
     };
-
-    this.showForm = false; // zatvori dodavanje
+    this.showForm = false;
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
@@ -311,15 +284,9 @@ export class DogadajiComponent implements OnInit, OnDestroy {
 
   async saveEdit() {
     if (!this.editingId) return;
-    if (!this.isEditValid()) {
-      alert('Molimo provjerite polja.');
-      return;
-    }
+    if (!this.isEditValid()) { alert('Molimo provjerite polja.'); return; }
     await this.eventsService.updateEvent(
-      this.editingId,
-      this.editData,                 // ima string datumVrijeme
-      this.editSelectedImage,
-      this.editingOriginalImageUrl
+      this.editingId, this.editData, this.editSelectedImage, this.editingOriginalImageUrl
     );
     this.cancelEdit();
     await this.loadEvents();

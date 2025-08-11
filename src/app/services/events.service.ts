@@ -10,14 +10,14 @@ import {
   orderBy,
   serverTimestamp,
   updateDoc,
-  deleteDoc
+  deleteDoc,
 } from '@angular/fire/firestore';
 import {
   Storage,
   ref,
   uploadBytes,
   getDownloadURL,
-  deleteObject
+  deleteObject,
 } from '@angular/fire/storage';
 
 @Injectable({ providedIn: 'root' })
@@ -27,13 +27,18 @@ export class EventsService {
   async addEvent(eventData: any, imageFile: File): Promise<void> {
     let imageUrl = '';
     if (imageFile) {
-      const filePath = `events/${Date.now()}_${imageFile.name.replace(/\s+/g, '_')}`;
+      const filePath = `events/${Date.now()}_${imageFile.name.replace(
+        /\s+/g,
+        '_'
+      )}`;
       const fileRef = ref(this.storage, filePath);
       await uploadBytes(fileRef, imageFile);
       imageUrl = await getDownloadURL(fileRef);
     }
 
-    const dv = eventData?.datumVrijeme ? new Date(eventData.datumVrijeme) : null;
+    const dv = eventData?.datumVrijeme
+      ? new Date(eventData.datumVrijeme)
+      : null;
 
     const eventsCol = collection(this.db, 'events');
     await addDoc(eventsCol, {
@@ -45,7 +50,7 @@ export class EventsService {
       maxSudionika: Number(eventData?.maxSudionika ?? 0),
       imageUrl,
       extraCount: 0,
-      createdAt: serverTimestamp()
+      createdAt: serverTimestamp(),
     });
   }
 
@@ -54,11 +59,14 @@ export class EventsService {
     const q = query(colRef, orderBy('datumVrijeme', 'asc'));
     const snapshot = await getDocs(q);
 
-    return snapshot.docs.map(d => {
+    return snapshot.docs.map((d) => {
       const data: any = d.data();
       const raw = data?.datumVrijeme;
-      const datumVrijeme =
-        raw?.toDate ? raw.toDate() : (raw ? new Date(raw) : null);
+      const datumVrijeme = raw?.toDate
+        ? raw.toDate()
+        : raw
+        ? new Date(raw)
+        : null;
 
       return { id: d.id, ...data, datumVrijeme };
     });
@@ -71,8 +79,11 @@ export class EventsService {
 
     const d: any = snap.data();
     const raw = d?.datumVrijeme;
-    const datumVrijeme =
-      raw?.toDate ? raw.toDate() : (raw ? new Date(raw) : null);
+    const datumVrijeme = raw?.toDate
+      ? raw.toDate()
+      : raw
+      ? new Date(raw)
+      : null;
 
     return {
       id: snap.id,
@@ -83,7 +94,7 @@ export class EventsService {
       mjesto: d?.mjesto ?? '',
       maxSudionika: d?.maxSudionika ?? 0,
       imageUrl: d?.imageUrl ?? '',
-      extraCount: d?.extraCount ?? 0
+      extraCount: d?.extraCount ?? 0,
     };
   }
 
@@ -97,7 +108,10 @@ export class EventsService {
     let imageUrl = oldImageUrl || '';
 
     if (newImageFile) {
-      const filePath = `events/${Date.now()}_${newImageFile.name.replace(/\s+/g, '_')}`;
+      const filePath = `events/${Date.now()}_${newImageFile.name.replace(
+        /\s+/g,
+        '_'
+      )}`;
       const fileRef = ref(this.storage, filePath);
       await uploadBytes(fileRef, newImageFile);
       imageUrl = await getDownloadURL(fileRef);
@@ -107,11 +121,15 @@ export class EventsService {
         try {
           const oldRef = ref(this.storage, oldImageUrl);
           await deleteObject(oldRef);
-        } catch { /* ignore */ }
+        } catch {
+          /* ignore */
+        }
       }
     }
 
-    const dv = eventData?.datumVrijeme ? new Date(eventData.datumVrijeme) : null;
+    const dv = eventData?.datumVrijeme
+      ? new Date(eventData.datumVrijeme)
+      : null;
 
     const target = doc(this.db, 'events', id);
     await updateDoc(target, {
@@ -121,7 +139,7 @@ export class EventsService {
       datumVrijeme: dv,
       mjesto: eventData?.mjesto ?? '',
       maxSudionika: Number(eventData?.maxSudionika ?? 0),
-      imageUrl: imageUrl ?? ''
+      imageUrl: imageUrl ?? '',
     });
   }
 
@@ -131,13 +149,44 @@ export class EventsService {
       try {
         const fileRef = ref(this.storage, imageUrl);
         await deleteObject(fileRef);
-      } catch { /* ignore */ }
+      } catch {
+        /* ignore */
+      }
     }
     await deleteDoc(doc(this.db, 'events', id));
   }
 
   async setExtraCount(id: string, value: number): Promise<void> {
-  const target = doc(this.db, 'events', id);
-  await updateDoc(target, { extraCount: Math.max(0, Math.floor(value)) });
-}
+    const target = doc(this.db, 'events', id);
+    await updateDoc(target, { extraCount: Math.max(0, Math.floor(value)) });
+  }
+
+  async getMany(ids: string[]): Promise<any[]> {
+    const unique = Array.from(new Set((ids || []).filter(Boolean)));
+    const tasks = unique.map((id) => getDoc(doc(this.db, 'events', id)));
+    const snaps = await Promise.all(tasks);
+
+    return snaps
+      .filter((s) => s.exists())
+      .map((s) => {
+        const d: any = s.data();
+        const raw = d?.datumVrijeme;
+        const datumVrijeme = raw?.toDate
+          ? raw.toDate()
+          : raw
+          ? new Date(raw)
+          : null;
+        return {
+          id: s.id,
+          naslov: d?.naslov ?? '',
+          ciljnaPopulacija: d?.ciljnaPopulacija ?? '',
+          opis: d?.opis ?? '',
+          datumVrijeme,
+          mjesto: d?.mjesto ?? '',
+          maxSudionika: d?.maxSudionika ?? 0,
+          imageUrl: d?.imageUrl ?? '',
+          extraCount: d?.extraCount ?? 0,
+        };
+      });
+  }
 }

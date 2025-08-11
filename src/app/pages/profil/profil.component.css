@@ -1,270 +1,112 @@
-/* Glavni wrapper */
-.profil-wrapper {
-  padding: 4rem 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
+/* ========== PROFIL: HEADER, INFO ========== */
+.profil-wrapper { padding: 4rem 2rem; max-width: 1200px; margin: 0 auto; }
+
+.profil-header{
+  display:flex; align-items:center; gap:1.5rem;
+  margin-bottom:3rem; padding:2rem; background:#fff;
+  border-radius:16px; box-shadow:0 8px 24px rgba(0,0,0,.05);
+}
+.profil-ikona{ font-size:5rem; color:#b39adc; }
+.profil-info{ text-align:left; }
+.ime-prezime{ font-size:2.5rem; color:#b39adc; font-weight:700; margin:0; line-height:1.2; }
+.email{ font-size:1rem; color:#888; margin-top:.5rem; }
+
+/* Naslovi sekcija */
+.sekcija-naslov{
+  font-size:1.8rem; margin-bottom:1.5rem; color:#b39adc; font-weight:600;
+  border-bottom:2px solid #e0d9f1; padding-bottom:.5rem;
+}
+.sekcija-naslov.sub{ font-size:1.2rem; margin:.5rem 0 0; border:0; padding:0; color:#6f5b94; }
+
+/* ========== KARTICE DOGAĐAJA (SHARED sa /dogadaji) ========== */
+.events-section{ padding: clamp(.9rem, 2.8vh, 1.6rem) 0 0; margin-bottom: 2rem; }
+
+/* Shared grid – isto kao na listi događaja */
+.events-grid{
+  --card-w: clamp(260px, 27vw, 300px);
+  --card-h: clamp(370px, 50vh, 520px);    /* default iz “Događaja” */
+  display:flex; flex-wrap:wrap; gap:18px 20px; justify-content:center; align-items:stretch;
+  padding: clamp(1rem, 3vh, 2rem) 0;
 }
 
-/* Sekcija zaglavlja profila */
-.profil-header {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  margin-bottom: 3rem;
-  padding: 2rem;
-  background-color: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+/* Podrži i <a class="event-card"> i <app-event-card> */
+.events-grid > a.event-card,
+.events-grid app-event-card{
+  flex:0 0 var(--card-w);
+  width:var(--card-w);
+  height:var(--card-h);
+  display:flex;
+  flex-direction:column;
 }
 
-.profil-ikona {
-  font-size: 5rem;
-  color: #b39adc;
+/* Mobiteli: jedna kartica u redu, visina auto */
+@media (max-width:480px){
+  .events-grid{ --card-w:100%; --card-h:auto; gap:16px; }
+  .events-grid > a.event-card,
+  .events-grid app-event-card{ height:auto; }
 }
 
-.profil-info {
-  text-align: left;
+/* PROFIL SPECIFIČNO: malo niža visina da nema praznine */
+.moji-dogadaji .events-grid{
+  --card-h: clamp(360px, 46vh, 480px);
 }
 
-.ime-prezime {
-  font-size: 2.5rem;
-  color: #b39adc;
-  font-weight: 700;
-  margin: 0;
-  line-height: 1.2;
-}
-
-.email {
-  font-size: 1rem;
-  color: #888;
-  margin-top: 0.5rem;
-}
-
-/* Naslov sekcije */
-.sekcija-naslov {
-  font-size: 1.8rem;
-  margin-bottom: 1.5rem;
-  color: #b39adc;
-  font-weight: 600;
-  border-bottom: 2px solid #e0d9f1;
-  padding-bottom: 0.5rem;
-}
-
-/* Grid događaja */
-.dogadaji-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 2rem;
-}
-
-.dogadaj-kartica {
-  background-color: #fdfbff;
-  border-radius: 12px;
-  padding: 1.5rem;
-  box-shadow: 0 4px 15px rgba(179, 154, 220, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  position: relative;
-}
-
-.dogadaj-kartica:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 8px 25px rgba(179, 154, 220, 0.3);
-}
-
-.dogadaj-kartica h3 {
-  font-size: 1.2rem;
-  color: #4b0082;
-  margin: 0 0 0.5rem 0;
-  font-weight: 600;
-}
-
-.dogadaj-kartica .datum {
-  font-size: 0.9rem;
-  color: #a3a3a3;
-  margin: 0;
-}
-
-.status {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  padding: 0.3rem 0.8rem;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: bold;
-  color: white;
-}
-
-.status.prijavljen { background-color: #8860d0; }
-.status.zavrsen   { background-color: #565656; }
-
-/* Admin users table */
+/* ========== ADMIN TABLICA (ostavljeno) ========== */
 .admin-users { margin-top: 2.5rem; }
-
-.table-wrap {
-  overflow-x: auto;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0,0,0,.05);
-}
-
-.users-table {
-  width: 100%;
-  border-collapse: collapse;
-  min-width: 720px;
-}
-
-.users-table th, .users-table td {
-  padding: 12px 14px;
-  border-bottom: 1px solid #eee;
-  text-align: left;
-  font-size: .95rem;
-}
-
-.users-table thead th {
-  background: #f6f3ff;
-  color: #6f5b94;
-  font-weight: 600;
-}
-
+.table-wrap { overflow-x: auto; background: #fff; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,.05); }
+.users-table { width: 100%; border-collapse: collapse; min-width: 720px; }
+.users-table th, .users-table td { padding: 12px 14px; border-bottom: 1px solid #eee; text-align: left; font-size: .95rem; }
+.users-table thead th { background: #f6f3ff; color: #6f5b94; font-weight: 600; }
 .users-table tbody tr:hover { background: #faf8ff; }
-
 .actions-col { width: 120px; text-align: right; }
 
-.btn-delete {
-  background: #ffecec;
-  border: 1px solid #ffd7d7;
-  padding: 6px 10px;
-  border-radius: 8px;
-  font-size: .9rem;
-  cursor: pointer;
-  transition: background .2s ease, border-color .2s ease;
+.btn-delete{
+  background:#ffecec; border:1px solid #ffd7d7; padding:6px 10px; border-radius:8px;
+  font-size:.9rem; cursor:pointer; transition:background .2s, border-color .2s;
 }
-.btn-delete:hover { background: #ffdfe4; }
+.btn-delete:hover{ background:#ffdfe4; }
 
-.admin-users__loading, .users-table .empty {
-  padding: 1rem;
-  color: #666;
-}
+.admin-users__loading, .users-table .empty{ padding:1rem; color:#666; }
 
-/* Pagination */
-.pagination {
-  --accent: #b39adc;
-  --accent-ink: #5b4b84;
-
-  display: flex;
-  gap: 14px;
-  align-items: center;
-  justify-content: flex-end;
-  padding: 12px 14px;
-  border-top: 1px solid #eee;
-  background: #fff;
-  border-radius: 0 0 12px 12px;
-  flex-wrap: wrap;
+/* ========== PAGINATION (ostavljeno) ========== */
+.pagination{
+  --accent:#b39adc; --accent-ink:#5b4b84;
+  display:flex; gap:14px; align-items:center; justify-content:flex-end;
+  padding:12px 14px; border-top:1px solid #eee; background:#fff; border-radius:0 0 12px 12px; flex-wrap:wrap;
 }
-
-.pagination .rows-per-page {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--accent-ink);
-  font-weight: 500;
+.pagination .rows-per-page{ display:flex; align-items:center; gap:8px; color:var(--accent-ink); font-weight:500; }
+.pagination .rows-per-page select{
+  appearance:none; padding:6px 28px 6px 10px; border-radius:8px; border:1px solid #e5e7eb; background:#fff;
+  height:34px; line-height:1; font-size:.95rem; cursor:pointer; transition:border-color .2s, box-shadow .2s;
+  background-image:url("data:image/svg+xml,%3Csvg width='12' height='12' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 4l4 4 4-4' fill='none' stroke='%236f5b94' stroke-width='2'/%3E%3C/svg%3E");
+  background-repeat:no-repeat; background-position:right 8px center; background-size:12px 12px;
 }
-
-.pagination .rows-per-page select {
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  position: relative;
-  padding: 6px 28px 6px 10px;
-  border-radius: 8px;
-  border: 1px solid #e5e7eb;
-  background: #fff;
-  height: 34px;
-  line-height: 1;
-  font-size: .95rem;
-  cursor: pointer;
-  transition: border-color .2s ease, box-shadow .2s ease;
-  background-image: url("data:image/svg+xml,%3Csvg width='12' height='12' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 4l4 4 4-4' fill='none' stroke='%236f5b94' stroke-width='2'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 8px center;
-  background-size: 12px 12px;
+.pagination .rows-per-page select:focus{ outline:none; border-color:var(--accent); box-shadow:0 0 0 3px rgba(179,154,220,.25); }
+.pagination .page-info{ color:#6b7280; font-size:.95rem; white-space:nowrap; }
+.pagination .pager-buttons{ display:flex; align-items:center; gap:8px; }
+.pagination .pager-buttons button{
+  background:#f6f3ff; border:1px solid #e6defb; color:var(--accent-ink);
+  padding:6px 10px; border-radius:8px; font-size:.9rem; cursor:pointer;
+  transition:background .2s, border-color .2s, transform .02s;
 }
-.pagination .rows-per-page select:focus {
-  outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(179,154,220,0.25);
-}
-
-.pagination .page-info {
-  color: #6b7280;
-  font-size: .95rem;
-  white-space: nowrap;
-}
-
-.pagination .pager-buttons {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.pagination .pager-buttons button {
-  background: #f6f3ff;
-  border: 1px solid #e6defb;
-  color: var(--accent-ink);
-  padding: 6px 10px;
-  border-radius: 8px;
-  font-size: .9rem;
-  cursor: pointer;
-  transition: background .2s ease, border-color .2s ease, transform .02s ease;
-}
-.pagination .pager-buttons button:hover {
-  background: #ede7ff;
-  border-color: #d8ccff;
-}
-.pagination .pager-buttons button:active {
-  transform: translateY(1px);
-}
-.pagination .pager-buttons button[disabled] {
-  opacity: .45;
-  cursor: not-allowed;
-}
-
-.pagination .pager-buttons span {
-  min-width: 120px;
-  text-align: center;
-  color: var(--accent-ink);
-  font-weight: 600;
-  white-space: nowrap;
-}
+.pagination .pager-buttons button:hover{ background:#ede7ff; border-color:#d8ccff; }
+.pagination .pager-buttons button:active{ transform:translateY(1px); }
+.pagination .pager-buttons button[disabled]{ opacity:.45; cursor:not-allowed; }
+.pagination .pager-buttons span{ min-width:120px; text-align:center; color:var(--accent-ink); font-weight:600; white-space:nowrap; }
 
 /* 📱 Responsivnost */
-@media (max-width: 992px) {
-  .profil-ikona { font-size: 4rem; }
-  .ime-prezime { font-size: 2rem; }
+@media (max-width: 992px){ .profil-ikona{ font-size:4rem; } .ime-prezime{ font-size:2rem; } }
+@media (max-width: 768px){
+  .profil-header{ flex-direction:column; text-align:center; gap:1rem; }
+  .profil-info{ text-align:center; }
+  .profil-ikona{ font-size:3.5rem; }
+  .ime-prezime{ font-size:1.8rem; }
+  .email{ font-size:.9rem; }
+  .pagination{ justify-content:space-between; gap:10px 16px; }
 }
-
-@media (max-width: 768px) {
-  .profil-header {
-    flex-direction: column;
-    text-align: center;
-    gap: 1rem;
-  }
-  .profil-info { text-align: center; }
-  .profil-ikona { font-size: 3.5rem; }
-  .ime-prezime { font-size: 1.8rem; }
-  .email { font-size: 0.9rem; }
-
-  .pagination {
-    justify-content: space-between;
-    gap: 10px 16px;
-  }
-}
-
-@media (max-width: 480px) {
-  .profil-ikona { font-size: 3rem; }
-  .ime-prezime { font-size: 1.5rem; }
-  .email { font-size: 0.85rem; }
-
-  .pagination .pager-buttons span { min-width: auto; }
+@media (max-width: 480px){
+  .profil-ikona{ font-size:3rem; }
+  .ime-prezime{ font-size:1.5rem; }
+  .email{ font-size:.85rem; }
+  .pagination .pager-buttons span{ min-width:auto; }
 }

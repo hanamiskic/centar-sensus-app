@@ -1,4 +1,3 @@
-<!-- profil.component.html -->
 <section class="profil-wrapper" *ngIf="user$ | async as user">
   <!-- HEADER -->
   <div class="profil-header">
@@ -12,32 +11,46 @@
   <div class="moji-dogadaji">
     <h2 class="sekcija-naslov">Moji događaji</h2>
 
-    <div class="dogadaji-grid">
-      <!-- Primjeri (kasnije može iz baze) -->
-      <div class="dogadaj-kartica">
-        <h3>Radionica keramike</h3>
-        <p class="datum">12. 9. 2025.</p>
-        <span class="status prijavljen">Prijavljen</span>
-      </div>
-      <div class="dogadaj-kartica">
-        <h3>Likovna radionica</h3>
-        <p class="datum">28. 9. 2025.</p>
-        <span class="status zavrsen">Završen</span>
-      </div>
-      <div class="dogadaj-kartica">
-        <h3>Glazbena večer</h3>
-        <p class="datum">5. 10. 2025.</p>
-        <span class="status prijavljen">Prijavljen</span>
-      </div>
-      <div class="dogadaj-kartica">
-        <h3>Foto natjecanje</h3>
-        <p class="datum">1. 11. 2025.</p>
-        <span class="status zavrsen">Završen</span>
-      </div>
-    </div>
+    <section class="events-section">
+      <h3 class="sekcija-naslov sub">Aktivni</h3>
+      <div *ngIf="loadingMyEvents" class="admin-users__loading">Učitavanje…</div>
+
+      <ng-container *ngIf="!loadingMyEvents && activeMyEvents.length; else noActive">
+        <div class="events-grid">
+          <app-event-card
+            *ngFor="let e of activeMyEvents; trackBy: trackByEventId"
+            [event]="e"
+            [isAdmin]="false">
+          </app-event-card>
+        </div>
+      </ng-container>
+
+      <ng-template #noActive>
+        <p class="admin-users__loading" *ngIf="!loadingMyEvents">Nema aktivnih prijava.</p>
+      </ng-template>
+    </section>
+
+    <section class="events-section">
+      <h3 class="sekcija-naslov sub">Završeni</h3>
+      <div *ngIf="loadingMyEvents" class="admin-users__loading">Učitavanje…</div>
+
+      <ng-container *ngIf="!loadingMyEvents && finishedMyEvents.length; else noFinished">
+        <div class="events-grid">
+          <app-event-card
+            *ngFor="let e of finishedMyEvents; trackBy: trackByEventId"
+            [event]="e"
+            [isAdmin]="false">
+          </app-event-card>
+        </div>
+      </ng-container>
+
+      <ng-template #noFinished>
+        <p class="admin-users__loading" *ngIf="!loadingMyEvents">Nema završenih prijava.</p>
+      </ng-template>
+    </section>
   </div>
 
-  <!-- ADMIN: KORISNICI -->
+  <!-- ADMIN: KORISNICI (ostavljeno) -->
   <div *ngIf="isAdmin" class="admin-users">
     <h2 class="sekcija-naslov">Korisnici</h2>
 
@@ -57,8 +70,7 @@
           </tr>
         </thead>
         <tbody>
-          <!-- KORISTI pagedUsers umjesto users -->
-          <tr *ngFor="let u of pagedUsers">
+          <tr *ngFor="let u of pagedUsers; trackBy: trackByUid">
             <td>{{ u.email }}</td>
             <td>{{ u.firstName }}</td>
             <td>{{ u.lastName }}</td>
@@ -69,14 +81,12 @@
               <button class="btn-delete" (click)="removeUser(u.uid)">🗑️ Obriši</button>
             </td>
           </tr>
-
           <tr *ngIf="users.length === 0">
             <td colspan="7" class="empty">Nema korisnika.</td>
           </tr>
         </tbody>
       </table>
 
-      <!-- PAGER -->
       <div class="pagination">
         <div class="rows-per-page">
           <label for="rpp">Redova:</label>
