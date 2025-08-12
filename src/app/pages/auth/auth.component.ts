@@ -24,6 +24,8 @@ export class AuthComponent {
   phone = '';
   successMessage = '';
   errorMessage = '';
+  emailPattern = '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$';
+
 
   constructor(private authService: AuthService, private router: Router) {}
 
@@ -77,15 +79,23 @@ export class AuthComponent {
         // odmah logout nakon registracije
         await this.authService.logout();
 
-        this.successMessage =
-          'Registracija uspješna! Sada se možete prijaviti.';
+        this.successMessage = 'Registracija uspješna! Sada se možete prijaviti.';
         setTimeout(() => {
           this.toggleMode();
           this.successMessage = '';
         }, 1500);
-      } catch (err) {
-        this.errorMessage =
-          (err as any).message || 'Greška pri registraciji';
+      } catch (err: any) {
+        const code = err?.code;
+
+        if (code === 'auth/email-already-in-use') {
+          this.errorMessage = 'Već postoji račun s tom e-mail adresom.';
+        } else if (code === 'auth/invalid-email') {
+          this.errorMessage = 'Unesite valjanu e-mail adresu.';
+        } else if (code === 'auth/weak-password') {
+          this.errorMessage = 'Lozinka mora imati najmanje 6 znakova.';
+        } else {
+          this.errorMessage = 'Greška pri registraciji.';
+        }
       }
     } else {
       // --- PRIJAVA ---
@@ -98,11 +108,7 @@ export class AuthComponent {
 
         // provjeri i ispiši claimove
         const claims = await this.authService.getCurrentClaims();
-        console.log(
-          'Admin claim?',
-          claims?.['admin'] === true,
-          claims
-        );
+        console.log('Admin claim?', claims?.['admin'] === true, claims);
 
         this.router.navigate(['/']);
       } catch (err: any) {

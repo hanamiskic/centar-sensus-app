@@ -20,6 +20,7 @@ interface EventItem {
   mjesto: string;
   maxSudionika: number;
   imageUrl?: string;
+  extraCount?: number;  // ⇦ važno za total prijava
 }
 
 interface EventFormData {
@@ -137,13 +138,15 @@ export class DogadajiComponent implements OnInit, OnDestroy {
     const now = Date.now();
     return this.filteredEvents
       .filter(e => this.toMs(e.datumVrijeme) > now)
-      .sort((a, b) => this.toMs(b.datumVrijeme) - this.toMs(a.datumVrijeme));
+      // aktivni: stariji -> noviji
+      .sort((a, b) => this.toMs(a.datumVrijeme) - this.toMs(b.datumVrijeme));
   }
 
   get finishedEvents(): EventItem[] {
     const now = Date.now();
     return this.filteredEvents
       .filter(e => this.toMs(e.datumVrijeme) <= now)
+      // završeni: noviji -> stariji
       .sort((a, b) => this.toMs(b.datumVrijeme) - this.toMs(a.datumVrijeme));
   }
 
@@ -214,7 +217,9 @@ export class DogadajiComponent implements OnInit, OnDestroy {
   async loadEvents() {
     const raw = await this.eventsService.listEvents();
     this.events = (raw as any[]).map(e => ({
-      ...e, datumVrijeme: this.coerceDate(e?.datumVrijeme)
+      ...e,
+      datumVrijeme: this.coerceDate(e?.datumVrijeme),
+      extraCount: Number(e?.extraCount ?? 0),   // ⇦ povuci ručno dodane
     })) as EventItem[];
 
     await this.loadRegistrationCounts();
@@ -233,7 +238,10 @@ export class DogadajiComponent implements OnInit, OnDestroy {
 
   // utili za status popunjenosti
   private getCount(e: EventItem): number {
-    return e.id ? (this.regCount[e.id] ?? 0) : 0;
+    return e.id ? (this.regCount[e.id] ?? 0) : 0;        // stvarni (iz prijava)
+  }
+  private getTotalCount(e: EventItem): number {
+    return this.getCount(e) + Number(e.extraCount ?? 0);  // stvarni + ručni
   }
   private isUnlimited(e: EventItem): boolean {
     return Number(e.maxSudionika ?? 0) === this.MAX_LIMIT;
@@ -242,7 +250,7 @@ export class DogadajiComponent implements OnInit, OnDestroy {
     if (this.isUnlimited(e)) return false;
     const cap = Number(e.maxSudionika || 0);
     if (cap <= 0) return false;
-    return this.getCount(e) >= cap;
+    return this.getTotalCount(e) >= cap;                  // ⇦ koristi total
   }
 
   onFileSelected(ev: Event) {

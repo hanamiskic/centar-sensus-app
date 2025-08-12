@@ -1,4 +1,9 @@
-<a class="event-card" [routerLink]="['/dogadaji', event.id]">
+<a
+  class="event-card"
+  [routerLink]="['/dogadaji', event.id]"
+  [state]="linkState"
+  [queryParams]="linkQuery"
+>
   <img *ngIf="event.imageUrl" [src]="event.imageUrl" [alt]="event.naslov || 'Slika događaja'" />
 
   <div class="card-body">
@@ -30,7 +35,6 @@
     </div>
   </div>
 
-  <!-- Admin tipke – DONJI DESNI KUT -->
   <div class="card-admin-actions" *ngIf="isAdmin" (click)="$event.preventDefault(); $event.stopPropagation();">
     <button class="mini-btn" (click)="onEdit($event)">✏️ Uredi</button>
     <button class="mini-btn danger" (click)="onRemove($event)">🗑️ Obriši</button>

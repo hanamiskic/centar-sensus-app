@@ -12,16 +12,15 @@
     <h2 class="sekcija-naslov">Moji događaji</h2>
 
     <section class="events-section">
-      <h3 class="sekcija-naslov sub">Aktivni</h3>
+      <h3 class="sekcija-naslov sub">Aktivni događaji</h3>
       <div *ngIf="loadingMyEvents" class="admin-users__loading">Učitavanje…</div>
 
       <ng-container *ngIf="!loadingMyEvents && activeMyEvents.length; else noActive">
         <div class="events-grid">
-          <app-event-card
-            *ngFor="let e of activeMyEvents; trackBy: trackByEventId"
-            [event]="e"
-            [isAdmin]="false">
+          <app-event-card *ngFor="let e of activeMyEvents; trackBy: trackByEventId" [event]="e" [isAdmin]="false"
+            from="profil">
           </app-event-card>
+
         </div>
       </ng-container>
 
@@ -31,15 +30,13 @@
     </section>
 
     <section class="events-section">
-      <h3 class="sekcija-naslov sub">Završeni</h3>
+      <h3 class="sekcija-naslov sub">Završeni događaji</h3>
       <div *ngIf="loadingMyEvents" class="admin-users__loading">Učitavanje…</div>
 
       <ng-container *ngIf="!loadingMyEvents && finishedMyEvents.length; else noFinished">
         <div class="events-grid">
-          <app-event-card
-            *ngFor="let e of finishedMyEvents; trackBy: trackByEventId"
-            [event]="e"
-            [isAdmin]="false">
+          <app-event-card *ngFor="let e of finishedMyEvents; trackBy: trackByEventId" [event]="e" [isAdmin]="false"
+            from="profil">
           </app-event-card>
         </div>
       </ng-container>

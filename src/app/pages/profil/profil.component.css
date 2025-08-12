@@ -16,7 +16,7 @@
   font-size:1.8rem; margin-bottom:1.5rem; color:#b39adc; font-weight:600;
   border-bottom:2px solid #e0d9f1; padding-bottom:.5rem;
 }
-.sekcija-naslov.sub{ font-size:1.2rem; margin:.5rem 0 0; border:0; padding:0; color:#6f5b94; }
+.sekcija-naslov.sub{ font-size:1.5rem; margin:.5rem 0 0; border:0; padding:0; color:#6f5b94; }
 
 /* ========== KARTICE DOGAĐAJA (SHARED sa /dogadaji) ========== */
 .events-section{ padding: clamp(.9rem, 2.8vh, 1.6rem) 0 0; margin-bottom: 2rem; }

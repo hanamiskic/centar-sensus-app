@@ -26,6 +26,8 @@ export class AuthService {
   // ⬇️ NOVO: admin observable
   private isAdminSubject = new BehaviorSubject<boolean>(false);
   public isAdmin$ = this.isAdminSubject.asObservable();
+  
+
 
   constructor(private auth: Auth, private firestore: Firestore) {
     onAuthStateChanged(this.auth, async (user) => {

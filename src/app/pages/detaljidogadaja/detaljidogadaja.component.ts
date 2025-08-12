@@ -1,8 +1,9 @@
 import { Component, OnDestroy } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ActivatedRoute, RouterLink } from '@angular/router';
-import { EventsService } from '../../services/events.service';
+import { CommonModule, Location } from '@angular/common';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Subscription } from 'rxjs';
+
+import { EventsService } from '../../services/events.service';
 import { AuthService } from '../../services/auth.service';
 import { EventRegistrationsService } from '../../services/event-registrations.service';
 
@@ -11,7 +12,7 @@ type RegItem = { uid: string; fullName: string; email: string | null; createdAt:
 @Component({
   selector: 'app-detaljidogadaja',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule],
   templateUrl: './detaljidogadaja.component.html',
   styleUrls: ['./detaljidogadaja.component.css']
 })
@@ -37,16 +38,27 @@ export class DetaljiDogadajaComponent implements OnDestroy {
   registrations: RegItem[] = [];
 
   // ručno dodani (samo broj)
-  extraCount = 0;       // spremljeno u bazi
-  extraDraft = 0;       // trenutno uređivano u modalu
+  extraCount = 0;   // spremljeno u bazi
+  extraDraft = 0;   // trenutno uređivano u modalu
   extraBusy = false;
+
+  // kamo se vratiti ako nema browser history
+  private backFallback: '/dogadaji' | '/profil' = '/dogadaji';
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
+    private location: Location,
     private events: EventsService,
     private auth: AuthService,
     private regs: EventRegistrationsService
   ) {
+    // odredi fallback destinaciju (profil ili događaji)
+    const fromState = (history.state as any)?.from ?? null;                   // kad navigiraš sa [state]
+    const fromQuery = this.route.snapshot.queryParamMap.get('from');          // kad koristiš ?from=profil
+    const from = (fromState || fromQuery || '').toString().toLowerCase();
+    this.backFallback = from === 'profil' ? '/profil' : '/dogadaji';
+
     // učitaj event
     this.sub = this.route.paramMap.subscribe(async p => {
       const id = p.get('id');
@@ -78,6 +90,16 @@ export class DetaljiDogadajaComponent implements OnDestroy {
     this.sub?.unsubscribe();
     this.authSub?.unsubscribe();
     this.adminSub?.unsubscribe();
+  }
+
+  // ===== back ponašanje =====
+  goBack(ev?: Event) {
+    ev?.preventDefault();
+    if (window.history.length > 1) {
+      this.location.back();
+    } else {
+      this.router.navigate([this.backFallback]);
+    }
   }
 
   // ====== prikaz/kapacitet ======

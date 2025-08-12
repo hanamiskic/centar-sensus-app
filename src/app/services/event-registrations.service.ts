@@ -123,14 +123,7 @@ export class EventRegistrationsService {
       orderBy('createdAt', 'desc')   // zahtijeva indeks: uid ASC, createdAt DESC/ASC
     );
     const snap = await getDocs(qy);
-    console.log('[regs:listEventIdsForUser] uid=', uid, 'docs=', snap.size);
     return snap.docs.map(d => (d.data() as any).eventId);
   }
 
-  /** Debug helper */
-  async debugDumpAll() {
-    const snap = await getDocs(this.colRef());
-    console.log('[debug] all docs in eventRegistrations:', snap.size);
-    snap.forEach(d => console.log(d.id, d.data()));
-  }
 }

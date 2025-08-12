@@ -24,10 +24,21 @@ export class EventCardComponent {
   @Input() event!: EventItem;
   @Input() isAdmin = false;
 
+  // optional source marker: "profil", "dogadaji", ...
+  @Input() from?: string;
+
   @Output() edit = new EventEmitter<EventItem>();
   @Output() remove = new EventEmitter<EventItem>();
 
   get isInfinity(): boolean { return Number(this.event?.maxSudionika) === 500; }
+
+  // ✅ RouterLink types want undefined (not null)
+  get linkState(): { [k: string]: any } | undefined {
+    return this.from ? { from: this.from } : undefined;
+  }
+  get linkQuery(): { [k: string]: any } | undefined {
+    return this.from ? { from: this.from } : undefined;
+  }
 
   onEdit(e: MouseEvent){ e.preventDefault(); e.stopPropagation(); this.edit.emit(this.event); }
   onRemove(e: MouseEvent){ e.preventDefault(); e.stopPropagation(); this.remove.emit(this.event); }
