@@ -1,7 +1,6 @@
 import { onCall, HttpsError } from 'firebase-functions/v2/https';
 import * as admin from 'firebase-admin';
 
-// ✅ idempotent init i ovdje (bez setGlobalOptions!)
 try { admin.app(); } catch { admin.initializeApp(); }
 
 const db = admin.firestore();

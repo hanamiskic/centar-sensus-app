@@ -1,9 +1,11 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EnvironmentInjector, inject, runInInjectionContext } from '@angular/core';
 import {
   Firestore, collection, doc, setDoc, getDocs, query, orderBy,
   serverTimestamp, updateDoc, deleteDoc
 } from '@angular/fire/firestore';
-import { Storage, ref, uploadBytes, getDownloadURL, deleteObject } from '@angular/fire/storage';
+import {
+  Storage, ref, uploadBytes, getDownloadURL, deleteObject
+} from '@angular/fire/storage';
 
 export interface BlogPost {
   id: string;
@@ -15,12 +17,18 @@ export interface BlogPost {
 
 @Injectable({ providedIn: 'root' })
 export class BlogService {
+  // helper za sigurno izvršavanje AngularFire poziva u injection kontekstu
+  private env = inject(EnvironmentInjector);
+  private inCtx = <T>(fn: () => Promise<T>) => runInInjectionContext(this.env, fn);
+
   constructor(private db: Firestore, private storage: Storage) {}
 
   async listPosts(): Promise<BlogPost[]> {
     const colRef = collection(this.db, 'blog');
     const qy = query(colRef, orderBy('createdAt', 'desc'));
-    const snap = await getDocs(qy);
+
+    // ✅ wrap getDocs
+    const snap = await this.inCtx(() => getDocs(qy));
 
     return snap.docs.map(d => {
       const data: any = d.data();
@@ -35,25 +43,26 @@ export class BlogService {
     });
   }
 
-  async addPost(
-    form: { title: string; content: string },
-    file: File
-  ): Promise<void> {
+  async addPost(form: { title: string; content: string }, file: File): Promise<void> {
     // 1) upload u Storage
-    const path = `blog/${Date.now()}_${file.name}`;
+    const path = `blog/${Date.now()}_${file.name.replace(/\s+/g, '_')}`;
     const fileRef = ref(this.storage, path);
-    await uploadBytes(fileRef, file);
-    const imageUrl = await getDownloadURL(fileRef);
+
+    // ✅ wrap upload i getDownloadURL
+    await this.inCtx(() => uploadBytes(fileRef, file));
+    const imageUrl = await this.inCtx(() => getDownloadURL(fileRef));
 
     // 2) upis u Firestore
     const newDocRef = doc(collection(this.db, 'blog'));
-    await setDoc(newDocRef, {
+
+    // ✅ wrap setDoc
+    await this.inCtx(() => setDoc(newDocRef, {
       title: form.title.trim(),
       content: form.content.trim(),
       imageUrl,
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp()
-    });
+    }));
   }
 
   async updatePost(
@@ -64,45 +73,47 @@ export class BlogService {
   ): Promise<void> {
     let imageUrlToUse: string | undefined;
 
-    // ako je odabrana nova slika – upload i (pokušaj) brisanja stare
     if (newFile) {
-      const path = `blog/${Date.now()}_${newFile.name}`;
+      const path = `blog/${Date.now()}_${newFile.name.replace(/\s+/g, '_')}`;
       const fileRef = ref(this.storage, path);
-      await uploadBytes(fileRef, newFile);
-      imageUrlToUse = await getDownloadURL(fileRef);
 
-      // obriši staru sliku ako postoji
+      // ✅ wrap upload i getDownloadURL
+      await this.inCtx(() => uploadBytes(fileRef, newFile));
+      imageUrlToUse = await this.inCtx(() => getDownloadURL(fileRef));
+
       if (oldImageUrl) {
         try {
-          const oldRef = ref(this.storage, oldImageUrl); // može primiti i https URL
-          await deleteObject(oldRef);
+          const oldRef = ref(this.storage, oldImageUrl);
+          // ✅ wrap deleteObject
+          await this.inCtx(() => deleteObject(oldRef));
         } catch {
-          // ako zakaže, samo preskoči – nije kritično
+          /* ignore */
         }
       }
     }
 
     const docRef = doc(this.db, 'blog', id);
-    await updateDoc(docRef, {
+    // ✅ wrap updateDoc
+    await this.inCtx(() => updateDoc(docRef, {
       title: form.title.trim(),
       content: form.content.trim(),
       ...(imageUrlToUse ? { imageUrl: imageUrlToUse } : {}),
       updatedAt: serverTimestamp()
-    });
+    }));
   }
 
   async deletePost(id: string, imageUrl?: string): Promise<void> {
-    // obriši dokument
     const docRef = doc(this.db, 'blog', id);
-    await deleteDoc(docRef);
+    // ✅ wrap deleteDoc
+    await this.inCtx(() => deleteDoc(docRef));
 
-    // probaj obrisati i sliku iz Storage-a
     if (imageUrl) {
       try {
         const imgRef = ref(this.storage, imageUrl);
-        await deleteObject(imgRef);
+        // ✅ wrap deleteObject
+        await this.inCtx(() => deleteObject(imgRef));
       } catch {
-        // preskoči ako ne može (npr. URL više ne postoji / permissions)
+        /* ignore */
       }
     }
   }

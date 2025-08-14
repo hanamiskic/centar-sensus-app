@@ -3,13 +3,10 @@ import { onCall, HttpsError } from 'firebase-functions/v2/https';
 import * as admin from 'firebase-admin';
 import { getAuth } from 'firebase-admin/auth';
 
-// ✅ idempotent init (ako je već inicijalizirano, neće ponovno)
 try { admin.app(); } catch { admin.initializeApp(); }
 
-// ✅ global options SAMO ovdje
 setGlobalOptions({ region: 'europe-west1', maxInstances: 10 });
 
-// Re-exports su ok nakon što je init siguran
 export { listUsers, deleteUser } from './adminUsers';
 
 export const setAdminRole = onCall(async (request) => {

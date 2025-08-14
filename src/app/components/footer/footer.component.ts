@@ -1,14 +1,15 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
+/** Footer komponenta (prezentacijska). */
 @Component({
   selector: 'app-footer',
-  imports: [CommonModule, RouterModule],
   standalone: true,
+  imports: [RouterModule],
   templateUrl: './footer.component.html',
-  styleUrls: ['./footer.component.css']
+  styleUrls: ['./footer.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FooterComponent {
-
+  
 }

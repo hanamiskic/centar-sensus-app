@@ -1,13 +1,18 @@
 .footer {
-  background-color: #cbc0db;
+  --footer-bg: #cbc0db;
+  --footer-fg: #fff;
+  --accent: #b39adc;
+  --accent-hover-bg: #c8beda;
+
+  background-color: var(--footer-bg);
+  color: var(--footer-fg);
   margin-top: auto;
   padding: 1.5rem 1rem;
   text-align: center;
-  color:white;
   font-size: 1rem;
- 
 }
 
+/* društvene ikone */
 .social-icons {
   display: flex;
   justify-content: center;
@@ -16,47 +21,56 @@
 }
 
 .social-icons a {
-  display: flex;
-  justify-content: center;
+  display: inline-flex;
   align-items: center;
-  border: 2px solid #b39adc;
-  color: #b39adc;
-  border-radius: 50%;
+  justify-content: center;
   width: 48px;
   height: 48px;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+  color: var(--accent);
   font-size: 1.2rem;
-  transition: background-color 0.3s, color 0.3s;
+  transition: background-color .2s ease, color .2s ease, border-color .2s ease;
 }
 
-.social-icons a:hover {
-  background-color: #c8beda;
-  color: white;
+.social-icons a:hover,
+.social-icons a:focus-visible {
+  background-color: var(--accent-hover-bg);
+  color: var(--footer-fg);
+  outline: none;   
 }
 
+/* linkovi u footeru */
 .footer-links {
-  margin-bottom: 1rem;
   display: flex;
   justify-content: center;
   gap: 2rem;
+  margin-bottom: 1rem;
   font-weight: bold;
 }
 
 .footer-links a {
+  color: var(--footer-fg);
   text-decoration: none;
-  color: white;
+  transition: text-decoration-color .2s ease;
 }
 
-.footer-links a:hover {
+.footer-links a:hover,
+.footer-links a:focus-visible {
   text-decoration: underline;
+  outline-offset: 3px; 
 }
 
-@media (max-width: 700px) {
-  .social-icons {
-    gap: 1rem;
-  }
+/* autorska prava */
+.footer .copyright {
+  margin: 0;
+}
 
+/* responzivno */
+@media (max-width: 700px) {
+  .social-icons { gap: 1rem; }
   .footer-links {
     flex-direction: column;
-    gap: 0.5rem;
+    gap: .5rem;
   }
 }

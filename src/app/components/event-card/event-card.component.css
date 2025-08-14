@@ -1,80 +1,136 @@
-:host{
-  display:block;
-  height:100%;            /* puni visinu koju zada parent */
+/* Osnovno */
+:host {
+  display: block;
+  height: 100%;
 }
 
-/* kartica */
-.event-card{
-  height:100%;
-  display:flex;
-  flex-direction:column;
-  text-decoration:none;
-  color:inherit;
-  background:#fff;
-  border:1px solid #ece8f6;
-  border-radius:16px;
-  overflow:hidden;
-  box-shadow:0 2px 10px rgba(0,0,0,.06);
-  transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;
-  position:relative;
-}
-.event-card:hover{ transform:translateY(-6px); box-shadow:0 10px 24px rgba(0,0,0,.12); border-color:#d9d0f0; }
-.event-card:focus-visible{ outline:3px solid rgba(179,154,220,.5); outline-offset:2px; }
+/* Kartica  */
+.event-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  text-decoration: none;
+  color: inherit;
+  background: #fff;
+  border: 1px solid #ece8f6;
+  border-radius: 16px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, .06);
+  overflow: hidden;
 
-/* slika – jedan aspect ratio za dosljednu visinu */
-.event-card img{
-  width:100%;
-  aspect-ratio:16/9;      /* ako želiš kockasto, promijeni u 1/1 */
-  object-fit:cover;
-  display:block;
-  flex:0 0 auto;
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
 }
 
-/* tijelo */
-.card-body{
-  flex:1 1 auto;
-  display:flex;
-  flex-direction:column;
-  padding:12px 14px 16px;
+.event-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, .12);
+  border-color: #d9d0f0;
 }
 
-/* naslov: max 2 reda */
-/* Naslov – bez ograničenja redova */
-.title{
+.event-card:focus-visible {
+  outline: 3px solid rgba(179, 154, 220, .5);
+  outline-offset: 2px;
+}
+
+/* Slika */
+.event-card img {
+  display: block;
+  flex: 0 0 auto;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+/* Tijelo */
+.card-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  padding: 12px 14px 16px;
+}
+
+/* Naslov */
+.title {
   margin: 2px 0 10px;
   font-size: 1.1rem;
   font-weight: 700;
   color: #6f5b94;
+  overflow-wrap: anywhere;
 
-  display: block;             /* makni -webkit-box */
-  -webkit-line-clamp: unset;  /* makni clamp */
-  -webkit-box-orient: unset;
+  display: block;
   overflow: visible;
   min-height: 0;
-  overflow-wrap: anywhere;    /* da dugi izrazi ne razbiju layout */
 }
 
+/* Meta info */
+.meta {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
 
-/* meta info pri dnu */
-.meta{ margin-top:auto; display:flex; flex-direction:column; gap:6px; }
-.meta-row{ display:flex; align-items:center; gap:8px; font-size:.95rem; color:#333; }
-.icon{ width:1.2rem; display:inline-flex; justify-content:center; }
-.label{ color:#6b6b6b; }
-.value{ color:#2c2c2c; font-weight:700; }
+.meta-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: .95rem;
+  color: #333;
+}
+
+.icon {
+  display: inline-flex;
+  justify-content: center;
+  width: 1.2rem;
+}
+
+.label {
+  color: #6b6b6b;
+}
+
+.value {
+  color: #2c2c2c;
+  font-weight: 700;
+}
 
 /* ∞ */
-.meta-row .value.infinity{
-  font-weight:800; font-size:2em; color:#b39adc; line-height:1;
+.meta-row .value.infinity {
+  line-height: 1;
+  font-size: 2em;
+  font-weight: 800;
+  color: #b39adc;
 }
 
-/* admin tipke */
-.card-admin-actions{
-  position:absolute; top:10px; right:10px; display:flex; gap:6px; z-index:2;
+/* Admin tipke  */
+.card-admin-actions {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+
+  display: flex;
+  gap: 6px;
 }
-.mini-btn{
-  border:1px solid #d9d6e8; background:#f6f3ff; padding:6px 10px; border-radius:8px;
-  font-size:.85rem; cursor:pointer;
+
+.mini-btn {
+  padding: 6px 10px;
+  border: 1px solid #d9d6e8;
+  border-radius: 8px;
+  background: #f6f3ff;
+
+  font-size: .85rem;
+  cursor: pointer;
 }
-.mini-btn:hover{ background:#efe9ff; }
-.mini-btn.danger{ background:#ffecec; border-color:#ffd7d7; }
-.mini-btn.danger:hover{ background:#ffdede; }
+
+.mini-btn:hover {
+  background: #efe9ff;
+}
+
+.mini-btn.danger {
+  background: #ffecec;
+  border-color: #ffd7d7;
+}
+
+.mini-btn.danger:hover {
+  background: #ffdede;
+}

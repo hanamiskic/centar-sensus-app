@@ -1,7 +1,7 @@
 <header>
   <nav class="navbar">
     <div class="logo">
-      <a routerLink="/" (click)="menuOpen = false">
+      <a routerLink="/" (click)="closeMenu()">
         <img src="assets/logo.png" alt="Logo" />
       </a>
     </div>
@@ -11,41 +11,43 @@
       <li><a routerLink="/dogadaji" (click)="closeMenu()">DOGAĐAJI</a></li>
       <li><a routerLink="/galerija" (click)="closeMenu()">GALERIJA</a></li>
       <li><a routerLink="/onama" (click)="closeMenu()">O NAMA</a></li>
-       <li><a routerLink="/blog" (click)="closeMenu()">BLOG</a></li>
+      <li><a routerLink="/blog" (click)="closeMenu()">BLOG</a></li>
       <li><a routerLink="/kontakt" (click)="closeMenu()">KONTAKT</a></li>
 
-      <!-- Ako je korisnik prijavljen -->
-      <li class="profile-wrapper" *ngIf="user$ | async as user">
+      <!-- DESKTOP: profil + dropdown -->
+      <li class="profile-wrapper desktop-only" *ngIf="user$ | async as user">
         <div class="profile-trigger" (click)="toggleDropdown()" tabindex="0">
           <i class="fas fa-user"></i>
-          <span class="user-name desktop-only">{{ user.fullName || user.email }}</span>
+          <span class="user-name">{{ user.fullName || user.email }}</span>
         </div>
-
-        <!-- Samo za mobilni meni -->
-        <div class="mobile-only">
-          <a [routerLink]="['/profil']" (click)="closeMenu()">MOJ PROFIL</a>
-        </div>
-
-        <!-- Dropdown meni -->
-        <ul class="dropdown-menu" *ngIf="dropdownOpen && !menuOpen">
-          <li>
-            <a [routerLink]="['/profil']" (click)="closeDropdown()">Moj profil</a>
-          </li>
-          <li>
-            <a (click)="logout()">Odjava</a>
-          </li>
+        <ul class="dropdown-menu" *ngIf="dropdownOpen">
+          <li><a [routerLink]="['/profil']" (click)="closeDropdown()">Moj profil</a></li>
+          <li><a (click)="logout()">Odjava</a></li>
         </ul>
       </li>
 
-      <!-- Ako nije prijavljen -->
-      <li *ngIf="!(user$ | async)">
+      <!-- DESKTOP: login za goste -->
+      <li class="desktop-only" *ngIf="!(user$ | async)">
+        <a routerLink="/auth" (click)="closeMenu()">PRIJAVI SE</a>
+      </li>
+
+      <!-- MOBILNI: prijavljen korisnik -->
+      <li class="mobile-only" *ngIf="user$ | async">
+        <a class="menu-link" [routerLink]="['/profil']" (click)="closeMenu()">MOJ PROFIL</a>
+      </li>
+      <li class="mobile-only" *ngIf="user$ | async">
+        <a class="menu-link" href="" (click)="logout(); $event.preventDefault()">ODJAVI SE</a>
+      </li>
+
+      <!-- MOBILE: gost -> prijavi se -->
+      <li class="mobile-only" *ngIf="!(user$ | async)">
         <a routerLink="/auth" (click)="closeMenu()">PRIJAVI SE</a>
       </li>
     </ul>
 
-    <div class="hamburger" (click)="toggleMenu()">
+    <button class="hamburger" type="button" (click)="toggleMenu()" aria-label="Toggle menu">
       <span *ngIf="!menuOpen">&#9776;</span>
       <span *ngIf="menuOpen">&#10005;</span>
-    </div>
+    </button>
   </nav>
 </header>

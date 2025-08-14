@@ -29,14 +29,14 @@ export class GalerijaComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
-    // admin status (bez pristupa privatnim poljima)
     this.authService.isAdmin$.subscribe((v) => (this.isAdmin = v));
 
-    // učitaj slike (trenutno vraća URL stringove)
-    this.images = await this.galleryService.listGallery();
+    // 1) zadnje dodane prve: samo okreni poredak
+    const list = await this.galleryService.listGallery();
+    this.images = [...list].reverse(); // kopija + reverse (ne mijenja izvorni niz u servisu)
   }
 
-  // ==== helpers za template (da ne koristimo "as any" u HTML-u) ====
+  // ==== helpers za template ====
   getThumb(img: ImgItem): string {
     return typeof img === 'string' ? img : img.thumb || img.full || '';
   }
@@ -45,12 +45,8 @@ export class GalerijaComponent implements OnInit {
   }
 
   // modal
-  openModal(index: number) {
-    this.selectedIndex = index;
-  }
-  closeModal() {
-    this.selectedIndex = null;
-  }
+  openModal(index: number) { this.selectedIndex = index; }
+  closeModal() { this.selectedIndex = null; }
   nextImage() {
     if (this.selectedIndex !== null) {
       this.selectedIndex = (this.selectedIndex + 1) % this.images.length;
@@ -58,8 +54,7 @@ export class GalerijaComponent implements OnInit {
   }
   prevImage() {
     if (this.selectedIndex !== null) {
-      this.selectedIndex =
-        (this.selectedIndex - 1 + this.images.length) % this.images.length;
+      this.selectedIndex = (this.selectedIndex - 1 + this.images.length) % this.images.length;
     }
   }
 
@@ -71,25 +66,17 @@ export class GalerijaComponent implements OnInit {
     if (event.key === 'Escape') this.closeModal();
   }
 
-  onTouchStart(event: TouchEvent) {
-    this.touchStartX = event.changedTouches[0].screenX;
-  }
-  onTouchEnd(event: TouchEvent) {
-    this.touchEndX = event.changedTouches[0].screenX;
-    this.handleSwipe();
-  }
+  onTouchStart(event: TouchEvent) { this.touchStartX = event.changedTouches[0].screenX; }
+  onTouchEnd(event: TouchEvent) { this.touchEndX = event.changedTouches[0].screenX; this.handleSwipe(); }
   handleSwipe() {
     const delta = this.touchEndX - this.touchStartX;
-    if (Math.abs(delta) > 50) {
-      delta < 0 ? this.nextImage() : this.prevImage();
-    }
+    if (Math.abs(delta) > 50) delta < 0 ? this.nextImage() : this.prevImage();
   }
 
   // upload
   onFileSelected(ev: Event) {
     const input = ev.target as HTMLInputElement;
-    this.selectedFile =
-      input.files && input.files.length ? input.files[0] : null;
+    this.selectedFile = input.files && input.files.length ? input.files[0] : null;
   }
 
   async uploadImage() {
@@ -97,7 +84,8 @@ export class GalerijaComponent implements OnInit {
     this.uploading = true;
     try {
       const url = await this.galleryService.uploadToGallery(this.selectedFile);
-      this.images.push(url); // i dalje string URL (ok)
+      // 2) novu sliku stavi na početak
+      this.images.unshift(url);
       this.selectedFile = null;
     } finally {
       this.uploading = false;

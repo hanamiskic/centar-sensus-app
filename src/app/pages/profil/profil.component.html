@@ -75,8 +75,12 @@
             <td>{{ u.phone || '—' }}</td>
             <td>{{ formatDate(u.createdAt) }}</td>
             <td class="actions-col">
-              <button class="btn-delete" (click)="removeUser(u.uid)">🗑️ Obriši</button>
+              <button class="btn-delete" (click)="removeUser(u.uid)" [disabled]="u.uid === currentUid"
+                [title]="u.uid === currentUid ? 'Ne možeš obrisati vlastiti račun' : 'Obriši korisnika'">
+                🗑️ Obriši
+              </button>
             </td>
+
           </tr>
           <tr *ngIf="users.length === 0">
             <td colspan="7" class="empty">Nema korisnika.</td>

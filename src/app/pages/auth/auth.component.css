@@ -1,4 +1,4 @@
-/* Kontejner za cijelu sekciju */
+/* Sekcija / pozadina */
 .auth-section {
   position: relative;
   width: 100%;
@@ -10,35 +10,34 @@
   background-color: #cec3e1;
 }
 
-/* Pozadinska slika */
+/* Pozadinska slika + overlay ne hvataju klikove */
 .background-img {
   position: absolute;
-  top: 0;
-  left: 0;
+  inset: 0 0 0 0;            
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center;
   z-index: 0;
+  pointer-events: none;
 }
 
-/* Prekrivajući sloj */
 .overlay {
   position: absolute;
-  top: 0;
-  left: 0;
+  inset: 0 0 0 0;
   width: 100%;
   height: 100%;
   backdrop-filter: blur(2px);
   background-color: rgba(0, 0, 0, 0.2);
   z-index: 1;
+  pointer-events: none;
 }
 
-/* Kontejner za formu */
+/* Kontejner / naslov */
 .auth-container {
   position: relative;
   z-index: 2;
-  background: white;
+  background: #fff;
   padding: 2rem;
   border-radius: 12px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
@@ -47,21 +46,19 @@
   text-align: center;
 }
 
-/* Naslov forme */
 .auth-container h2 {
   margin-bottom: 1.5rem;
   color: #b39adc;
   font-size: 1.8rem;
 }
 
-/* Forma */
+/* Forma / inputi */
 .auth-form {
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
 }
 
-/* Grupa input polja */
 .input-group {
   position: relative;
   display: flex;
@@ -83,7 +80,12 @@
   border-color: #b39adc;
 }
 
-/* Stil za grupu s lozinkom */
+/* Stil za nevaljana polja (Angular klasa) */
+input.ng-invalid.ng-touched {
+  border-color: #d9534f;
+}
+
+/* Lozinka + toggle „oko”*/
 .password-group {
   position: relative;
   display: flex;
@@ -92,26 +94,36 @@
 }
 
 .password-group input {
-  padding-right: 3rem; /* Ostavlja prostor za gumb s okom */
+  padding-right: 3rem; 
 }
 
 .toggle-password {
   position: absolute;
   right: 12px;
+  top: 50%;                     
+  transform: translateY(-50%);
   background: transparent;
   border: none;
   cursor: pointer;
-  color: #b39adc; /* Promijenjena boja u ljubičastu */
+  color: #b39adc;
   padding: 0;
+  line-height: 1;
   font-size: 1rem;
 }
 
+.toggle-password:focus-visible {
+  outline: 2px solid rgba(179, 154, 220, 0.45);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* Submit gumb */
 button[type="submit"] {
   width: 100%;
   padding: 1.1rem 1.5rem;
   font-size: clamp(1rem, 1.6vw, 1.2rem);
   background-color: #b39adc;
-  color: white;
+  color: #fff;
   border: none;
   border-radius: 10px;
   cursor: pointer;
@@ -120,23 +132,18 @@ button[type="submit"] {
   margin-top: 0.8rem;
 }
 
-
-button[type="submit"]:hover {
-  background-color: #9e84c8;
-}
-
+button[type="submit"]:hover { background-color: #9e84c8; }
 button[type="submit"]:disabled {
   background-color: #ccc;
   cursor: not-allowed;
 }
 
-/* Grupa radio gumba */
+/* Radio sekcija */
 .radio-section {
   display: flex;
   flex-direction: column;
   text-align: left;
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
+  margin: 0.5rem 0;
 }
 
 .radio-label {
@@ -160,7 +167,10 @@ button[type="submit"]:disabled {
   cursor: pointer;
 }
 
-/* Error poruke */
+/* Sitni makeover radio gumba (ne mijenja layout) */
+.radio-group input[type="radio"] { accent-color: #b39adc; }
+
+/* Poruke / linkovi */
 .error {
   color: #d9534f;
   font-size: 0.8rem;
@@ -169,50 +179,86 @@ button[type="submit"]:disabled {
   font-weight: 500;
 }
 
-/* Link za prebacivanje između registracije i prijave */
+.success-msg,
+.error-msg {
+  font-size: 0.9rem;
+  margin-top: 1rem;
+  text-align: center;
+}
+.success-msg { color: green; }
+.error-msg   { color: red; }
+
 .switch-mode {
   margin-top: 1.5rem;
   font-size: 0.9rem;
   color: #555;
 }
-
 .switch-mode a {
   color: #b39adc;
   cursor: pointer;
   text-decoration: none;
   font-weight: bold;
 }
+.switch-mode a:hover { text-decoration: underline; }
 
-.switch-mode a:hover {
+/* Reset lozinke  */
+.reset-prompt {
+  display: flex;
+  justify-content: center;
+  margin: 10px 0 16px;
+  text-align: center;
+}
+.reset-prompt a {
+  color: #6f5b94;
   text-decoration: underline;
 }
 
-/* Stil za nevaljana polja */
-input.ng-invalid.ng-touched {
-  border-color: #d9534f;
+.reset-box {
+  margin-top: .75rem;
+  display: grid;
+  gap: .5rem;
+}
+.reset-box .input-group input { width: 100%; }
+.reset-box .hint {
+  color: #666;
+  font-size: .85rem;
 }
 
-.success-msg {
-  color: green;
-  font-size: 0.9rem;
-  margin-top: 1rem;
-  text-align: center;
+/* Sekundarni gumb za reset lozinke */
+.btn-reset{
+  width: 100%;
+  padding: 0.9rem 1.2rem;
+  border-radius: 10px;
+  border: 1px solid #e6defb;
+  background: #f6f3ff;
+  color: #6f5b94;
+  font-weight: 700;
+  font-size: clamp(.95rem, 1.6vw, 1.05rem);
+  cursor: pointer;
+  transition: background .2s ease, border-color .2s ease, transform .02s;
+  box-shadow: 0 1px 0 rgba(0,0,0,.03);
+  margin-top: .25rem;
+}
+.btn-reset:hover{
+  background: #ede7ff;
+  border-color: #d8ccff;
+  transform: translateY(-1px);
+}
+.btn-reset:active{ transform: translateY(0); }
+.btn-reset:disabled{
+  background: #eee;
+  color: #a0a0a0;
+  border-color: #e5e7eb;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
-.error-msg {
-  color: red;
-  font-size: 0.9rem;
-  margin-top: 1rem;
-  text-align: center;
-}
-
+/* Responsive */
 @media screen and (max-width: 600px) {
   .auth-section {
     padding: 2rem 0;
     align-items: flex-start;
   }
-
-  .auth-container {
-    margin-top: 1rem;
-  }
+  .auth-container { margin-top: 1rem; }
 }

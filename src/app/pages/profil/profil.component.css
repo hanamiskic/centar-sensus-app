@@ -110,3 +110,9 @@
   .email{ font-size:.85rem; }
   .pagination .pager-buttons span{ min-width:auto; }
 }
+
+.btn-delete[disabled]{
+  opacity: .45;
+  cursor: not-allowed;
+  filter: grayscale(0.2);
+}

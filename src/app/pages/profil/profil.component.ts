@@ -48,6 +48,7 @@ type EventItem = {
 export class ProfilComponent implements OnInit, OnDestroy {
   user$: Observable<AppUser | null>;
   isAdmin = false;
+  currentUid: string | null = null;
 
   // --- Moji događaji ---
   loadingMyEvents = true;
@@ -104,6 +105,7 @@ export class ProfilComponent implements OnInit, OnDestroy {
     this.authService.currentUser$
       .pipe(takeUntil(this.destroy$))
       .subscribe(u => {
+        this.currentUid = u?.uid ?? null;
         if (u?.uid) this.loadMyEvents(u.uid);
         else { this.myEvents = []; this.loadingMyEvents = false; }
       });
@@ -188,6 +190,11 @@ export class ProfilComponent implements OnInit, OnDestroy {
   }
 
   async removeUser(uid: string) {
+    // ⬇️ zaštita da se ne možeš obrisati
+    if (uid === this.currentUid) {
+      alert('Ne možeš obrisati vlastiti račun.');
+      return;
+    }
     if (!confirm('Obrisati korisnika?')) return;
     try {
       await this.adminUsers.deleteUser(uid);

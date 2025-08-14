@@ -8,92 +8,44 @@
     <form (ngSubmit)="onSubmit()" #authForm="ngForm" class="auth-form" novalidate>
       <ng-container *ngIf="isRegisterMode; else loginForm">
         <div class="input-group">
-          <input
-            type="text"
-            placeholder="Ime"
-            required
-            [(ngModel)]="firstName"
-            name="firstName"
-            #firstNameInput="ngModel"
-          />
-          <div *ngIf="firstNameInput.invalid && firstNameInput.touched" class="error">
-            Ime je obavezno
-          </div>
+          <input type="text" placeholder="Ime" required [(ngModel)]="firstName" name="firstName"
+            #firstNameInput="ngModel" />
+          <div *ngIf="firstNameInput.invalid && firstNameInput.touched" class="error">Ime je obavezno</div>
         </div>
 
         <div class="input-group">
-          <input
-            type="text"
-            placeholder="Prezime"
-            required
-            [(ngModel)]="lastName"
-            name="lastName"
-            #lastNameInput="ngModel"
-          />
-          <div *ngIf="lastNameInput.invalid && lastNameInput.touched" class="error">
-            Prezime je obavezno
-          </div>
+          <input type="text" placeholder="Prezime" required [(ngModel)]="lastName" name="lastName"
+            #lastNameInput="ngModel" />
+          <div *ngIf="lastNameInput.invalid && lastNameInput.touched" class="error">Prezime je obavezno</div>
         </div>
 
         <!-- REGISTRACIJA: e-mail s pattern validacijom -->
         <div class="input-group">
-          <input
-            type="email"
-            placeholder="Email"
-            required
-            email
-            [pattern]="emailPattern"
-            [(ngModel)]="email"
-            name="email"
-            #emailInput="ngModel"
-            autocapitalize="off"
-            autocomplete="email"
-            spellcheck="false"
-          />
-          <div
-            *ngIf="emailInput.touched && (emailInput.errors?.['email'] || emailInput.errors?.['pattern'])"
-            class="error"
-          >
+          <input type="email" placeholder="Email" required email [pattern]="emailPattern" [(ngModel)]="email"
+            name="email" #emailInput="ngModel" autocapitalize="off" autocomplete="email" spellcheck="false" />
+          <div *ngIf="emailInput.touched && (emailInput.errors?.['email'] || emailInput.errors?.['pattern'])"
+            class="error">
             Neispravan format e-mail adrese
           </div>
         </div>
 
         <div class="input-group password-group">
-          <input
-            [type]="isPasswordVisible ? 'text' : 'password'"
-            placeholder="Lozinka"
-            required
-            minlength="8"
-            [(ngModel)]="password"
-            name="password"
-            #passInput="ngModel"
-            autocomplete="new-password"
-          />
+          <input [type]="isPasswordVisible ? 'text' : 'password'" placeholder="Lozinka" required minlength="8"
+            [(ngModel)]="password" name="password" #passInput="ngModel" autocomplete="new-password" />
           <button type="button" class="toggle-password" (click)="togglePasswordVisibility()">
             <i class="fas" [ngClass]="isPasswordVisible ? 'fa-eye-slash' : 'fa-eye'"></i>
           </button>
         </div>
-        <div *ngIf="passInput.invalid && passInput.touched" class="error">
-          Lozinka mora imati najmanje 8 znakova
-        </div>
+        <div *ngIf="passInput.invalid && passInput.touched" class="error">Lozinka mora imati najmanje 8 znakova</div>
 
         <div class="input-group password-group">
-          <input
-            [type]="isPasswordVisible ? 'text' : 'password'"
-            placeholder="Potvrdi lozinku"
-            required
-            [(ngModel)]="confirmPassword"
-            name="confirmPassword"
-            #confirmInput="ngModel"
-            autocomplete="new-password"
-          />
+          <input [type]="isPasswordVisible ? 'text' : 'password'" placeholder="Potvrdi lozinku" required
+            [(ngModel)]="confirmPassword" name="confirmPassword" #confirmInput="ngModel" autocomplete="new-password" />
           <button type="button" class="toggle-password" (click)="togglePasswordVisibility()">
             <i class="fas" [ngClass]="isPasswordVisible ? 'fa-eye-slash' : 'fa-eye'"></i>
           </button>
         </div>
-        <div *ngIf="confirmInput.invalid && confirmInput.touched" class="error">
-          Potvrda lozinke je obavezna
-        </div>
+        <div *ngIf="confirmInput.invalid && confirmInput.touched" class="error">Potvrda lozinke je obavezna</div>
 
         <div *ngIf="password && confirmPassword && password !== confirmPassword" class="error">
           Lozinke se ne podudaraju
@@ -102,8 +54,10 @@
         <div class="radio-section">
           <label class="radio-label">Član udruge:</label>
           <div class="radio-group">
-            <label><input type="radio" name="memberType" [(ngModel)]="membership" value="redovni" required /> DA - redovni</label>
-            <label><input type="radio" name="memberType" [(ngModel)]="membership" value="podupiruci" required /> DA - podupirući</label>
+            <label><input type="radio" name="memberType" [(ngModel)]="membership" value="redovni" required /> DA -
+              redovni</label>
+            <label><input type="radio" name="memberType" [(ngModel)]="membership" value="podupiruci" required /> DA -
+              podupirući</label>
             <label><input type="radio" name="memberType" [(ngModel)]="membership" value="ne" required /> NE</label>
           </div>
         </div>
@@ -113,54 +67,56 @@
         </div>
 
         <!-- Submit onemogućen dok je forma nevaljana ili lozinke ne odgovaraju -->
-        <button
-          type="submit"
-          [disabled]="authForm.invalid || (isRegisterMode && password !== confirmPassword)"
-        >
+        <button type="submit" [disabled]="authForm.invalid || (isRegisterMode && password !== confirmPassword)">
           Registriraj se
         </button>
       </ng-container>
 
       <ng-template #loginForm>
-        <!-- PRIJAVA: e-mail s istom pattern validacijom -->
+        <!-- PRIJAVA: bez provjera formata; jedini uvjet je da oba polja nisu prazna -->
         <div class="input-group">
-          <input
-            type="email"
-            placeholder="Email"
-            required
-            email
-            [pattern]="emailPattern"
-            [(ngModel)]="email"
-            name="email"
-            #loginEmailInput="ngModel"
-            autocapitalize="off"
-            autocomplete="email"
-            spellcheck="false"
-          />
-          <div
-            *ngIf="loginEmailInput.touched && (loginEmailInput.errors?.['email'] || loginEmailInput.errors?.['pattern'])"
-            class="error"
-          >
-            Neispravan format e-mail adrese
-          </div>
+          <input type="text" placeholder="Email" [(ngModel)]="email" name="email" autocapitalize="off"
+            autocomplete="email" spellcheck="false" />
         </div>
 
         <div class="input-group password-group">
-          <input
-            [type]="isPasswordVisible ? 'text' : 'password'"
-            placeholder="Lozinka"
-            required
-            [(ngModel)]="password"
-            name="password"
-            autocomplete="current-password"
-          />
+          <input [type]="isPasswordVisible ? 'text' : 'password'" placeholder="Lozinka" [(ngModel)]="password"
+            name="password" autocomplete="current-password" />
           <button type="button" class="toggle-password" (click)="togglePasswordVisibility()">
             <i class="fas" [ngClass]="isPasswordVisible ? 'fa-eye-slash' : 'fa-eye'"></i>
           </button>
         </div>
 
-        <!-- Submit onemogućen dok login email nije valjan ili lozinka prazna -->
-        <button type="submit" [disabled]="loginEmailInput?.invalid || !password">
+        <!-- Link za zaboravljenu lozinku -->
+        <p class="reset-prompt">
+          <a href="" (click)="$event.preventDefault(); toggleResetSection()">
+            {{ showResetSection ? 'Natrag na prijavu' : 'Zaboravljena lozinka?' }}
+          </a>
+        </p>
+
+        <!-- Reset forma (sakrij kad postoji success poruka) -->
+        <div class="reset-box" *ngIf="showResetSection && !successMessage">
+          <div class="input-group">
+            <input type="email" placeholder="Upišite e-mail za reset" required email [pattern]="emailPattern"
+              [(ngModel)]="resetEmail" name="resetEmail" #resetEmailInput="ngModel" autocapitalize="off"
+              autocomplete="email" spellcheck="false" />
+            <div
+              *ngIf="resetEmailInput.touched && (resetEmailInput.errors?.['email'] || resetEmailInput.errors?.['pattern'])"
+              class="error">
+              Neispravan format e-mail adrese
+            </div>
+          </div>
+
+          <button type="button" class="btn-reset" (click)="sendPasswordReset()"
+            [disabled]="sendingReset || resetEmailInput.invalid">
+            Pošalji link za reset
+          </button>
+
+          <small class="hint">Poslat ćemo ti e-mail s uputama za promjenu lozinke.</small>
+        </div>
+
+        <!-- jedini uvjet: oba polja moraju biti popunjena -->
+        <button type="submit" [disabled]="!email || !password">
           Prijavi se
         </button>
       </ng-template>

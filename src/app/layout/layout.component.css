@@ -1,24 +1,29 @@
-
-
-.page-content {
-  position: relative;
-  min-height: 100vh;
-  overflow-x: hidden;
-}
-
-.route-wrapper {
-  position: relative;
-  min-height: inherit;
-}
-
+/* glavni layout: kolona + sticky footer kroz min-height */
 .layout-wrapper {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
 
+/* prostor između headera i footera */
 .page-wrapper {
-  flex: 1;
+  flex: 1 1 auto;
   display: flex;
   flex-direction: column;
+  min-height: 0;                 /* važno u flex kontejneru: djeca smiju skrolati */
+}
+
+/* sadržaj rute */
+.page-content {
+  position: relative;
+  flex: 1 1 auto;                /* ispuni visinu raspoloživog prostora */
+  min-height: 100vh;
+  overflow-x: hidden;
+  scroll-margin-top: var(--nav-offset, 0);
+}
+
+/* omotač oko router-outlet-a (koristan za animacije i relativno pozicioniranje) */
+.route-wrapper {
+  position: relative;
+  min-height: inherit;
 }

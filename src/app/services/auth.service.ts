@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Firestore, doc, getDoc, setDoc } from '@angular/fire/firestore';
+import { sendPasswordResetEmail } from '@angular/fire/auth';
 import {
   Auth,
   createUserWithEmailAndPassword,
@@ -74,6 +75,11 @@ export class AuthService {
   logout(): Promise<void> {
     return this.auth.signOut();
   }
+
+  resetPassword(email: string): Promise<void> {
+  return sendPasswordResetEmail(this.auth, email);
+}
+
 
   // ⬇️ NOVO: ručno osvježi claimove (pozovi nakon promocije/democije)
   async refreshClaims(): Promise<void> {

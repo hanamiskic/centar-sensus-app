@@ -1,82 +1,66 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EnvironmentInjector, runInInjectionContext } from '@angular/core';
 import {
   Firestore,
-  doc,
-  setDoc,
-  deleteDoc,
-  getDoc,
-  collection,
-  orderBy,
-  query,
-  where,
-  getDocs,
-  serverTimestamp,
-  DocumentReference,
-  CollectionReference
+  doc, setDoc, deleteDoc, getDoc,
+  collection, orderBy, query, where, getDocs,
+  serverTimestamp, DocumentReference, CollectionReference
 } from '@angular/fire/firestore';
 
 @Injectable({ providedIn: 'root' })
 export class EventRegistrationsService {
-  /** Ime kolekcije na jednom mjestu */
   private static readonly COLL = 'eventRegistrations';
 
-  constructor(private db: Firestore) {}
+  constructor(private db: Firestore, private env: EnvironmentInjector) {}
 
-  /** Referenca na kolekciju */
+  /** Sve Firebase read pozive vrtimo unutar Angular injection konteksta */
+  private inCtx<T>(cb: () => Promise<T>) {
+    return runInInjectionContext(this.env, cb);
+  }
+
   private colRef(): CollectionReference {
     return collection(this.db, EventRegistrationsService.COLL);
   }
 
-  /** Deterministički ID dokumenta: eventId_uid */
   private regDocId(eventId: string, uid: string): string {
     return `${eventId}_${uid}`;
   }
 
-  /** Referenca na konkretan doc prijave */
   private regDocRef(eventId: string, uid: string): DocumentReference {
     return doc(this.db, EventRegistrationsService.COLL, this.regDocId(eventId, uid));
   }
 
-  /** Je li korisnik već prijavljen? */
   async isRegistered(eventId: string, uid: string): Promise<boolean> {
-    const snap = await getDoc(this.regDocRef(eventId, uid));
+    const snap = await this.inCtx(() => getDoc(this.regDocRef(eventId, uid)));
     return snap.exists();
+    //                      ^^^ ovo je sad sigurno u kontekstu
   }
 
-  /** Broj prijava na događaj */
   async countForEvent(eventId: string): Promise<number> {
     const qy = query(this.colRef(), where('eventId', '==', eventId));
-    const snap = await getDocs(qy);
+    const snap = await this.inCtx(() => getDocs(qy));
     return snap.size;
   }
 
-  /** Prijavi korisnika na događaj */
   async register(eventId: string, uid: string): Promise<void> {
     await setDoc(this.regDocRef(eventId, uid), {
-      eventId,
-      uid,
-      createdAt: serverTimestamp(),
+      eventId, uid, createdAt: serverTimestamp(),
     });
   }
 
-  /** Odjavi korisnika s događaja */
   async unregister(eventId: string, uid: string): Promise<void> {
     await deleteDoc(this.regDocRef(eventId, uid));
   }
 
-  /** Lista prijavljenih s podacima o korisniku */
   async listWithUsers(eventId: string): Promise<Array<{
-    uid: string;
-    createdAt: Date | null;
-    fullName: string;
-    email: string | null;
+    uid: string; createdAt: Date | null; fullName: string; email: string | null;
   }>> {
     const qy = query(
       this.colRef(),
       where('eventId', '==', eventId),
       orderBy('createdAt', 'asc')
     );
-    const snap = await getDocs(qy);
+
+    const snap = await this.inCtx(() => getDocs(qy));
 
     const rows = await Promise.all(
       snap.docs.map(async d => {
@@ -86,15 +70,14 @@ export class EventRegistrationsService {
         const createdAtRaw = data?.createdAt;
         const createdAt = createdAtRaw?.toDate
           ? createdAtRaw.toDate()
-          : createdAtRaw
-          ? new Date(createdAtRaw)
-          : null;
+          : createdAtRaw ? new Date(createdAtRaw) : null;
 
-        // povuci user profil
+        // ⬇️ i dohvat user-profila vrti u injection kontekstu
         let fullName = '';
         let email: string | null = null;
         try {
-          const usnap = await getDoc(doc(this.db, 'users', uid));
+          const userRef = doc(this.db, 'users', uid);
+          const usnap = await this.inCtx(() => getDoc(userRef));
           const u = (usnap.data() as any) || {};
           const first = (u?.firstName || '').trim();
           const last  = (u?.lastName  || '').trim();
@@ -102,28 +85,21 @@ export class EventRegistrationsService {
           email = u?.email || null;
         } catch { /* ignore */ }
 
-        return {
-          uid,
-          createdAt,
-          fullName: fullName || '(bez imena)',
-          email,
-        };
+        return { uid, createdAt, fullName: fullName || '(bez imena)', email };
       })
     );
 
     return rows;
   }
 
-  /** Svi eventId-ovi na koje je korisnik prijavljen (za profil) */
   async listEventIdsForUser(uid: string): Promise<string[]> {
     if (!uid) return [];
     const qy = query(
       this.colRef(),
       where('uid', '==', uid),
-      orderBy('createdAt', 'desc')   // zahtijeva indeks: uid ASC, createdAt DESC/ASC
+      orderBy('createdAt', 'desc')
     );
-    const snap = await getDocs(qy);
+    const snap = await this.inCtx(() => getDocs(qy));
     return snap.docs.map(d => (d.data() as any).eventId);
   }
-
 }
