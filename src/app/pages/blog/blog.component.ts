@@ -17,8 +17,10 @@ export class BlogComponent implements OnInit, OnDestroy {
 
   isAdmin = false;
   showForm = false;
+  isSubmitting = false;     // sprječava dvostruke klikove
+  isLoading = false;        // spinner/placeholder za listu
 
-  // forma
+  // forma (create/edit)
   title = '';
   content = '';
   selectedImage: File | null = null;
@@ -27,6 +29,7 @@ export class BlogComponent implements OnInit, OnDestroy {
   editingId: string | null = null;
   originalImageUrl: string | null = null;
 
+  // podaci
   posts: BlogPost[] = [];
 
   constructor(
@@ -35,7 +38,10 @@ export class BlogComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.sub = this.auth.isAdmin$.subscribe(v => this.isAdmin = v);
+    // tko je admin (za prikaz gumba) — 1 subscription je ok
+    this.sub = this.auth.isAdmin$.subscribe(v => (this.isAdmin = v));
+
+    // učitaj postove
     this.loadPosts();
   }
 
@@ -43,9 +49,8 @@ export class BlogComponent implements OnInit, OnDestroy {
     this.sub?.unsubscribe();
   }
 
-  // ===== helpers =====
-  toggleNewPost() {
-    // ako smo u edit modu – resetiraj
+  /** Otvori/zatvori formu. Ako je bio edit, resetiraj stanje. */
+  toggleNewPost(): void {
     if (this.showForm && this.editingId) {
       this.resetForm();
       this.editingId = null;
@@ -54,6 +59,7 @@ export class BlogComponent implements OnInit, OnDestroy {
     this.showForm = !this.showForm;
   }
 
+  /** Create validacija: naslov + tekst + slika su obavezni. */
   isFormValid(): boolean {
     return (
       this.title.trim().length > 0 &&
@@ -62,86 +68,125 @@ export class BlogComponent implements OnInit, OnDestroy {
     );
   }
 
+  /** Edit validacija: slika nije obavezna. */
   canSaveEdit(): boolean {
-    // kod uređivanja slika nije obavezna
     return this.title.trim().length > 0 && this.content.trim().length > 0;
   }
 
-  onFileSelected(ev: Event) {
+  /** Odabir slike iz file inputa. */
+  onFileSelected(ev: Event): void {
     const input = ev.target as HTMLInputElement;
     this.selectedImage = input.files && input.files.length ? input.files[0] : null;
   }
 
-  resetForm() {
+  /** Očisti polja forme. */
+  resetForm(): void {
     this.title = '';
     this.content = '';
     this.selectedImage = null;
   }
 
-  formatDate(d: Date | null): string {
+  /** Sigurno formatiraj datum (radi i s Firestore Timestamp-om). */
+  formatDate(d: Date | any | null): string {
     if (!d) return '';
-    const dd = d.getDate().toString().padStart(2, '0');
-    const mm = (d.getMonth() + 1).toString().padStart(2, '0');
-    const yyyy = d.getFullYear();
+    // Firestore Timestamp ima metodu toDate()
+    const date: Date = typeof d?.toDate === 'function' ? d.toDate() : d;
+    const dd = date.getDate().toString().padStart(2, '0');
+    const mm = (date.getMonth() + 1).toString().padStart(2, '0');
+    const yyyy = date.getFullYear();
     return `${dd}. ${mm}. ${yyyy}.`;
   }
 
-  // ===== data =====
-  async loadPosts() {
-    this.posts = await this.blog.listPosts();
+  /** trackBy smanjuje re-render liste (brže kod puno elemenata). */
+  trackPost = (_: number, p: BlogPost) => p.id;
+
+  // Data (CRUD)
+
+  /** Učitaj sve postove. */
+  async loadPosts(): Promise<void> {
+    this.isLoading = true;
+    try {
+      const list = await this.blog.listPosts();
+      this.posts = list;
+    } finally {
+      this.isLoading = false;
+    }
   }
 
-  async addPost() {
+  /** Kreiraj novi post (slika je obavezna po tvojoj logici). */
+  async addPost(): Promise<void> {
     if (!this.isFormValid() || !this.selectedImage) {
       alert('Naslov, tekst i slika su obavezni.');
       return;
     }
-    await this.blog.addPost({ title: this.title, content: this.content }, this.selectedImage);
-    this.showForm = false;
-    this.resetForm();
-    await this.loadPosts();
+    if (this.isSubmitting) return;
+
+    this.isSubmitting = true;
+    try {
+      await this.blog.addPost(
+        { title: this.title.trim(), content: this.content.trim() },
+        this.selectedImage
+      );
+
+      // Zatvori formu i očisti
+      this.showForm = false;
+      this.resetForm();
+
+      // Re-fetch
+      await this.loadPosts();
+    } finally {
+      this.isSubmitting = false;
+    }
   }
 
-  // ===== edit =====
-  startEdit(p: BlogPost) {
+  /** Uđi u edit mod za odabrani post. */
+  startEdit(p: BlogPost): void {
     this.editingId = p.id;
     this.originalImageUrl = p.imageUrl;
     this.title = p.title;
     this.content = p.content;
-    this.selectedImage = null; // slika nije obavezna pri uređivanju
+    this.selectedImage = null; // slika opcionalna pri uređivanju
     this.showForm = true;
-    // skrolaj do forme po želji
-    // window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  async saveEdit() {
-    if (!this.editingId) return;
+  /** Spremi izmjene. */
+  async saveEdit(): Promise<void> {
+    if (!this.editingId || this.isSubmitting) return;
 
-    await this.blog.updatePost(
-      this.editingId,
-      { title: this.title, content: this.content },
-      this.selectedImage || undefined,
-      this.originalImageUrl || undefined
-    );
+    this.isSubmitting = true;
+    try {
+      await this.blog.updatePost(
+        this.editingId,
+        { title: this.title.trim(), content: this.content.trim() },
+        this.selectedImage || undefined,
+        this.originalImageUrl || undefined
+      );
 
+      // Reset stanja
+      this.editingId = null;
+      this.originalImageUrl = null;
+      this.showForm = false;
+      this.resetForm();
+
+      await this.loadPosts();
+    } finally {
+      this.isSubmitting = false;
+    }
+  }
+
+  /** Zatvori formu / odustani od uređivanja. */
+  cancelEditOrClose(): void {
+    this.showForm = false;
     this.editingId = null;
     this.originalImageUrl = null;
-    this.showForm = false;
-    this.resetForm();
-    await this.loadPosts();
-  }
-
-  cancelEditOrClose() {
-    this.showForm = false;
-    this.editingId = null;
-    this.originalImageUrl = null;
     this.resetForm();
   }
 
-  // ===== delete =====
-  async deletePost(p: BlogPost) {
+  /** Obriši post (uz potvrdu). */
+  async deletePost(p: BlogPost): Promise<void> {
     const ok = confirm(`Obrisati post: "${p.title}"?`);
     if (!ok) return;
+
     await this.blog.deletePost(p.id, p.imageUrl);
     await this.loadPosts();
   }

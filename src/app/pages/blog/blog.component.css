@@ -1,5 +1,5 @@
-/* ===== naslov stranice ===== */
-.blog-header{
+/* naslov stranice */
+.blog-header {
   padding: clamp(1rem, 3vh, 4rem) clamp(1rem, 5vw, 4rem) 0;
   font-size: 1.6rem;
   font-weight: 700;
@@ -7,44 +7,113 @@
   margin-top: clamp(1rem, 3vh, 3rem);
 }
 
-/* ===== admin gumb ===== */
-.admin-actions{
+/* admin gumb */
+.admin-actions {
   padding: 0 clamp(1rem, 5vw, 4rem);
   margin: .5rem 0 1rem;
 }
-.primary-btn{
-  background:#b39adc;color:#fff;border:none;padding:10px 16px;border-radius:10px;
-  font-size:.95rem;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.08);
-  transition:transform .06s ease, background .2s ease;
-}
-.primary-btn:hover{background:#a088c7;}
-.primary-btn:active{transform:translateY(1px);}
 
-/* ===== forma ===== */
-.blog-form{
-  margin: 0 clamp(1rem,5vw,4rem) 1rem;
-  background:#f9f9ff;border:1px solid #e6e1f5;border-radius:14px;
-  padding:16px;box-shadow:0 1px 6px rgba(0,0,0,.06);
-  display:grid;gap:12px;grid-template-columns:1fr;
+.primary-btn {
+  background: #b39adc;
+  color: #fff;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-size: .95rem;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, .08);
+  transition: transform .06s ease, background .2s ease;
 }
-.blog-form label{display:block;margin:0 0 6px;color:#6f5b94;font-size:.92rem;}
-.blog-form input[type="text"], .blog-form textarea{
-  width:100%;padding:10px 12px;border:1px solid #d9d6e8;border-radius:10px;background:#fff;
-  font-size:.95rem;outline:none;transition:border-color .15s, box-shadow .15s;
-}
-.blog-form input:focus,.blog-form textarea:focus{
-  border-color:#b39adc;box-shadow:0 0 0 2px rgba(179,154,220,.2);
-}
-.form-buttons{display:flex;gap:8px;justify-content:flex-end;margin-top:8px;}
-.form-buttons button{padding:8px 14px;border-radius:8px;font-size:.9rem;font-weight:500;min-width:110px}
-.save-btn{background:#b39adc;color:#fff;border:none;}
-.save-btn:hover{background:#a088c7;}
-.save-btn:disabled{background:#ccc;cursor:not-allowed;opacity:.7;}
-.cancel-btn{background:#f3f3f7;color:#444;border:1px solid #d9d6e8;}
-.cancel-btn:hover{background:#e8e8ef;}
 
-/* ===== lista postova ===== */
-.blog-list{
+.primary-btn:hover {
+  background: #a088c7;
+}
+
+.primary-btn:active {
+  transform: translateY(1px);
+}
+
+/* forma */
+.blog-form {
+  margin: 0 clamp(1rem, 5vw, 4rem) 1rem;
+  background: #f9f9ff;
+  border: 1px solid #e6e1f5;
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, .06);
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 1fr;
+}
+
+.blog-form label {
+  display: block;
+  margin: 0 0 6px;
+  color: #6f5b94;
+  font-size: .92rem;
+}
+
+.blog-form input[type="text"],
+.blog-form textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d9d6e8;
+  border-radius: 10px;
+  background: #fff;
+  font-size: .95rem;
+  outline: none;
+  transition: border-color .15s, box-shadow .15s;
+}
+
+.blog-form input:focus,
+.blog-form textarea:focus {
+  border-color: #b39adc;
+  box-shadow: 0 0 0 2px rgba(179, 154, 220, .2);
+}
+
+.form-buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
+.form-buttons button {
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: .9rem;
+  font-weight: 500;
+  min-width: 110px;
+}
+
+.save-btn {
+  background: #b39adc;
+  color: #fff;
+  border: none;
+}
+
+.save-btn:hover {
+  background: #a088c7;
+}
+
+.save-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  opacity: .7;
+}
+
+.cancel-btn {
+  background: #f3f3f7;
+  color: #444;
+  border: 1px solid #d9d6e8;
+}
+
+.cancel-btn:hover {
+  background: #e8e8ef;
+}
+
+/* lista postova */
+.blog-list {
   padding: clamp(1rem, 3vh, 4rem) clamp(1rem, 5vw, 4rem);
   max-width: 1300px;
   margin: 0 auto;
@@ -52,109 +121,62 @@
   gap: 28px;
 }
 
-/* ===== kartica posta ===== */
-.post{
-  display:block;                               /* bez side-by-side flexa */
-  background:#fff;border-radius:16px;
-  box-shadow:0 8px 24px rgba(0,0,0,.05);
+/* kartica posta */
+.post {
+  position: relative;
+  display: block;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .05);
   padding: clamp(16px, 2.5vw, 28px);
-  transition:transform .3s, box-shadow .3s;
-}
-.post:hover{ transform:translateY(-3px); box-shadow:0 12px 28px rgba(0,0,0,.08); }
-
-/* ===== header u kartici ===== */
-.post-header{
-  position:relative;
-  margin-bottom:12px;
-}
-.post-title{
-  margin:0;
-  font-weight:800;
-  color:#b39adc;
-  font-size:clamp(1.3rem, 3.2vw, 2.2rem);
-  line-height:1.2;
-  padding-right:9rem;                           /* da naslov ne udari u datum */
-}
-.post-date{
-  position:absolute;
-  top:0; right:0;
-  background:#efe9ff; color:#7a63b0; font-weight:600;
-  border-radius:999px; padding:6px 14px; font-size:.9rem;
-  box-shadow:0 2px 6px rgba(0,0,0,.06);
-  white-space:nowrap;
+  transition: transform .3s, box-shadow .3s;
 }
 
-/* ===== tijelo posta ===== */
-.post-body{
-  font-size:clamp(1rem, 2.2vw, 1.125rem);
-  line-height:1.9;
-  color:#222;
-  text-align:justify;
-}
-.post-body::after{ content:""; display:block; clear:both; } /* clearfix */
-
-/* slika – mobitel: full width iznad teksta */
-.post-image{
-  width:100%; height:auto; display:block;
-  border-radius:12px; margin:10px 0 16px;
-  object-fit:cover; box-shadow:0 8px 20px rgba(0,0,0,.08);
+.post:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, .08);
 }
 
-/* … tvoj postojeći CSS ostaje kako si poslao … */
-
-/* admin akcije na kartici */
-.post-admin-actions{
-  position:absolute;
-  right:0;
-  top: calc(100% + 8px);
-  display:flex;
-  gap:8px;
-}
-.mini-btn{
-  border:1px solid #d9d6e8;
-  background:#f6f3ff;
-  padding:6px 10px;
-  border-radius:8px;
-  font-size:.85rem;
-  cursor:pointer;
-}
-.mini-btn:hover{ background:#efe9ff; }
-.mini-btn.danger{ background:#ffecec; border-color:#ffd7d7; }
-.mini-btn.danger:hover{ background:#ffdede; }
-
-
-/* poravnavanje datuma i admin tipki u istu liniju */
+/* header u kartici (naslov dolje, traka gore desno) */
 .post-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap; /* da ne puca layout na uskim ekranima */
+  position: relative;
+  margin-bottom: 12px;
+  padding-top: clamp(38px, 6vw, 50px);
 }
 
-.post-header-left {
-  flex: 1;
+.post-title {
+  margin: 0;
+  font-weight: 800;
+  color: #b39adc;
+  font-size: clamp(1.3rem, 3.2vw, 2.2rem);
+  line-height: 1.2;
+  padding-right: 0;
 }
 
+/* traka gore desno: datum + admin tipke */
 .post-header-right {
+  position: absolute;
+  top: 0;
+  right: 0;
   display: flex;
   align-items: center;
   gap: 8px;
+  z-index: 2;
 }
 
 .post-date {
-  position: static; /* makni absolute */
   background: #efe9ff;
   color: #7a63b0;
   font-weight: 600;
   border-radius: 999px;
   padding: 6px 14px;
   font-size: .9rem;
-  box-shadow: 0 2px 6px rgba(0,0,0,.06);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, .06);
   white-space: nowrap;
 }
 
+/* admin tipke u traci */
 .post-admin-actions {
-  position: static; /* makni absolute */
   display: flex;
   gap: 6px;
 }
@@ -167,94 +189,86 @@
   font-size: .85rem;
   cursor: pointer;
 }
-.mini-btn:hover { background: #efe9ff; }
-.mini-btn.danger { background: #ffecec; border-color: #ffd7d7; }
-.mini-btn.danger:hover { background: #ffdede; }
 
-/* ===== TOP-RIGHT bar: datum + admin tipke uvijek gore desno ===== */
-.post{ position: relative; }
-
-/* ostavi naslov u svom redu, a gore desno rezerviraj prostor za traku */
-.post-header{
-  position: relative;
-  margin-bottom: 12px;
-  padding-top: clamp(38px, 6vw, 50px); /* prostor za traku iznad naslova */
-  display: block;                      /* makni flex poravnanje s naslovom */
-}
-
-.post-title{
-  margin: 0;
-  font-weight: 800;
-  color: #b39adc;
-  font-size: clamp(1.3rem, 3.2vw, 2.2rem);
-  line-height: 1.2;
-  padding-right: 0; /* više ne trebamo rezervu za datum */
-}
-
-/* traka gore desno */
-.post-header-right{
-  position: absolute;
-  top: 0;
-  right: 0;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  z-index: 2;
-}
-
-/* datum */
-.post-date{
+.mini-btn:hover {
   background: #efe9ff;
-  color: #7a63b0;
-  font-weight: 600;
-  border-radius: 999px;
-  padding: 6px 14px;
-  font-size: .9rem;
-  box-shadow: 0 2px 6px rgba(0,0,0,.06);
-  white-space: nowrap;
 }
 
-/* tipke */
-.post-admin-actions{
-  display: flex;
-  gap: 6px;
+.mini-btn.danger {
+  background: #ffecec;
+  border-color: #ffd7d7;
 }
 
-.mini-btn{
-  border: 1px solid #d9d6e8;
-  background: #f6f3ff;
-  padding: 6px 10px;
-  border-radius: 8px;
-  font-size: .85rem;
-  cursor: pointer;
+.mini-btn.danger:hover {
+  background: #ffdede;
 }
-.mini-btn:hover{ background:#efe9ff; }
-.mini-btn.danger{ background:#ffecec; border-color:#ffd7d7; }
-.mini-btn.danger:hover{ background:#ffdede; }
 
-/* malo veći razmak na užim ekranima da traka ne “udari” u rub */
-@media (max-width: 420px){
-  .post-header-right{ right: 4px; }
+/* tijelo posta */
+.post-body {
+  font-size: clamp(1rem, 2.2vw, 1.125rem);
+  line-height: 1.9;
+  color: #222;
+  text-align: justify;
+}
+
+.post-body::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+.post-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 12px;
+  margin: 10px 0 16px;
+  object-fit: cover;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, .08);
+}
+
+/* malo veći razmak na uskim ekranima da traka ne udara u rub */
+@media (max-width: 420px) {
+  .post-header-right {
+    right: 4px;
+  }
 }
 
 /* desktop: slika desno, tekst teče oko nje */
-@media (min-width:900px){
-  .post-image{
-    float:right;
-    width:min(520px, 40%);
-    margin:4px 0 14px 24px;                    /* razmak lijevo ispred teksta */
+@media (min-width: 900px) {
+  .post-image {
+    float: right;
+    width: min(520px, 40%);
+    margin: 4px 0 14px 24px;
     shape-outside: inset(0 round 12px);
   }
 }
 
-/* ===== ostalo/kompat sloj (ako ostanu stare klase u HTML-u) ===== */
-.meta{ display:flex; justify-content:flex-end; }
-.meta .date{
-  color:#9b8ac2; font-size:.9rem; background:#f6f3ff; border:1px solid #e6e1f5;
-  border-radius:999px; padding:4px 10px;
+.meta {
+  display: flex;
+  justify-content: flex-end;
 }
 
-/* onemogući stari flex layout ako je negdje ostao */
-.text, .image{ flex:none !important; padding:0 !important; }
-.post:nth-child(even){ flex-direction:initial !important; }
-.image img{ max-width:100%; height:auto; }
+.meta .date {
+  color: #9b8ac2;
+  font-size: .9rem;
+  background: #f6f3ff;
+  border: 1px solid #e6e1f5;
+  border-radius: 999px;
+  padding: 4px 10px;
+}
+
+.text,
+.image {
+  flex: none !important;
+  padding: 0 !important;
+}
+
+.post:nth-child(even) {
+  flex-direction: initial !important;
+}
+
+.image img {
+  max-width: 100%;
+  height: auto;
+}

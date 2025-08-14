@@ -1,27 +1,28 @@
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Router, NavigationEnd } from '@angular/router';
-import { filter } from 'rxjs/operators'; // Uvezi filter operator
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
   standalone: true,
-  styleUrl: './app.css',
-  template: `
-    <router-outlet></router-outlet>
-  `,
+  imports: [RouterOutlet],
+  styleUrls: ['./app.css'],
+  template: `<router-outlet></router-outlet>`,
 })
 export class App {
   constructor(private router: Router) {
-    this.router.events.subscribe(event => {
-      if (event instanceof NavigationEnd) {
-        setTimeout(() => {
+    // Nakon svake uspješne navigacije skrolaj na vrh,
+    // osim kad je otvoren mobilni meni (body.menu-open).
+    this.router.events
+      .pipe(filter((e): e is NavigationEnd => e instanceof NavigationEnd))
+      .subscribe(() => {
+        // Pričekaj jedan frame da se novi view izmjeri/posloži
+        requestAnimationFrame(() => {
           if (!document.body.classList.contains('menu-open')) {
             window.scrollTo({ top: 0, behavior: 'smooth' });
           }
-        }, 100);
-      }
-    });
+        });
+      });
   }
 }

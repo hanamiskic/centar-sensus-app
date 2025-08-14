@@ -1,10 +1,9 @@
-<!-- detaljidogadaja.component.html -->
-<!-- Back iznad kartice, poravnat sa sadržajem -->
+<!-- Back iznad kartice -->
 <div class="detail-back">
   <a href="" (click)="goBack($event)" class="back-button" aria-label="Natrag">&#x276E;</a>
 </div>
 
-<section class="event-detail" *ngIf="!notFound; else nf">
+<section class="event-detail" *ngIf="!notFound; else nf" [class.is-admin]="isAdmin">
   <div class="left">
     <header class="detail-header">
       <h1 class="title">{{ event?.naslov }}</h1>
@@ -43,12 +42,12 @@
     </dl>
   </div>
 
-  <!-- ⬇️ PREMJEŠTENO: Akcije ide iznad slike -->
+  <!-- Akcije iznad slike -->
   <div class="actions" *ngIf="isLoggedIn && isActive">
     <div class="capacity">
       <span class="label">Prijavljeno:</span>
       <span class="count">
-        <!-- BROJ PRIJAVLJENIH (klik adminu otvara modal) -->
+        <!-- broj prijavljenih (adminu je klikabilan) -->
         <ng-container *ngIf="isAdmin; else totalStatic">
           <button class="num-btn" type="button" title="Prikaži prijavljene" (click)="openRegistrationsModal()">
             {{ totalCount }}
@@ -68,7 +67,8 @@
       </span>
     </div>
 
-    <button class="reg-btn"
+    <button
+      class="reg-btn"
       [class.secondary]="isRegistered"
       [disabled]="regLoading || (!isRegistered && isFull)"
       (click)="onToggleRegistration()"
@@ -77,7 +77,6 @@
       <ng-template #odjava>Odjavi se</ng-template>
     </button>
   </div>
-  <!-- ⬆️ PREMJEŠTENO -->
 
   <aside class="right" *ngIf="event?.imageUrl">
     <img class="poster" [src]="event?.imageUrl" [alt]="event?.naslov" />
@@ -93,7 +92,7 @@
   </section>
 </ng-template>
 
-<!-- ===== ADMIN MODAL: popis + ručno dodani ===== -->
+<!-- ADMIN MODAL -->
 <div class="modal-backdrop" *ngIf="isAdmin && showRegModal" (click)="closeRegistrationsModal()"></div>
 
 <div class="modal" *ngIf="isAdmin && showRegModal" role="dialog" aria-modal="true">
@@ -125,9 +124,12 @@
           <input type="number" [value]="extraDraft" (input)="onExtraInput($event)" min="0" [max]="maxExtra" />
           <button type="button" (click)="incExtra()" [disabled]="extraDraft>=maxExtra || extraBusy">+</button>
         </div>
-        <button class="save-extra" type="button"
-                (click)="saveExtra()"
-                [disabled]="extraBusy || extraDraft<0 || extraDraft>maxExtra">
+        <button
+          class="save-extra"
+          type="button"
+          (click)="saveExtra()
+          "
+          [disabled]="extraBusy || extraDraft<0 || extraDraft>maxExtra">
           Spremi
         </button>
       </div>

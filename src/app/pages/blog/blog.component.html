@@ -30,7 +30,7 @@
       class="save-btn"
       (click)="addPost()"
       [disabled]="!isFormValid()"
-    >
+      type="button">
       Objavi
     </button>
 
@@ -39,11 +39,11 @@
       class="save-btn"
       (click)="saveEdit()"
       [disabled]="!canSaveEdit()"
-    >
+      type="button">
       Spremi izmjene
     </button>
 
-    <button class="cancel-btn" (click)="cancelEditOrClose()">Odustani</button>
+    <button class="cancel-btn" (click)="cancelEditOrClose()" type="button">Odustani</button>
   </div>
 </div>
 
@@ -55,17 +55,15 @@
       <div class="post-header-right">
         <span class="post-date">{{ formatDate(p.createdAt) }}</span>
         <div *ngIf="isAdmin" class="post-admin-actions">
-          <button class="mini-btn" (click)="startEdit(p)">✏️ Uredi</button>
-          <button class="mini-btn danger" (click)="deletePost(p)">🗑️ Obriši</button>
+          <button class="mini-btn" (click)="startEdit(p)" type="button">✏️ Uredi</button>
+          <button class="mini-btn danger" (click)="deletePost(p)" type="button">🗑️ Obriši</button>
         </div>
       </div>
     </header>
 
     <div class="post-body">
-      <img class="post-image" [src]="p.imageUrl" [alt]="p.title" />
-      <p class="post-text">
-        {{ p.content }}
-      </p>
+      <img *ngIf="p.imageUrl" class="post-image" [src]="p.imageUrl" [alt]="p.title" />
+      <p class="post-text">{{ p.content }}</p>
     </div>
   </article>
 </section>

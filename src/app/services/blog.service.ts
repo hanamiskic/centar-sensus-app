@@ -1,10 +1,22 @@
 import { Injectable, EnvironmentInjector, inject, runInInjectionContext } from '@angular/core';
 import {
-  Firestore, collection, doc, setDoc, getDocs, query, orderBy,
-  serverTimestamp, updateDoc, deleteDoc
+  Firestore,
+  collection,
+  doc,
+  setDoc,
+  getDocs,
+  query,
+  orderBy,
+  serverTimestamp,
+  updateDoc,
+  deleteDoc,
 } from '@angular/fire/firestore';
 import {
-  Storage, ref, uploadBytes, getDownloadURL, deleteObject
+  Storage,
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  deleteObject,
 } from '@angular/fire/storage';
 
 export interface BlogPost {
@@ -17,54 +29,53 @@ export interface BlogPost {
 
 @Injectable({ providedIn: 'root' })
 export class BlogService {
-  // helper za sigurno izvršavanje AngularFire poziva u injection kontekstu
+  // Sigurno izvršavanje AngularFire poziva u injection kontekstu
   private env = inject(EnvironmentInjector);
   private inCtx = <T>(fn: () => Promise<T>) => runInInjectionContext(this.env, fn);
 
   constructor(private db: Firestore, private storage: Storage) {}
 
+  /** Učitaj sve postove, sortirano po datumu DESC. */
   async listPosts(): Promise<BlogPost[]> {
     const colRef = collection(this.db, 'blog');
     const qy = query(colRef, orderBy('createdAt', 'desc'));
-
-    // ✅ wrap getDocs
     const snap = await this.inCtx(() => getDocs(qy));
 
     return snap.docs.map(d => {
       const data: any = d.data();
-      const createdAt: Date | null = data?.createdAt?.toDate?.() ?? null;
+      const createdAt: Date | null = data?.createdAt?.toDate?.() ?? null; // Timestamp → Date
       return {
         id: d.id,
         title: data?.title ?? '',
         content: data?.content ?? '',
         imageUrl: data?.imageUrl ?? '',
-        createdAt
+        createdAt,
       };
     });
   }
 
+  /** Dodaj novi post: upload slike → upis dokumenta s imageUrl i timestampovima. */
   async addPost(form: { title: string; content: string }, file: File): Promise<void> {
-    // 1) upload u Storage
-    const path = `blog/${Date.now()}_${file.name.replace(/\s+/g, '_')}`;
+    const safeName = file.name.replace(/\s+/g, '_');
+    const path = `blog/${Date.now()}_${safeName}`;
     const fileRef = ref(this.storage, path);
 
-    // ✅ wrap upload i getDownloadURL
-    await this.inCtx(() => uploadBytes(fileRef, file));
+    await this.inCtx(() => uploadBytes(fileRef, file, { contentType: file.type }));
     const imageUrl = await this.inCtx(() => getDownloadURL(fileRef));
 
-    // 2) upis u Firestore
     const newDocRef = doc(collection(this.db, 'blog'));
-
-    // ✅ wrap setDoc
-    await this.inCtx(() => setDoc(newDocRef, {
-      title: form.title.trim(),
-      content: form.content.trim(),
-      imageUrl,
-      createdAt: serverTimestamp(),
-      updatedAt: serverTimestamp()
-    }));
+    await this.inCtx(() =>
+      setDoc(newDocRef, {
+        title: form.title.trim(),
+        content: form.content.trim(),
+        imageUrl,
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
+      })
+    );
   }
 
+  /** Uredi postojeći post; ako je dodana nova slika, uploadaj je i obriši staru. */
   async updatePost(
     id: string,
     form: { title: string; content: string },
@@ -74,17 +85,16 @@ export class BlogService {
     let imageUrlToUse: string | undefined;
 
     if (newFile) {
-      const path = `blog/${Date.now()}_${newFile.name.replace(/\s+/g, '_')}`;
+      const safeName = newFile.name.replace(/\s+/g, '_');
+      const path = `blog/${Date.now()}_${safeName}`;
       const fileRef = ref(this.storage, path);
 
-      // ✅ wrap upload i getDownloadURL
-      await this.inCtx(() => uploadBytes(fileRef, newFile));
+      await this.inCtx(() => uploadBytes(fileRef, newFile, { contentType: newFile.type }));
       imageUrlToUse = await this.inCtx(() => getDownloadURL(fileRef));
 
       if (oldImageUrl) {
         try {
-          const oldRef = ref(this.storage, oldImageUrl);
-          // ✅ wrap deleteObject
+          const oldRef = ref(this.storage, oldImageUrl); // podržava i full download URL
           await this.inCtx(() => deleteObject(oldRef));
         } catch {
           /* ignore */
@@ -93,24 +103,24 @@ export class BlogService {
     }
 
     const docRef = doc(this.db, 'blog', id);
-    // ✅ wrap updateDoc
-    await this.inCtx(() => updateDoc(docRef, {
-      title: form.title.trim(),
-      content: form.content.trim(),
-      ...(imageUrlToUse ? { imageUrl: imageUrlToUse } : {}),
-      updatedAt: serverTimestamp()
-    }));
+    await this.inCtx(() =>
+      updateDoc(docRef, {
+        title: form.title.trim(),
+        content: form.content.trim(),
+        ...(imageUrlToUse ? { imageUrl: imageUrlToUse } : {}),
+        updatedAt: serverTimestamp(),
+      })
+    );
   }
 
+  /** Obriši post; potom (best-effort) obriši i sliku. */
   async deletePost(id: string, imageUrl?: string): Promise<void> {
     const docRef = doc(this.db, 'blog', id);
-    // ✅ wrap deleteDoc
     await this.inCtx(() => deleteDoc(docRef));
 
     if (imageUrl) {
       try {
         const imgRef = ref(this.storage, imageUrl);
-        // ✅ wrap deleteObject
         await this.inCtx(() => deleteObject(imgRef));
       } catch {
         /* ignore */
