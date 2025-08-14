@@ -1,0 +1,4 @@
+* text=auto eol=lf
+# (po želji) Windows skripte neka ostanu CRLF:
+*.bat text eol=crlf
+*.cmd text eol=crlf
