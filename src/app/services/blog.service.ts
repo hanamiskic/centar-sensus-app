@@ -123,7 +123,7 @@ export class BlogService {
         const imgRef = ref(this.storage, imageUrl);
         await this.inCtx(() => deleteObject(imgRef));
       } catch {
-        /* ignore */
+        //
       }
     }
   }

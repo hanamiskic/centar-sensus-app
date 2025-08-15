@@ -1,6 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { Firestore, doc, getDoc, setDoc } from '@angular/fire/firestore';
-import { sendPasswordResetEmail } from '@angular/fire/auth';
 import {
   Auth,
   createUserWithEmailAndPassword,
@@ -8,9 +7,8 @@ import {
   UserCredential,
   onAuthStateChanged,
 } from '@angular/fire/auth';
-// ⬇️ novo: uzmi getIdTokenResult iz Firebase Auth SDK-a
-import { getIdTokenResult } from 'firebase/auth';
-
+import { sendPasswordResetEmail } from '@angular/fire/auth';
+import { getIdTokenResult, Unsubscribe } from 'firebase/auth';
 import { BehaviorSubject } from 'rxjs';
 
 interface AppUser {
@@ -19,28 +17,40 @@ interface AppUser {
   fullName: string;
 }
 
+// minimalni oblik user dokumenta u Firestoreu
+type UserDoc = {
+  firstName?: string;
+  lastName?: string;
+};
+
 @Injectable({ providedIn: 'root' })
-export class AuthService {
+export class AuthService implements OnDestroy {
   private currentUserSubject = new BehaviorSubject<AppUser | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
 
-  // ⬇️ NOVO: admin observable
   private isAdminSubject = new BehaviorSubject<boolean>(false);
   public isAdmin$ = this.isAdminSubject.asObservable();
-  
 
+  private authUnsub: Unsubscribe | null = null;
 
   constructor(private auth: Auth, private firestore: Firestore) {
-    onAuthStateChanged(this.auth, async (user) => {
-      if (user) {
-        // fetch ime/prezime iz Firestorea (tvoj postojeći dio)
+    // reagiraj na promjene autentikacije
+    this.authUnsub = onAuthStateChanged(this.auth, async (user) => {
+      if (!user) {
+        this.currentUserSubject.next(null);
+        this.isAdminSubject.next(false);
+        return;
+      }
+
+      try {
+        // ime/prezime iz Firestorea (ako postoji dokument)
         const userRef = doc(this.firestore, 'users', user.uid);
         const snap = await getDoc(userRef);
-        const data = snap.data();
-        const firstName = data?.['firstName'] ?? '';
-        const lastName = data?.['lastName'] ?? '';
-        const fullName =
-          (firstName + ' ' + lastName).trim() || user.email || '';
+        const data = (snap.data() as UserDoc | undefined) ?? {};
+
+        const firstName = data.firstName ?? '';
+        const lastName = data.lastName ?? '';
+        const fullName = (firstName + ' ' + lastName).trim() || user.email || '';
 
         const appUser: AppUser = {
           uid: user.uid,
@@ -49,16 +59,31 @@ export class AuthService {
         };
         this.currentUserSubject.next(appUser);
 
-        // ⬇️ NOVO: učitaj i spremi admin claim
-        const token = await getIdTokenResult(user, true); // force refresh na ulazu
+        // učitaj admin claim (force refresh na ulazu)
+        const token = await getIdTokenResult(user, true);
         this.isAdminSubject.next(!!token.claims['admin']);
-      } else {
-        this.currentUserSubject.next(null);
+      } catch (err) {
+        console.error('onAuthStateChanged handler error:', err);
+        const appUser: AppUser = {
+          uid: user.uid,
+          email: user.email,
+          fullName: user.email || '',
+        };
+        this.currentUserSubject.next(appUser);
         this.isAdminSubject.next(false);
       }
     });
   }
 
+  ngOnDestroy(): void {
+    // sigurnosno odjavi listener ako se servis uništi (npr. u testovima)
+    if (this.authUnsub) {
+      this.authUnsub();
+      this.authUnsub = null;
+    }
+  }
+
+  // registracija/login/logout
   register(email: string, password: string): Promise<UserCredential> {
     return createUserWithEmailAndPassword(this.auth, email, password);
   }
@@ -67,36 +92,55 @@ export class AuthService {
     return signInWithEmailAndPassword(this.auth, email, password);
   }
 
-  saveUserData(uid: string, data: any): Promise<void> {
-    const userRef = doc(this.firestore, 'users', uid);
-    return setDoc(userRef, data);
-  }
-
   logout(): Promise<void> {
     return this.auth.signOut();
   }
 
+  // spremi/kreiraj dokument korisnika u Firestoreu
+  saveUserData(uid: string, data: Record<string, unknown>): Promise<void> {
+    const userRef = doc(this.firestore, 'users', uid);
+    return setDoc(userRef, data);
+  }
+
+  // reset lozinke
   resetPassword(email: string): Promise<void> {
-  return sendPasswordResetEmail(this.auth, email);
-}
+    return sendPasswordResetEmail(this.auth, email);
+  }
 
-
-  // ⬇️ NOVO: ručno osvježi claimove (pozovi nakon promocije/democije)
+  // ručno osvježi custom claimove (npr. nakon promjene uloga)
   async refreshClaims(): Promise<void> {
     const user = this.auth.currentUser;
     if (!user) {
       this.isAdminSubject.next(false);
       return;
     }
-    const token = await getIdTokenResult(user, true);
-    this.isAdminSubject.next(!!token.claims['admin']);
+    try {
+      const token = await getIdTokenResult(user, true);
+      this.isAdminSubject.next(!!token.claims['admin']);
+    } catch (err) {
+      console.error('refreshClaims error:', err);
+      this.isAdminSubject.next(false);
+    }
   }
 
-  // ⬇️ (Opcionalno) dohvati sve claimove ako ti trebaju za debug
+  // pomoćno: dohvat svih claimova 
   async getCurrentClaims(): Promise<Record<string, unknown> | null> {
     const user = this.auth.currentUser;
     if (!user) return null;
-    const token = await getIdTokenResult(user, true);
-    return token.claims ?? {};
+    try {
+      const token = await getIdTokenResult(user, true);
+      return token.claims ?? {};
+    } catch (err) {
+      console.error('getCurrentClaims error:', err);
+      return null;
+    }
+  }
+
+  get currentUserSnapshot(): AppUser | null {
+    return this.currentUserSubject.value;
+  }
+
+  get isAdminSnapshot(): boolean {
+    return this.isAdminSubject.value;
   }
 }

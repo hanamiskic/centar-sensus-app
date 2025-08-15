@@ -1,4 +1,4 @@
-
+/* Header s naslovom i gumbom za povratak */
 .detalji-header {
   padding: clamp(2rem, 0.2vh, 6rem) 5vw clamp(0.5rem, 1vh, 1rem);
   text-align: center;
@@ -10,6 +10,21 @@
   color: #b39adc;
 }
 
+.back-button {
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  color: #b39adc;
+  font-weight: bold;
+  font-size: clamp(1.2rem, 3vw, 2rem);
+  text-align: left;
+  transition: transform 0.2s ease;
+}
+.back-button:hover { transform: translateX(-5px); }
+.back-button:focus { outline: none; box-shadow: 0 0 0 3px rgba(179,154,220,.35); border-radius: 8px; }
+
+/* Kontejner za listu podprograma */
 .podprogrami-container {
   padding: 1rem clamp(1.5rem, 5vw, 2.5rem) 4rem;
   max-width: 1300px;
@@ -19,28 +34,26 @@
   gap: 1rem;
 }
 
-
+/* Kartica podprograma */
 .podprogram {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.5rem; 
+  gap: 1.5rem;
   padding: 1rem;
   background-color: #ffffff;
   border-radius: 15px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
   transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
-
-.podprogram:nth-child(even) {
-  flex-direction: column-reverse;
-}
+.podprogram:nth-child(even) { flex-direction: column-reverse; }
 
 .podprogram:hover {
   transform: translateY(-5px);
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
 }
 
+/* Slika unutar kartice */
 .podprogram img {
   width: 100%;
   max-width: 500px;
@@ -50,18 +63,15 @@
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease-in-out;
 }
+.podprogram img:hover { transform: scale(1.02); }
 
-.podprogram img:hover {
-  transform: scale(1.02);
-}
-
+/* Tipografija teksta */
 .tekst h2 {
   color: #b39adc;
   font-size: clamp(1.3rem, 2vw, 2.1rem);
   margin-bottom: 0.5rem;
   font-weight: 600;
 }
-
 .tekst p {
   font-size: clamp(1rem, 2.5vw, 1.2rem);
   line-height: 1.8;
@@ -69,51 +79,27 @@
   text-align: justify;
 }
 
-.back-button {
-  cursor: pointer;
-  color: #b39adc;
-  font-weight: bold;
-  font-size: clamp(1.2rem, 3vw, 2rem); 
-  text-align: left;
-  transition: transform 0.2s ease;
-}
-
-.back-button:hover {
-  transform: translateX(-5px);
-}
-
-
+/* Veći ekrani: veći razmaci i layout u redovima */
 @media (min-width: 768px) {
-
   .detalji-header {
-  padding: clamp(4rem, 0.2vh, 6rem) 5vw clamp(0.5rem, 1vh, 1rem);
-  text-align: center;
-}
-
-  
-  .podprogrami-container {
-    gap: 6rem;
+    padding: clamp(4rem, 0.2vh, 6rem) 5vw clamp(0.5rem, 1vh, 1rem);
+    text-align: center;
   }
-  
+
+  .podprogrami-container { gap: 6rem; }
+
   .podprogram {
     flex-direction: row;
     gap: 4rem;
     padding: 2rem;
   }
-  
-  .podprogram:nth-child(even) {
-    flex-direction: row-reverse;
-  }
 
-  .tekst {
-    flex: 1;
-    padding: 0 2rem;
-  }
+  .podprogram:nth-child(even) { flex-direction: row-reverse; }
 
-  .slika {
-    flex: 1.2;
-  }
+  .tekst { flex: 1; padding: 0 2rem; }
+  .slika { flex: 1.2; }
 
+  /* na većim ekranima slika puni svoju kolonu */
   .slika img {
     max-width: none;
     width: 100%;

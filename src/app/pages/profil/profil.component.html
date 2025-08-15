@@ -1,71 +1,81 @@
 <section class="profil-wrapper" *ngIf="user$ | async as user">
-  <!-- HEADER -->
-  <div class="profil-header">
+  <!-- PROFIL: Header s osnovnim informacijama korisnika -->
+  <header class="profil-header">
     <div class="profil-info">
       <h1 class="ime-prezime">{{ user.fullName }}</h1>
       <p class="email">{{ user.email }}</p>
     </div>
-  </div>
+  </header>
 
-  <!-- MOJI DOGAĐAJI -->
-  <div class="moji-dogadaji">
+  <!--  MOJI DOGAĐAJI  -->
+  <section class="moji-dogadaji">
     <h2 class="sekcija-naslov">Moji događaji</h2>
 
-    <section class="events-section">
-      <h3 class="sekcija-naslov sub">Aktivni događaji</h3>
-      <div *ngIf="loadingMyEvents" class="admin-users__loading">Učitavanje…</div>
+    <!-- Aktivni -->
+    <ng-container
+      *ngTemplateOutlet="eventsBlock; context: {
+        title: 'Aktivni događaji',
+        list: activeMyEvents,
+        emptyMsg: 'Nema aktivnih prijava.'
+      }">
+    </ng-container>
 
-      <ng-container *ngIf="!loadingMyEvents && activeMyEvents.length; else noActive">
-        <div class="events-grid">
-          <app-event-card *ngFor="let e of activeMyEvents; trackBy: trackByEventId" [event]="e" [isAdmin]="false"
-            from="profil">
-          </app-event-card>
+    <!-- Završeni -->
+    <ng-container
+      *ngTemplateOutlet="eventsBlock; context: {
+        title: 'Završeni događaji',
+        list: finishedMyEvents,
+        emptyMsg: 'Nema završenih prijava.'
+      }">
+    </ng-container>
 
-        </div>
-      </ng-container>
+    <!-- Zajednički template za listanje događaja -->
+    <ng-template #eventsBlock let-title="title" let-list="list" let-emptyMsg="emptyMsg">
+      <section class="events-section">
+        <h3 class="sekcija-naslov sub">{{ title }}</h3>
 
-      <ng-template #noActive>
-        <p class="admin-users__loading" *ngIf="!loadingMyEvents">Nema aktivnih prijava.</p>
-      </ng-template>
-    </section>
+        <!-- Status učitavanja (aria-live za pristupačnost) -->
+        <div *ngIf="loadingMyEvents" class="status loading" role="status" aria-live="polite">Učitavanje…</div>
 
-    <section class="events-section">
-      <h3 class="sekcija-naslov sub">Završeni događaji</h3>
-      <div *ngIf="loadingMyEvents" class="admin-users__loading">Učitavanje…</div>
+        <!-- Sadržaj ili prazno stanje -->
+        <ng-container *ngIf="!loadingMyEvents && list?.length; else noItems">
+          <div class="events-grid">
+            <app-event-card
+              *ngFor="let e of list; trackBy: trackByEventId"
+              [event]="e"
+              [isAdmin]="false"
+              from="profil">
+            </app-event-card>
+          </div>
+        </ng-container>
 
-      <ng-container *ngIf="!loadingMyEvents && finishedMyEvents.length; else noFinished">
-        <div class="events-grid">
-          <app-event-card *ngFor="let e of finishedMyEvents; trackBy: trackByEventId" [event]="e" [isAdmin]="false"
-            from="profil">
-          </app-event-card>
-        </div>
-      </ng-container>
+        <ng-template #noItems>
+          <p class="status empty" *ngIf="!loadingMyEvents">{{ emptyMsg }}</p>
+        </ng-template>
+      </section>
+    </ng-template>
+  </section>
 
-      <ng-template #noFinished>
-        <p class="admin-users__loading" *ngIf="!loadingMyEvents">Nema završenih prijava.</p>
-      </ng-template>
-    </section>
-  </div>
-
-  <!-- ADMIN: KORISNICI (ostavljeno) -->
-  <div *ngIf="isAdmin" class="admin-users">
+  <!--  ADMIN: KORISNICI -->
+  <section *ngIf="isAdmin" class="admin-users">
     <h2 class="sekcija-naslov">Korisnici</h2>
 
-    <div *ngIf="loadingUsers" class="admin-users__loading">Učitavanje…</div>
+    <div *ngIf="loadingUsers" class="status loading" role="status" aria-live="polite">Učitavanje…</div>
 
     <div class="table-wrap" *ngIf="!loadingUsers">
       <table class="users-table">
         <thead>
           <tr>
-            <th>Email</th>
-            <th>Ime</th>
-            <th>Prezime</th>
-            <th>Član</th>
-            <th>Telefon</th>
-            <th>Registriran</th>
-            <th class="actions-col">Akcije</th>
+            <th scope="col">Email</th>
+            <th scope="col">Ime</th>
+            <th scope="col">Prezime</th>
+            <th scope="col">Član</th>
+            <th scope="col">Telefon</th>
+            <th scope="col">Registriran</th>
+            <th scope="col" class="actions-col">Akcije</th>
           </tr>
         </thead>
+
         <tbody>
           <tr *ngFor="let u of pagedUsers; trackBy: trackByUid">
             <td>{{ u.email }}</td>
@@ -75,20 +85,26 @@
             <td>{{ u.phone || '—' }}</td>
             <td>{{ formatDate(u.createdAt) }}</td>
             <td class="actions-col">
-              <button class="btn-delete" (click)="removeUser(u.uid)" [disabled]="u.uid === currentUid"
+              <button
+                type="button"
+                class="btn-delete"
+                (click)="removeUser(u.uid)"
+                [disabled]="u.uid === currentUid"
                 [title]="u.uid === currentUid ? 'Ne možeš obrisati vlastiti račun' : 'Obriši korisnika'">
                 🗑️ Obriši
               </button>
             </td>
-
           </tr>
+
+          <!-- Prazno stanje tablice -->
           <tr *ngIf="users.length === 0">
             <td colspan="7" class="empty">Nema korisnika.</td>
           </tr>
         </tbody>
       </table>
 
-      <div class="pagination">
+      <!-- Paginacija -->
+      <div class="pagination" *ngIf="users.length">
         <div class="rows-per-page">
           <label for="rpp">Redova:</label>
           <select id="rpp" (change)="changePageSize($any($event.target).value)">
@@ -99,16 +115,14 @@
           </select>
         </div>
 
-        <div class="page-info" *ngIf="users.length">
-          Prikaz {{ showingFrom }}–{{ showingTo }} od {{ users.length }}
-        </div>
+        <div class="page-info">Prikaz {{ showingFrom }}–{{ showingTo }} od {{ users.length }}</div>
 
         <div class="pager-buttons">
-          <button (click)="prevPage()" [disabled]="pageIndex === 0">« Prethodna</button>
+          <button type="button" (click)="prevPage()" [disabled]="pageIndex === 0">« Prethodna</button>
           <span>Stranica {{ pageIndex + 1 }} / {{ pageCount }}</span>
-          <button (click)="nextPage()" [disabled]="pageIndex + 1 >= pageCount">Sljedeća »</button>
+          <button type="button" (click)="nextPage()" [disabled]="pageIndex + 1 >= pageCount">Sljedeća »</button>
         </div>
       </div>
     </div>
-  </div>
+  </section>
 </section>
