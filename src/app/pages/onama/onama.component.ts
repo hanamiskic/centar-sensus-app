@@ -5,9 +5,8 @@ import { Component } from '@angular/core';
   standalone: true,
   imports: [],
   templateUrl: './onama.component.html',
-  styleUrl: './onama.component.css'
+  styleUrls: ['./onama.component.css'],
 })
 export class OnamaComponent {
-  // Component logic goes here
 
 }

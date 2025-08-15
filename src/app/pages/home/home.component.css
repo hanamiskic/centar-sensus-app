@@ -1,9 +1,11 @@
+/* Reset (lokalno za komponentu) */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+/* :host — širina i pozadina sekcije */
 :host {
   display: block;
   width: 100vw;
@@ -13,6 +15,7 @@
   background-color: #CEC3E1;
 }
 
+/* HERO */
 .hero {
   position: relative;
   width: 100vw;
@@ -25,8 +28,7 @@
 
 .hero-img {
   position: absolute;
-  top: 0;
-  left: 0;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -36,10 +38,7 @@
 
 .overlay {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   backdrop-filter: blur(2px);
   background-color: rgba(0, 0, 0, 0.2);
   z-index: 1;
@@ -56,16 +55,9 @@
 
 .title-right {
   font-size: clamp(1.4rem, 6vw, 3rem);
-  color: white;
-  text-shadow: 0.2vw 0.2vw 0.5vw rgba(0, 0, 0, 0.6);
+  color: #fff;
   line-height: 1.2;
-}
-
-.title-right {
-  font-size: clamp(1.4rem, 6vw, 3rem);
-  color: white;
   text-shadow: 0.2vw 0.2vw 0.5vw rgba(0, 0, 0, 0.6);
-  line-height: 1.2;
   transition: transform 0.3s ease, text-shadow 0.3s ease;
   cursor: default;
 }
@@ -76,27 +68,11 @@
 }
 
 .moto {
-  color: white;
+  color: #fff;
   font-size: clamp(1.2rem, 3.5vw, 2.2rem);
   font-weight: 600;
   margin-top: 1rem;
   text-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
-}
-
-.cta-button {
-  margin-top: 2vh;
-  padding: 1vh 3vw;
-  background-color: #4b0082;
-  color: white;
-  border: none;
-  border-radius: 3vw;
-  font-size: clamp(0.8rem, 1.2vw, 1.2rem);
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.cta-button:hover {
-  background-color: #360061;
 }
 
 @media (min-width: 1024px) {
@@ -105,9 +81,58 @@
   }
 }
 
+/* ABOUT */
+.about-section-modern {
+  background-color: #f5f1f9;
+  padding: 5vh 7vw;
+  color: #2d2d2d;
+}
+
+.about-container {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.about-text p {
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  line-height: 1.7;
+  margin-bottom: 1rem;
+  max-width: 60ch;
+  text-align: justify;
+}
+
+.about-image img {
+  width: 100%;
+  max-width: 500px;
+  border-radius: 12px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+}
+
+@media (min-width: 768px) {
+  .about-container {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .about-text {
+    flex: 1;
+  }
+
+  .about-image {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+  }
+}
+
+/* PROGRAMI */
 .programs {
   background-color: #fcfbfb;
-  padding: 3vh 5vw 6vh; 
+  padding: 3vh 5vw 6vh;
   text-align: center;
 }
 
@@ -127,40 +152,7 @@
 }
 
 .program-card {
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  justify-content: space-between;
-  height: 100%;
-}
-
-.program-card button {
-  margin-top: auto;
-  align-self: center;
-}
-
-@keyframes fadeSlideUp {
-  0% {
-    opacity: 0;
-    transform: translateY(40px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-moto {
-  animation: fadeSlideUp 1.2s ease-out 0.6s both;
-}
-
-.program-card {
-  background: white;
+  background: #fff;
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   padding: 1.5rem;
@@ -198,76 +190,47 @@
   margin-bottom: 1.5rem;
 }
 
+.program-card button {
+  margin-top: auto;
+  align-self: center;
+}
+
 .program-btn {
   background-color: #b39adc;
-  color: white;
+  color: #fff;
   padding: 1rem 2rem;
   font-size: clamp(1rem, 1.6vw, 1.2rem);
   border: none;
   border-radius: 14px;
   cursor: pointer;
   font-weight: 600;
-  transition: background-color 0.3s ease, transform 0.2s ease;
   white-space: nowrap;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
-
 
 .program-btn:hover {
   background-color: #9e84c8;
 }
 
-.about-section-modern {
-  background-color: #f5f1f9;
-  padding: 5vh 7vw;
-  color: #2d2d2d;
+.program-btn:focus-visible {
+  outline: 2px solid rgba(179, 154, 220, .55);
+  outline-offset: 3px;
+  border-radius: 14px;
 }
 
-.about-container {
-  display: flex;
-  flex-direction: column;
-  gap: 3rem;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.about-text h2 {
-  font-size: clamp(2rem, 5vw, 2.8rem);
-  color: #b39adc;
-  margin-bottom: 1rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.about-text p {
-  font-size: clamp(1rem, 2.5vw, 1.2rem);
-  line-height: 1.7;
-  margin-bottom: 1rem;
-  max-width: 60ch;
-  text-align: justify;
-}
-
-.about-image img {
-  width: 100%;
-  max-width: 500px;
-  border-radius: 12px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
-}
-
-@media (min-width: 768px) {
-  .about-container {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
+/* Animacija za moto */
+@keyframes fadeSlideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
   }
 
-  .about-text {
-    flex: 1;
+  100% {
+    opacity: 1;
+    transform: translateY(0);
   }
+}
 
-  .about-image {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-  }
+.animate-moto {
+  animation: fadeSlideUp 1.2s ease-out 0.6s both;
 }

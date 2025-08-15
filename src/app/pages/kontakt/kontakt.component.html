@@ -1,25 +1,38 @@
-<section class="contact-section">
-  <h1>📞 Kontaktirajte nas</h1>
+<section class="contact-section" aria-labelledby="contact-title">
+  <h1 id="contact-title">📞 Kontaktirajte nas</h1>
 
   <div class="contact-info">
-    <p><strong>Email: </strong> <a href="mailto:info&#64;centarsensus.hr">info&#64;centarsensus.hr</a></p>
-    <p><strong>Telefon: </strong> <a href="tel:095222222">+385 95 222 222</a></p>
+    <p>
+      <strong>Email: </strong>
+      <a href="mailto:info&#64;centarsensus.hr">info&#64;centarsensus.hr</a>
+    </p>
+
+    <!-- tel: u međunarodnom formatu; prikaz ostaje isti -->
+    <p>
+      <strong>Telefon: </strong>
+      <a href="tel:+38595222222">+385 95 222 222</a>
+    </p>
+
     <p>Sesvete, Zagreb</p>
     <p class="note">Možete nas kontaktirati putem emaila ili telefonski. Svi upiti su dobrodošli.</p>
   </div>
 
-  <div class="contact-icons">
-    <a href="mailto:info@centarsensus.hr" title="Pošalji email">
+  <div class="contact-icons" aria-label="Društvene mreže i email">
+    <a href="mailto:info@centarsensus.hr" title="Pošalji email" aria-label="Pošalji email">
       <i class="fa-solid fa-envelope"></i>
     </a>
-    <a href="https://www.facebook.com/share/1BqLdN1csb/" target="_blank" aria-label="Facebook">
+    <a href="https://www.facebook.com/share/1BqLdN1csb/"
+       target="_blank" rel="noopener noreferrer" aria-label="Facebook">
       <i class="fab fa-facebook-f"></i>
     </a>
-    <a href="https://www.instagram.com/centarsensus/?igsh=MTV6emU1ZjRlb2d0cw%3D%3D#" target="_blank" aria-label="Instagram">
+    <a href="https://www.instagram.com/centarsensus/?igsh=MTV6emU1ZjRlb2d0cw%3D%3D#"
+       target="_blank" rel="noopener noreferrer" aria-label="Instagram">
       <i class="fab fa-instagram"></i>
     </a>
   </div>
 </section>
+
+<!-- Hero slika ispod sekcije -->
 <div class="contact-image-wrapper">
-  <img src="assets/hero (7).jpg" alt="Kontakt ilustracija" />
+  <img src="assets/hero (7).jpg" alt="Kontakt ilustracija" loading="lazy" />
 </div>

@@ -5,9 +5,7 @@
   color: #2d2d2d;
 }
 
-.justify-text {
-  text-align: justify;
-}
+.justify-text { text-align: justify; }
 
 .section-block {
   background-color: #fcfbfb;
@@ -16,14 +14,12 @@
   margin-bottom: 2rem;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  
 }
 
 .section-block:hover {
   transform: translateY(-8px);
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
 }
-
 
 .section-block h2 {
   font-size: clamp(1.6rem, 4vw, 2.5rem);
@@ -42,59 +38,39 @@
   margin: 0.5rem 0 1rem;
 }
 
-.section-block ul li {
-  margin-bottom: 0.4rem;
-}
+.section-block ul li { margin-bottom: 0.4rem; }
 
 .section-block a {
   color: #b39adc;
-  text-decoration: underline;
-}
-
-.section-block a:hover {
   text-decoration: none;
+  transition: color .2s ease, background-color .2s ease;
+  border-radius: .25rem;
+}
+.section-block a:hover,
+.section-block a:active {
+  color: #9164d9;
+  background-color: rgba(179, 154, 220, 0.12);
+}
+.section-block a:focus-visible {
+  outline: 2px solid rgba(179, 154, 220, 0.55);
+  outline-offset: 2px;
+  border-radius: .25rem;
 }
 
-.donate {
-  border: 2px dashed #b39adc;
-  background-color: #f6f2ff;
-}
-
-@media (max-width: 700px) {
-
-  .about-section {
-    padding: 1rem 5vw;
-  }
-
-  .section-block {
-    padding: 1rem;
-  }
-
-  .section-block h2 {
-    font-size: clamp(1.4rem, 5vw, 2rem);
-  }
-
-  .section-block p,
-  .section-block ul li {
-    font-size: clamp(0.95rem, 3vw, 1.1rem);
-  }
-}
-
+/* DONATE blok — spojen u jedan set pravila */
 .donate {
   padding: 2rem 1rem;
-  background-color: #f9f9f9;
+  background-color: #f6f2ff;
+  border: 2px dashed #b39adc;
   border-radius: 1rem;
   box-shadow: 0 0 12px rgba(0, 0, 0, 0.05);
 }
-
 .donate h2 {
   text-align: center;
   font-size: 1.8rem;
   margin-bottom: 1rem;
 }
-
 .donate p {
-
   font-size: clamp(1rem, 2.5vw, 1.2rem);
   line-height: 1.6;
   margin-bottom: 1rem;
@@ -103,20 +79,26 @@
   margin-right: auto;
 }
 
-.center-text {
-  text-align: center;
-}
+.center-text { text-align: center; }
 
 .qr-code {
   margin: 2rem auto;
   max-width: 300px;
   width: 100%;
 }
-
 .qr-code img {
   width: 100%;
   height: auto;
   display: block;
   border-radius: 0.5rem;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+  .about-section { padding: 1rem 5vw; }
+  .section-block { padding: 1rem; }
+  .section-block h2 { font-size: clamp(1.4rem, 5vw, 2rem); }
+  .section-block p,
+  .section-block ul li { font-size: clamp(0.95rem, 3vw, 1.1rem); }
 }

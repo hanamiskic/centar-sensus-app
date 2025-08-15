@@ -1,52 +1,62 @@
 <h1 class="gallery-header">🖼️ Galerija</h1>
 
-<!-- Admin dio -->
+<!-- Admin: upload -->
 <div *ngIf="isAdmin" class="upload-container">
-  <input type="file" (change)="onFileSelected($event)" />
-  <button (click)="uploadImage()" [disabled]="!selectedFile">Dodaj sliku</button>
+  <input type="file" (change)="onFileSelected($event)" aria-label="Odaberi sliku za upload" />
+  <button type="button" (click)="uploadImage()" [disabled]="!selectedFile">Dodaj sliku</button>
 </div>
 
-<!-- grid -->
+<!-- Grid s kvadratnim ćelijama -->
 <div class="grid">
   <div class="item" *ngFor="let img of images; let i = index">
-    <!-- Lazy-load + thumb -->
+    <!-- Thumbnail (lazy) – klik otvara modal -->
     <img
       [src]="getThumb(img)"
-      alt="Slika"
+      alt="Slika iz galerije"
       loading="lazy"
       (click)="openModal(i)"
     />
 
-    <!-- Gumb za brisanje samo adminu -->
+    <!-- Brisanje (samo admin) -->
     <button
       *ngIf="isAdmin"
       class="delete-btn"
+      type="button"
       (click)="deleteImage(img)"
-    >
-      🗑
-    </button>
+      aria-label="Obriši sliku"
+      title="Obriši sliku"
+    >🗑</button>
   </div>
 </div>
 
-<!-- modal -->
-<div class="modal" *ngIf="selectedIndex !== null" (click)="closeModal()">
+<!-- Modal -->
+<div
+  class="modal"
+  *ngIf="selectedIndex !== null"
+  (click)="closeModal()"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Pregled slike"
+>
   <div
     class="modal-content"
     (click)="$event.stopPropagation()"
     (touchstart)="onTouchStart($event)"
     (touchend)="onTouchEnd($event)"
   >
-    <button class="close" (click)="closeModal()">×</button>
+    <button class="close" type="button" (click)="closeModal()" aria-label="Zatvori">×</button>
 
-    <!-- u modalu otvori full verziju -->
+    <!-- Full slika u modalu -->
     <img
       [src]="getFull(images[selectedIndex!])"
       alt="Pregled slike"
+      decoding="async"
     />
 
-    <div class="controls">
-      <button (click)="prevImage()">⟨</button>
-      <button (click)="nextImage()">⟩</button>
+    <!-- Navigacija -->
+    <div class="controls" aria-hidden="false">
+      <button type="button" (click)="prevImage()" aria-label="Prethodna slika">⟨</button>
+      <button type="button" (click)="nextImage()" aria-label="Sljedeća slika">⟩</button>
     </div>
   </div>
 </div>

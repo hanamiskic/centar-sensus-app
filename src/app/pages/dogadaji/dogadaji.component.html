@@ -2,19 +2,19 @@
 
 <!-- Admin: gumb za dodavanje -->
 <div *ngIf="isAdmin" class="admin-actions">
-  <button class="primary-btn" (click)="showForm = !showForm">
+  <button class="primary-btn" type="button" (click)="showForm = !showForm">
     {{ showForm ? 'Zatvori formu' : '➕ Dodaj događaj' }}
   </button>
 </div>
 
 <!-- FORMA: DODAVANJE -->
 <div *ngIf="showForm && isAdmin" class="event-form">
-  <div>
+  <div class="field">
     <label>Naslov događaja</label>
     <input [(ngModel)]="formData.naslov" type="text" />
   </div>
 
-  <div>
+  <div class="field">
     <label>Ciljna populacija:</label>
     <select [(ngModel)]="formData.ciljnaPopulacija">
       <option value="SVI">SVI</option>
@@ -27,46 +27,49 @@
     </select>
   </div>
 
-  <div>
+  <div class="field">
     <label>Slika</label>
-    <input type="file" (change)="onFileSelected($event)" />
+    <input type="file" accept="image/*" (change)="onFileSelected($event)" />
   </div>
 
-  <div>
+  <div class="field">
     <label>Opis</label>
     <textarea [(ngModel)]="formData.opis"></textarea>
   </div>
 
-  <div>
+  <div class="field">
     <label>Datum i vrijeme</label>
     <input [(ngModel)]="formData.datumVrijeme" type="datetime-local" />
   </div>
 
-  <div>
+  <div class="field">
     <label>Mjesto održavanja</label>
     <input [(ngModel)]="formData.mjesto" type="text" />
   </div>
 
-  <div>
+  <div class="field">
     <label>Maksimalan broj sudionika</label>
-    <input [(ngModel)]="formData.maxSudionika" type="number" min="1" step="1"
-           (keydown)="blockNonNumericKey($event)" (input)="normalizeMaxSudionika()" />
+    <input
+      [(ngModel)]="formData.maxSudionika"
+      type="number" min="1" step="1"
+      (keydown)="blockNonNumericKey($event)"
+      (input)="normalizeMaxSudionika()" />
   </div>
 
   <div class="form-buttons">
-    <button class="save-btn" (click)="addEvent()" [disabled]="!isFormValid()">Spremi</button>
-    <button class="cancel-btn" (click)="showForm=false">Odustani</button>
+    <button class="save-btn" type="button" (click)="addEvent()" [disabled]="!isFormValid()">Spremi</button>
+    <button class="cancel-btn" type="button" (click)="showForm=false">Odustani</button>
   </div>
 </div>
 
 <!-- FORMA: UREĐIVANJE -->
 <div *ngIf="isAdmin && editingId" class="event-form">
-  <div>
+  <div class="field">
     <label>Naslov događaja</label>
     <input [(ngModel)]="editData.naslov" type="text" />
   </div>
 
-  <div>
+  <div class="field">
     <label>Ciljna populacija:</label>
     <select [(ngModel)]="editData.ciljnaPopulacija">
       <option value="SVI">SVI</option>
@@ -79,35 +82,37 @@
     </select>
   </div>
 
-  <div>
+  <div class="field">
     <label>Nova slika (opcionalno)</label>
-    <input type="file" (change)="onEditFileSelected($event)" />
+    <input type="file" accept="image/*" (change)="onEditFileSelected($event)" />
   </div>
 
-  <div>
+  <div class="field">
     <label>Opis</label>
     <textarea [(ngModel)]="editData.opis"></textarea>
   </div>
 
-  <div>
+  <div class="field">
     <label>Datum i vrijeme</label>
     <input [(ngModel)]="editData.datumVrijeme" type="datetime-local" />
   </div>
 
-  <div>
+  <div class="field">
     <label>Mjesto održavanja</label>
     <input [(ngModel)]="editData.mjesto" type="text" />
   </div>
 
-  <div>
+  <div class="field">
     <label>Maksimalan broj sudionika</label>
-    <input [(ngModel)]="editData.maxSudionika" type="number" min="1" step="1"
-           (keydown)="blockNonNumericKey($event)" />
+    <input
+      [(ngModel)]="editData.maxSudionika"
+      type="number" min="1" step="1"
+      (keydown)="blockNonNumericKey($event)" />
   </div>
 
   <div class="form-buttons">
-    <button class="save-btn" (click)="saveEdit()" [disabled]="!isEditValid()">Spremi izmjene</button>
-    <button class="cancel-btn" (click)="cancelEdit()">Odustani</button>
+    <button class="save-btn" type="button" (click)="saveEdit()" [disabled]="!isEditValid()">Spremi izmjene</button>
+    <button class="cancel-btn" type="button" (click)="cancelEdit()">Odustani</button>
   </div>
 </div>
 
@@ -115,12 +120,12 @@
 <section class="events-filters">
   <div class="filters-row">
     <span class="filters-title"><strong>Filtriraj:</strong></span>
+
     <label>Mjesec održavanja:</label>
     <select [(ngModel)]="filters.month">
       <option value="">Svi mjeseci</option>
       <option *ngFor="let m of months" [value]="m.value">{{ m.label | uppercase }}</option>
     </select>
-
 
     <label>Ciljna populacija:</label>
     <select [(ngModel)]="filters.populacija">
@@ -135,7 +140,9 @@
       <option value="full">POPUNJENO</option>
     </select>
 
-    <button class="filter-reset" (click)="resetFilters()" *ngIf="filters.month || filters.populacija || filters.status">
+    <button class="filter-reset" type="button"
+            (click)="resetFilters()"
+            *ngIf="filters.month || filters.populacija || filters.status">
       ✖️ Resetiraj
     </button>
   </div>

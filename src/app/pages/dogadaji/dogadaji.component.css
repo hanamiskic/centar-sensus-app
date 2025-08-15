@@ -1,5 +1,5 @@
-/* ===== Naslov ===== */
-.events-header{
+/* Naslov */
+.events-header {
   padding: clamp(1rem, 3vh, 4rem) clamp(1rem, 5vw, 4rem) 0;
   font-size: 1.6rem;
   font-weight: 700;
@@ -7,37 +7,50 @@
   margin-top: clamp(1rem, 3vh, 3rem);
 }
 
-/* ========== STILIZIRANJE FORME ========== */
-.event-form{
+/* Forma za događaj */
+.event-form {
   margin: 0 clamp(1rem, 5vw, 4rem) 1rem;
-  background:#f9f9ff;
-  border:1px solid #e6e1f5;
-  border-radius:14px;
-  padding:16px;
-  box-shadow:0 1px 6px rgba(0,0,0,.06);
+  background: #f9f9ff;
+  border: 1px solid #e6e1f5;
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 1px 6px rgba(0,0,0,.06);
 
-  display:grid;
-  gap:12px;
-  grid-template-columns:1fr; /* mobitel default */
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 1fr; /* mobitel default */
 }
-.event-form > .field{ display:flex; flex-direction:column; gap:6px; }
-.event-form label{ display:block; margin:0; color:#6f5b94; font-size:.92rem; }
+
+.event-form > .field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.event-form label {
+  display: block;
+  margin: 0;
+  color: #6f5b94;
+  font-size: .92rem;
+}
+
 .event-form input[type="text"],
 .event-form input[type="number"],
 .event-form input[type="datetime-local"],
 .event-form textarea,
-.event-form select{
-  width:100%;
-  padding:10px 12px;
-  border:1px solid #d9d6e8;
-  border-radius:10px;
-  background:#fff;
-  font-size:.95rem;
-  outline:none;
-  transition:border-color .15s ease, box-shadow .15s ease;
+.event-form select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d9d6e8;
+  border-radius: 10px;
+  background: #fff;
+  font-size: .95rem;
+  outline: none;
+  transition: border-color .15s ease, box-shadow .15s ease;
 }
-.event-form select{
-  appearance:none;
+
+.event-form select {
+  appearance: none;
   background-image:
     linear-gradient(45deg, transparent 50%, #b39adc 50%),
     linear-gradient(135deg, #b39adc 50%, transparent 50%),
@@ -46,95 +59,156 @@
     calc(100% - 20px) calc(50% - 3px),
     calc(100% - 14px) calc(50% - 3px),
     calc(100% - 2.2rem) 50%;
-  background-size:6px 6px, 6px 6px, 1px 60%;
-  background-repeat:no-repeat;
-  background-color:#fff;
+  background-size: 6px 6px, 6px 6px, 1px 60%;
+  background-repeat: no-repeat;
+  background-color: #fff;
 }
-.event-form textarea{ min-height:80px; resize:vertical; }
+
+.event-form textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
 .event-form input:focus,
 .event-form textarea:focus,
-.event-form select:focus{
-  border-color:#b39adc;
-  box-shadow:0 0 0 2px rgba(179,154,220,.2);
+.event-form select:focus {
+  border-color: #b39adc;
+  box-shadow: 0 0 0 2px rgba(179,154,220,.2);
 }
 
-/* ===== Gumbi ===== */
-.form-buttons{
-  display:flex !important;
-  flex-direction:row !important;
-  gap:8px;
-  margin-top:8px;
-  justify-content:flex-end;
-  align-items:center;
+/* Gumbi u formi */
+.form-buttons {
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 8px;
+  margin-top: 8px;
+  justify-content: flex-end;
+  align-items: center;
 }
+
 .form-buttons .save-btn,
-.form-buttons .cancel-btn{
-  width:auto;
-  min-width:120px;
-  padding:8px 14px;
-  border-radius:8px;
-  font-weight:500;
-  cursor:pointer;
-}
-.form-buttons .save-btn{ background:#b39adc; color:#fff; border:none; }
-.form-buttons .save-btn:hover{ background:#a088c7; }
-.form-buttons .save-btn:disabled{ background:#ccc; cursor:not-allowed; opacity:.7; }
-.form-buttons .cancel-btn{ background:#f3f3f7; color:#444; border:1px solid #d9d6e8; }
-.form-buttons .cancel-btn:hover{ background:#e8e8ef; }
-
-/* ===== Desktop layout forme ===== */
-@media (min-width:768px){
-  .event-form{ grid-template-columns:1fr 1fr; gap:16px 20px; }
-  .event-form > .field{ display:flex; flex-direction:column; }
-  .form-buttons{ grid-column: 2 / 3; justify-self: end; align-self: end; }
+.form-buttons .cancel-btn {
+  width: auto;
+  min-width: 120px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
 }
 
-/* ===== Admin gumb ===== */
-.admin-actions{
+.form-buttons .save-btn {
+  background: #b39adc;
+  color: #fff;
+  border: none;
+}
+
+.form-buttons .save-btn:hover {
+  background: #a088c7;
+}
+
+.form-buttons .save-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  opacity: .7;
+}
+
+.form-buttons .cancel-btn {
+  background: #f3f3f7;
+  color: #444;
+  border: 1px solid #d9d6e8;
+}
+
+.form-buttons .cancel-btn:hover {
+  background: #e8e8ef;
+}
+
+/* Desktop layout forme */
+@media (min-width: 768px) {
+  .event-form { grid-template-columns: 1fr 1fr; gap: 16px 20px; }
+  .event-form > .field { display: flex; flex-direction: column; }
+  .form-buttons { grid-column: 2 / 3; justify-self: end; align-self: end; }
+}
+
+/* Admin gumb */
+.admin-actions {
   padding: 0 clamp(1rem, 5vw, 4rem);
   margin: .5rem 0 1rem;
 }
-.primary-btn{
-  background:#b39adc;color:#fff;border:none;padding:10px 16px;border-radius:10px;
-  font-size:.95rem;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.08);
-  transition:transform .06s ease, background .2s ease;
-}
-.primary-btn:hover{ background:#a088c7; }
-.primary-btn:active{ transform:translateY(1px); }
 
-/* ===== Sekcije ===== */
-.events-section{
+.primary-btn {
+  background: #b39adc;
+  color: #fff;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-size: .95rem;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(0,0,0,.08);
+  transition: transform .06s ease, background .2s ease;
+}
+
+.primary-btn:hover { background: #a088c7; }
+.primary-btn:active { transform: translateY(1px); }
+
+/* Sekcije liste događaja */
+.events-section {
   padding: clamp(.9rem, 2.8vh, 1.6rem) clamp(1rem, 5vw, 4rem) 0;
   margin-bottom: 2rem;
 }
-.events-subheader{
-  margin:.5rem 0 .5rem;
-  color:#6f5b94;
-  font-weight:800;
-  font-size:clamp(1.1rem, 2.2vw, 1.4rem);
-}
-.events-empty{
-  padding:1rem clamp(1rem, 5vw, 4rem);
-  color:#7a63b0;background:#f6f3ff;border:1px solid #e6e1f5;border-radius:12px;
-  margin-top:.5rem;
+
+.events-subheader {
+  margin: .5rem 0 .5rem;
+  color: #6f5b94;
+  font-weight: 800;
+  font-size: clamp(1.1rem, 2.2vw, 1.4rem);
 }
 
-/* ===== FILTERI (NE DIRAM) ===== */
-.events-filters{
-  position:sticky; top:0; z-index:5;
-  background:linear-gradient(#fff 0 60%, transparent 100%);
+.events-empty {
+  padding: 1rem clamp(1rem, 5vw, 4rem);
+  color: #7a63b0;
+  background: #f6f3ff;
+  border: 1px solid #e6e1f5;
+  border-radius: 12px;
+  margin-top: .5rem;
+}
+
+/* Filteri */
+.events-filters {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: linear-gradient(#fff 0 60%, transparent 100%);
   padding: clamp(.6rem, 1.6vh, .9rem) clamp(1rem, 5vw, 4rem) 0;
 }
-.filters-row{
-  display:flex; align-items:center; flex-wrap:wrap; gap:10px 12px;
-  background:#f9f9ff;border:1px solid #e6e1f5;border-radius:14px;
-  padding:14px 16px; box-shadow:0 1px 6px rgba(0,0,0,.06);
+
+.filters-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 12px;
+  background: #f9f9ff;
+  border: 1px solid #e6e1f5;
+  border-radius: 14px;
+  padding: 14px 16px;
+  box-shadow: 0 1px 6px rgba(0,0,0,.06);
 }
-.events-filters label{ font-size:.92rem; color:#6f5b94; margin-right:6px; }
-.events-filters select{
-  appearance:none; min-width:220px;
-  padding:10px 12px; border:1px solid #d9d6e8; border-radius:10px; background:#fff;
-  font-size:.95rem; outline:none; transition:border-color .15s, box-shadow .15s;
+
+.events-filters label {
+  font-size: .92rem;
+  color: #6f5b94;
+  margin-right: 6px;
+}
+
+.events-filters select {
+  appearance: none;
+  min-width: 220px;
+  padding: 10px 12px;
+  border: 1px solid #d9d6e8;
+  border-radius: 10px;
+  background: #fff;
+  font-size: .95rem;
+  outline: none;
+  transition: border-color .15s, box-shadow .15s;
   background-image:
     linear-gradient(45deg, transparent 50%, #b39adc 50%),
     linear-gradient(135deg, #b39adc 50%, transparent 50%),
@@ -143,64 +217,82 @@
     calc(100% - 20px) calc(50% - 3px),
     calc(100% - 14px) calc(50% - 3px),
     calc(100% - 2.2rem) 50%;
-  background-size:6px 6px, 6px 6px, 1px 60%;
-  background-repeat:no-repeat;
+  background-size: 6px 6px, 6px 6px, 1px 60%;
+  background-repeat: no-repeat;
 }
-.events-filters select:focus{
-  border-color:#b39adc; box-shadow:0 0 0 2px rgba(179,154,220,.2);
+
+.events-filters select:focus {
+  border-color: #b39adc;
+  box-shadow: 0 0 0 2px rgba(179,154,220,.2);
 }
-.filter-reset{
-  margin-left:auto; border:1px solid #d9d6e8; background:#f6f3ff; color:#6f5b94;
-  padding:8px 12px; border-radius:10px; font-size:.9rem; cursor:pointer;
-  transition:background .2s, transform .06s;
+
+.filter-reset {
+  margin-left: auto;
+  border: 1px solid #d9d6e8;
+  background: #f6f3ff;
+  color: #6f5b94;
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-size: .9rem;
+  cursor: pointer;
+  transition: background .2s, transform .06s;
 }
-.filter-reset:hover{ background:#efe9ff; }
-.filter-reset:active{ transform:translateY(1px); }
+
+.filter-reset:hover { background: #efe9ff; }
+.filter-reset:active { transform: translateY(1px); }
 
 /* Naslov "Filtriraj:" iznad filtera */
-.events-filters .filters-row{ display:flex; flex-wrap:wrap; align-items:center; gap:10px 16px; }
-.events-filters .filters-title{
-  flex:0 0 100%;
-  display:block;
-  margin:0 0 1px 0;
-  font-weight:800;
-  color:#6f5b94;
-  font-size:1.05rem;
-}
-.events-filters .filter-reset{ margin-left:auto; }
-
-/* Mobile: label iznad selecta */
-@media (max-width: 560px){
-  .events-filters .filters-row{ gap:8px 0; }
-  .events-filters .filters-row > label{ flex:0 0 100%; display:block; margin-top:10px; }
-  .events-filters .filters-row > select{ flex:0 0 100%; display:block; width:100%; min-width:0; }
-  .events-filters .filter-reset{ margin-left:auto; }
+.events-filters .filters-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 16px;
 }
 
-/* ===== GRID KARTICA (lista događaja) — FIKSNE VISINE ===== */
-.events-grid{
+.events-filters .filters-title {
+  flex: 0 0 100%;
+  display: block;
+  margin: 0 0 1px 0;
+  font-weight: 800;
+  color: #6f5b94;
+  font-size: 1.05rem;
+}
+
+.events-filters .filter-reset { margin-left: auto; }
+
+/* Filteri na mobitelu: label iznad selecta */
+@media (max-width: 560px) {
+  .events-filters .filters-row { gap: 8px 0; }
+  .events-filters .filters-row > label { flex: 0 0 100%; display: block; margin-top: 10px; }
+  .events-filters .filters-row > select { flex: 0 0 100%; display: block; width: 100%; min-width: 0; }
+  .events-filters .filter-reset { margin-left: auto; }
+}
+
+/* Grid kartica (lista događaja) – fiksne visine */
+.events-grid {
   --card-w: clamp(260px, 27vw, 300px);
-  /* ↓ manja fiksna visina da ne zjapi prazno */
   --card-h: clamp(370px, 50vh, 520px);
   padding: clamp(1rem, 3vh, 4rem) clamp(1rem, 5vw, 4rem);
-  display:flex; flex-wrap:wrap; gap:18px 20px;
-  justify-content:center; align-items:stretch;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px 20px;
+  justify-content: center;
+  align-items: stretch;
 }
-
 
 /* podrži i staro <a class="event-card"> i novo <app-event-card> */
 .events-grid > a.event-card,
-.events-grid app-event-card{
-  flex:0 0 var(--card-w);
-  width:var(--card-w);
-  height:var(--card-h);
-  display:flex;
-  flex-direction:column;
+.events-grid app-event-card {
+  flex: 0 0 var(--card-w);
+  width: var(--card-w);
+  height: var(--card-h);
+  display: flex;
+  flex-direction: column;
 }
 
-/* Mobiteli: jedna kartica u redu, visina neka bude auto */
-@media (max-width:480px){
-  .events-grid{ --card-w:100%; }
+/* Grid na mobitelu: jedna kartica u redu, visina auto */
+@media (max-width: 480px) {
+  .events-grid { --card-w: 100%; }
   .events-grid > a.event-card,
-  .events-grid app-event-card{ height:auto; }
+  .events-grid app-event-card { height: auto; }
 }

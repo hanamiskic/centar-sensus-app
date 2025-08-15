@@ -5,9 +5,8 @@ import { Component } from '@angular/core';
   standalone: true,
   imports: [],
   templateUrl: './kontakt.component.html',
-  styleUrl: './kontakt.component.css'
+  styleUrls: ['./kontakt.component.css'],
 })
 export class KontaktComponent {
-  // Component logic goes here
 
 }

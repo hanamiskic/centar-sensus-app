@@ -1,10 +1,4 @@
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 12px;
-  padding: clamp(1rem, 3vh, 4rem) clamp(1rem, 5vw, 4rem);
-}
-
+/* Naslov stranice */
 .gallery-header {
   padding: clamp(1rem, 3vh, 4rem) clamp(1rem, 5vw, 4rem) 0;
   font-size: 1.6rem;
@@ -12,88 +6,7 @@
   color: #b39adc;
 }
 
-.item {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  overflow: hidden;
-  border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-  background: #f0f0f0;
-}
-
-.item img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  cursor: pointer;
-  transition: transform 0.3s ease;
-}
-
-.item img:hover {
-  transform: scale(1.05);
-}
-
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.8);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
-
-.modal-content {
-  position: relative;
-  max-width: 90%;
-  max-height: 90%;
-}
-
-.modal-content img {
-  width: auto;
-  max-width: 90vw;
-  max-height: 80vh;
-  height: auto;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.5);
-}
-
-.controls {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
-  display: flex;
-  justify-content: space-between;
-  transform: translateY(-50%);
-}
-
-.controls button {
-  background: rgba(0,0,0,0.6);
-  border: none;
-  color: white;
-  font-size: 2rem;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-}
-
-.close {
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  background: transparent;
-  border: none;
-  font-size: 2rem;
-  color: white;
-  cursor: pointer;
-}
-
-/* Upload forma */
+/* Upload (admin) */
 .upload-container {
   display: flex;
   align-items: center;
@@ -143,6 +56,39 @@
   background-color: #a088c7;
 }
 
+/* Grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 12px;
+  padding: clamp(1rem, 3vh, 4rem) clamp(1rem, 5vw, 4rem);
+}
+
+/* Stavka u gridu */
+.item {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  background: #f0f0f0;
+}
+
+.item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.item img:hover {
+  transform: scale(1.05);
+}
+
+/* Gumb za brisanje (admin) */
 .delete-btn {
   position: absolute;
   top: 8px;
@@ -162,6 +108,80 @@
   background: rgba(200,0,0,0.85);
 }
 
+.delete-btn:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+/* Modal overlay + sadržaj */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1200;
+}
+
+.modal-content {
+  position: relative;
+  max-width: 90%;
+  max-height: 90%;
+}
+
+.modal-content img {
+  width: auto;
+  max-width: 90vw;
+  max-height: 80vh;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+/* Kontrole u modalu (lijevo/desno) */
+.controls {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  transform: translateY(-50%);
+}
+
+.controls button {
+  background: rgba(0,0,0,0.6);
+  border: none;
+  color: white;
+  font-size: 2rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+.controls button:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+/* Zatvori (X) */
+.close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: transparent;
+  border: none;
+  font-size: 2rem;
+  color: white;
+  cursor: pointer;
+}
+
+.close:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+/* Mobilni raspored za upload */
 @media (max-width: 480px) {
   .upload-container {
     flex-direction: column;
@@ -178,5 +198,12 @@
 @media (min-width: 550px) {
   .gallery-header {
     padding-top: 7vh;
+  }
+}
+
+/* Poštuj OS preferencu smanjene animacije */
+@media (prefers-reduced-motion: reduce) {
+  .item img {
+    transition: none;
   }
 }
