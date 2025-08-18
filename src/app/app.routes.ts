@@ -24,19 +24,19 @@ export const routes: Routes = [
 
       // Događaji (lista)
       {
-        path: 'dogadaji',
+        path: 'events',
         loadComponent: () =>
-          import('./pages/dogadaji/dogadaji.component').then(m => m.DogadajiComponent),
+          import('./pages/events/events.component').then(m => m.EventsComponent),
         data: { animation: 'Dogadaji' },
         title: 'Događaji – Centar Sensus',
       },
 
       // Događaj (detalj)
       {
-        path: 'dogadaji/:id',
+        path: 'events/:id',
         loadComponent: () =>
-          import('./pages/detaljidogadaja/detaljidogadaja.component').then(
-            m => m.DetaljiDogadajaComponent
+          import('./pages/event-details/event-details.component').then(
+            m => m.EventDetailsComponent
           ),
         data: { animation: 'DogadajiDetalji' },
         title: 'Detalji događaja – Centar Sensus',
@@ -46,18 +46,18 @@ export const routes: Routes = [
 
       // Galerija
       {
-        path: 'galerija',
+        path: 'gallery',
         loadComponent: () =>
-          import('./pages/galerija/galerija.component').then(m => m.GalerijaComponent),
+          import('./pages/gallery/gallery.component').then(m => m.GalleryComponent),
         data: { animation: 'Galerija' },
         title: 'Galerija – Centar Sensus',
       },
 
       // O nama
       {
-        path: 'onama',
+        path: 'about',
         loadComponent: () =>
-          import('./pages/onama/onama.component').then(m => m.OnamaComponent),
+          import('./pages/about/about.component').then(m => m.AboutComponent),
         data: { animation: 'Onama' },
         title: 'O nama – Centar Sensus',
       },
@@ -73,9 +73,9 @@ export const routes: Routes = [
 
       // Kontakt
       {
-        path: 'kontakt',
+        path: 'contact',
         loadComponent: () =>
-          import('./pages/kontakt/kontakt.component').then(m => m.KontaktComponent),
+          import('./pages/contact/contact.component').then(m => m.ContactComponent),
         data: { animation: 'Kontakt' },
         title: 'Kontakt – Centar Sensus',
       },
@@ -84,8 +84,8 @@ export const routes: Routes = [
       {
         path: 'program/:id',
         loadComponent: () =>
-          import('./pages/programi/detaljiprograma/detaljiprograma.component').then(
-            m => m.DetaljiProgramaComponent
+          import('./pages/programi/program-details/program-details.component').then(
+            m => m.ProgramDetailsComponent
           ),
         data: { animation: 'Program' },
         title: 'Detalji programa – Centar Sensus',

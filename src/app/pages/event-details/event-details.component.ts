@@ -28,13 +28,13 @@ type RegItem = {
 };
 
 @Component({
-  selector: 'app-detaljidogadaja',
+  selector: 'app-eventdetails',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './detaljidogadaja.component.html',
-  styleUrls: ['./detaljidogadaja.component.css'],
+  templateUrl: './event-details.component.html',
+  styleUrls: ['./event-details.component.css'],
 })
-export class DetaljiDogadajaComponent implements OnDestroy {
+export class EventDetailsComponent implements OnDestroy {
   private sub?: Subscription;
   private authSub?: Subscription;
   private adminSub?: Subscription;
@@ -65,7 +65,7 @@ export class DetaljiDogadajaComponent implements OnDestroy {
   extraBusy = false;
 
   // kamo se vratiti ako nema browser history
-  private backFallback: '/dogadaji' | '/profil' = '/dogadaji';
+  private backFallback: '/events' | '/profil' = '/events';
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -79,7 +79,7 @@ export class DetaljiDogadajaComponent implements OnDestroy {
     const fromState = (history.state as any)?.from ?? null; // kad navigiraš sa [state]
     const fromQuery = this.route.snapshot.queryParamMap.get('from'); // kad koristiš ?from=profil
     const from = (fromState || fromQuery || '').toString().toLowerCase();
-    this.backFallback = from === 'profil' ? '/profil' : '/dogadaji';
+    this.backFallback = from === 'profil' ? '/profil' : '/events';
 
     // učitaj event na promjenu :id
     this.sub = this.route.paramMap.subscribe(async (p) => {
@@ -144,7 +144,7 @@ export class DetaljiDogadajaComponent implements OnDestroy {
   }
 
   get isUnlimited(): boolean {
-    return Number(this.event?.maxSudionika ?? 0) === DetaljiDogadajaComponent.INFINITY_SENTINEL;
+    return Number(this.event?.maxSudionika ?? 0) === EventDetailsComponent.INFINITY_SENTINEL;
   }
 
   get capacity(): number {

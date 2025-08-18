@@ -7,13 +7,13 @@ import { Subscription } from 'rxjs';
 type ImgItem = string | { thumb?: string; full?: string };
 
 @Component({
-  selector: 'app-galerija',
+  selector: 'app-gallery',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './galerija.component.html',
-  styleUrls: ['./galerija.component.css']
+  templateUrl: './gallery.component.html',
+  styleUrls: ['./gallery.component.css']
 })
-export class GalerijaComponent implements OnInit, OnDestroy {
+export class GalleryComponent implements OnInit, OnDestroy {
   private adminSub?: Subscription;
 
   images: ImgItem[] = [];

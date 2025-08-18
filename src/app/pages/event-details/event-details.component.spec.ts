@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { OnamaComponent } from './onama.component';
+import { EventDetailsComponent } from './event-details.component';
 
-describe('Onama', () => {
-  let component: OnamaComponent;
-  let fixture: ComponentFixture<OnamaComponent>;
+describe('Detaljidogadaja', () => {
+  let component: EventDetailsComponent;
+  let fixture: ComponentFixture<EventDetailsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [OnamaComponent]
+      imports: [EventDetailsComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(OnamaComponent);
+    fixture = TestBed.createComponent(EventDetailsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

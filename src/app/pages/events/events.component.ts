@@ -33,13 +33,13 @@ interface EventFormData {
 }
 
 @Component({
-  selector: 'app-dogadaji',
+  selector: 'app-events',
   standalone: true,
   imports: [CommonModule, FormsModule, EventCardComponent],
-  templateUrl: './dogadaji.component.html',
-  styleUrls: ['./dogadaji.component.css']
+  templateUrl: './events.component.html',
+  styleUrls: ['./events.component.css']
 })
-export class DogadajiComponent implements OnInit, OnDestroy {
+export class EventsComponent implements OnInit, OnDestroy {
   private authSub?: Subscription;
 
   // prava i data

@@ -62,13 +62,13 @@ const PROGRAM_DATA: Record<string, ProgramData> = {
 };
 
 @Component({
-  selector: 'app-detalji-programa',
+  selector: 'app-programdetails',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './detaljiprograma.component.html',
-  styleUrls: ['./detaljiprograma.component.css'],
+  templateUrl: './program-details.component.html',
+  styleUrls: ['./program-details.component.css'],
 })
-export class DetaljiProgramaComponent implements OnInit {
+export class ProgramDetailsComponent implements OnInit {
   programId = '';
   title = '';
   podprogrami: PodProgram[] = [];

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GalerijaComponent } from './galerija.component';
+import { EventsComponent } from './events.component';
 
-describe('Galerija', () => {
-  let component: GalerijaComponent;
-  let fixture: ComponentFixture<GalerijaComponent>;
+describe('Dogadaji', () => {
+  let component: EventsComponent;
+  let fixture: ComponentFixture<EventsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [GalerijaComponent]
+      imports: [EventsComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(GalerijaComponent);
+    fixture = TestBed.createComponent(EventsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
