@@ -43,3 +43,7 @@ Thumbs.db
 
 
 scripts/*.json
+
+# Environment config
+.env
+*.env

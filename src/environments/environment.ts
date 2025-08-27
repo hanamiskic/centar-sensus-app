@@ -1,11 +1,11 @@
 export const environment = {
   production: false,
   firebase: {
-    apiKey: "AIzaSyDPM7akstKRowvCTbVGQNlsPXptKEqrngU",
-    authDomain: "centar-sensus.firebaseapp.com",
-    projectId: "centar-sensus",
-    storageBucket: "centar-sensus.firebasestorage.app",
-    messagingSenderId: "824277428467",
-    appId: "1:824277428467:web:62c4bb1ab6525e5f89ef86"
+    apiKey: process.env['NG_APP_FIREBASE_API_KEY'] || '',
+    authDomain: process.env['NG_APP_FIREBASE_AUTH_DOMAIN'] || '',
+    projectId: process.env['NG_APP_FIREBASE_PROJECT_ID'] || '',
+    storageBucket: process.env['NG_APP_FIREBASE_STORAGE_BUCKET'] || '',
+    messagingSenderId: process.env['NG_APP_FIREBASE_MESSAGING_SENDER_ID'] || '',
+    appId: process.env['NG_APP_FIREBASE_APP_ID'] || ''
   },
 };
